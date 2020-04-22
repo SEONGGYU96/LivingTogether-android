@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "8861569604",
+    "firebase_url": "https://livingtogether-android.firebaseio.com",
+    "project_id": "livingtogether-android",
+    "storage_bucket": "livingtogether-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8861569604:android:635c503715b36f6d63e211",
+        "android_client_info": {
+          "package_name": "com.seoultech.livingtogether_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8861569604-uk0vqv2mndqu3stoo7cnqbvauocv34bo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seoultech.livingtogether_android",
+            "certificate_hash": "fb5c6d3db31a685cc02df8fdb7de76ec064075c4"
+          }
+        },
+        {
+          "client_id": "8861569604-qm109uu1i2kses394d0poaoes88e6v2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpZP9aulK8hnA5oCywK5kd61ZlZ-3PGD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8861569604-qm109uu1i2kses394d0poaoes88e6v2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
