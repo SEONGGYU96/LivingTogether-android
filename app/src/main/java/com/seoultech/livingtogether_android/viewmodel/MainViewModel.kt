@@ -1,8 +1,8 @@
 package com.seoultech.livingtogether_android.viewmodel
 
 import androidx.databinding.ObservableField
-import com.seoultech.livingtogether_android.data.NOKData
-import com.seoultech.livingtogether_android.data.SensorData
+import com.seoultech.livingtogether_android.model.NOKData
+import com.seoultech.livingtogether_android.model.SensorData
 
 class MainViewModel {
     var sensors = ObservableField<List<SensorData>>(mutableListOf())
