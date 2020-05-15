@@ -135,7 +135,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/text_sensor_more_main"
                     style="@style/MinorText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

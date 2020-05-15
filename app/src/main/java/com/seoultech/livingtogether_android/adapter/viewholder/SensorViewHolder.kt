@@ -3,7 +3,7 @@ package com.seoultech.livingtogether_android.adapter.viewholder
 import android.view.ViewGroup
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseViewHolder
-import com.seoultech.livingtogether_android.data.SensorData
+import com.seoultech.livingtogether_android.model.SensorData
 import com.seoultech.livingtogether_android.databinding.SensorItemMainBinding
 
 class SensorViewHolder(parent: ViewGroup) :

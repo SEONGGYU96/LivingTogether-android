@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import com.seoultech.livingtogether_android.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.adapter.SensorAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
+import com.seoultech.livingtogether_android.ui.ScanActivity
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
@@ -29,6 +31,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             recyclerNokListMain.layoutManager = LinearLayoutManager(baseContext)
             recyclerNokListMain.adapter = nokAdapter
             recyclerNokListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
+
+            textSensorMoreMain.setOnClickListener {
+                val intent = Intent(this@MainActivity, ScanActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }

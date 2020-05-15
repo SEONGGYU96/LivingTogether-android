@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.seoultech.livingtogether_android">
 
+    <!-- For Bluetooth low energy usage-->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- For using only BLE device-->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,11 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.MainActivity"></activity>
+        <activity android:name=".ui.ScanActivity"></activity>
+        <activity android:name=".ui.main.MainActivity" />
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
