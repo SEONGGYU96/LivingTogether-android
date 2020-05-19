@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ScanActivity"></activity>
+        <activity android:name=".ui.scan.ScanActivity"></activity>
         <activity android:name=".ui.main.MainActivity" />
         <activity
             android:name=".ui.SplashActivity"
