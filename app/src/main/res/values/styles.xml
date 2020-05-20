@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -22,6 +22,11 @@
     <style name="MinorText" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ToolbarTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">32sp</item>
     </style>
 
 </resources>

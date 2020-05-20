@@ -46,6 +46,9 @@ dependencies {
     implementation "androidx.room:room-runtime:2.2.5"
     annotationProcessor "androidx.room:room-compiler:2.2.5"
     kapt "androidx.room:room-compiler:2.2.5"
+
+    //lottie
+    implementation "com.airbnb.android:lottie:3.4.0"
 }
 
 apply plugin: 'com.google.gms.google-services'

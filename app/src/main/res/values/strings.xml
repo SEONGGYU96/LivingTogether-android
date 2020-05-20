@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">LivingTogether-android</string>
     <string name="app_title">Living Together</string>
+    <string name="resgist_sensor">센서 등록</string>
 </resources>
