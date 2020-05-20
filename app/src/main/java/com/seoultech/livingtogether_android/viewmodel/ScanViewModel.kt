@@ -7,16 +7,28 @@ import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.os.Handler
 import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import com.seoultech.livingtogether_android.model.BleDevice
+import com.seoultech.livingtogether_android.model.room.DataBaseManager
+import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.tools.BleCreater
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
-class ScanViewModel(context: Context) {
+class ScanViewModel(context: Context) : ViewModel() {
 
     companion object{
         private const val TAG = "ScanViewModel"
         private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
         private const val MIN_RSSI = -85
     }
+
+    private val db = DataBaseManager.getInstance(context)
+
+    private lateinit var device: BleDevice
 
     private var isScanning = false
 
@@ -77,6 +89,12 @@ class ScanViewModel(context: Context) {
 
                 if (bleDevice.uuid == LIVING_TOGETHER_UUID) {
                     Log.d(TAG, "Living Together H/W has been found")
+
+                    device = bleDevice
+
+                    viewModelScope.launch(Dispatchers.IO) {
+                        db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), null, null, null, null, true))
+                    }
 
                     stopScan()
 

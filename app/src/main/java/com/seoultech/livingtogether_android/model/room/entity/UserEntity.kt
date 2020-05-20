@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_entity")
 data class UserEntity(
-    @PrimaryKey(autoGenerate = true) var userId: Int = 0,
-
     @ColumnInfo(name = "name") var name: String = "",
 
     @ColumnInfo(name = "address") var address: String = "",
@@ -18,4 +16,8 @@ data class UserEntity(
     @ColumnInfo(name = "district") var district: String = "",
 
     @ColumnInfo(name = "last_location") var lastLocation: String = ""
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    var userId: Int = 0
+}
