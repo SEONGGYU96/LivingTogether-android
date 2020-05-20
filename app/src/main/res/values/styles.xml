@@ -24,4 +24,9 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="ToolbarTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
 </resources>
