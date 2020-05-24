@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.nok.NOKListActivity"></activity>
+        <activity android:name=".ui.nok.AddNOKActivity"></activity>
+        <activity android:name=".ui.nok.NOKListActivity" />
         <activity android:name=".ui.scan.ScanActivity" />
         <activity android:name=".ui.main.MainActivity" />
         <activity

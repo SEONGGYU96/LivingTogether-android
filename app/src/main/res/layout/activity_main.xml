@@ -181,7 +181,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/recycler_sensor_list_main">
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/button_show_more_nok_main"
                     style="@style/MinorText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

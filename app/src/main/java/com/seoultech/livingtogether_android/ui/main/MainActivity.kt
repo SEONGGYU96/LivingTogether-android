@@ -11,6 +11,7 @@ import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
+import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
 
@@ -35,6 +36,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             textSensorMoreMain.setOnClickListener {
                 val intent = Intent(this@MainActivity, ScanActivity::class.java)
                 startActivity(intent)
+            }
+
+            buttonShowMoreNokMain.setOnClickListener {
+                startActivity(Intent(this@MainActivity, NOKListActivity::class.java))
             }
         }
     }

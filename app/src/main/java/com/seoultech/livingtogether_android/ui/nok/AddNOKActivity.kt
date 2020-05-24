@@ -1,25 +1,17 @@
 package com.seoultech.livingtogether_android.ui.nok
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
-import com.seoultech.livingtogether_android.databinding.ActivityNokListBinding
+import com.seoultech.livingtogether_android.databinding.ActivityAddNokBinding
 
-class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_nok_list) {
+class AddNOKActivity : BaseActivity<ActivityAddNokBinding>(R.layout.activity_add_nok) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.run {
-            buttonAddNokList.setOnClickListener {
-                //Todo: 입력하여 추가하기 vs 주소록에서 추가하기 다이얼로그 띄우기
-                startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
-            }
-        }
-
-        setSupportActionBar(binding.toolbarNokList)
+        setSupportActionBar(binding.toolbarAddNok)
 
         supportActionBar?.let {
             it.setDisplayShowTitleEnabled(false)

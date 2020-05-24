@@ -15,7 +15,7 @@
         tools:context=".ui.nok.NOKListActivity">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_scan"
+            android:id="@+id/toolbar_nok_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/text_title_scan"
-                style="@style/ToolbarTitle"
+                style="@style/TitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/next_of_kin" />
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
-                    app:srcCompat="@drawable/ic_add_80dp" />
+                    app:srcCompat="@drawable/ic_add_60dp" />
 
             </androidx.cardview.widget.CardView>
 
