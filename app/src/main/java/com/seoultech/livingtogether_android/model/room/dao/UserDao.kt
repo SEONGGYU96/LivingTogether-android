@@ -10,11 +10,11 @@ interface UserDao {
     fun getAllObservable(): LiveData<List<UserEntity>>
 
     @Insert
-    fun insert(deviceEntity: UserEntity)
+    fun insert(userEntity: UserEntity)
 
     @Update
-    fun update(deviceEntity: UserEntity)
+    fun update(userEntity: UserEntity)
 
     @Delete
-    fun delete(deviceEntity: UserEntity)
+    fun delete(userEntity: UserEntity)
 }
