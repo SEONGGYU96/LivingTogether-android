@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.seoultech.livingtogether_android.viewmodel.NOKViewModel" />
 
     </data>
 
