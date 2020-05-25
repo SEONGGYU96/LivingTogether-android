@@ -2,6 +2,7 @@ package com.seoultech.livingtogether_android.ui.nok
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
@@ -27,13 +28,14 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
 
             viewModel = vm
 
+
+            recyclerNokList.layoutManager = LinearLayoutManager(baseContext)
+            recyclerNokList.adapter = nokAdapter
+            recyclerNokList.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
+
             buttonAddNokList.setOnClickListener {
                 //Todo: 입력하여 추가하기 vs 주소록에서 추가하기 다이얼로그 띄우기
                 startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
-
-                recyclerNokList.layoutManager = LinearLayoutManager(baseContext)
-                recyclerNokList.adapter = nokAdapter
-                recyclerNokList.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
             }
 
             //NOKEntity 를 관찰하고 값이 비어있지 않다면 레이아웃을 변경

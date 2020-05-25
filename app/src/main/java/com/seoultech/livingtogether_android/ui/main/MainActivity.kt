@@ -29,9 +29,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             recyclerSensorListMain.adapter = sensorAdapter
             recyclerSensorListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.HORIZONTAL))
 
-            recyclerNokListMain.layoutManager = LinearLayoutManager(baseContext)
-            recyclerNokListMain.adapter = nokAdapter
-            recyclerNokListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
+            //recyclerNokListMain.layoutManager = LinearLayoutManager(baseContext)
+            //recyclerNokListMain.adapter = nokAdapter
+            //recyclerNokListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
 
             textSensorMoreMain.setOnClickListener {
                 val intent = Intent(this@MainActivity, ScanActivity::class.java)
