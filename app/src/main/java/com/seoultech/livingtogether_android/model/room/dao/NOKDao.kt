@@ -17,4 +17,7 @@ interface NOKDao {
 
     @Delete
     fun delete(nokEntity: NOKEntity)
+
+    @Query("Delete From nok_entity")
+    fun deleteAll()
 }

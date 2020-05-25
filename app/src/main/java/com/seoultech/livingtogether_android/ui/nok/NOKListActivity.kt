@@ -3,6 +3,8 @@ package com.seoultech.livingtogether_android.ui.nok
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.R
@@ -11,6 +13,7 @@ import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityNokListBinding
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.NOKViewModel
+import kotlinx.android.synthetic.main.activity_nok_list.*
 
 class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_nok_list) {
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
@@ -20,7 +23,10 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
         super.onCreate(savedInstanceState)
 
         binding.run {
+            lifecycleOwner = this@NOKListActivity
+
             viewModel = vm
+
             buttonAddNokList.setOnClickListener {
                 //Todo: 입력하여 추가하기 vs 주소록에서 추가하기 다이얼로그 띄우기
                 startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
@@ -29,6 +35,17 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
                 recyclerNokList.adapter = nokAdapter
                 recyclerNokList.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
             }
+
+            //NOKEntity 를 관찰하고 값이 비어있지 않다면 레이아웃을 변경
+            vm.getAll().observe(this@NOKListActivity, Observer {
+                if (it.isEmpty()) {
+                    layoutNoNok.visibility = View.VISIBLE
+                    layoutNoks.visibility = View.GONE
+                } else {
+                    layoutNoNok.visibility = View.GONE
+                    layoutNoks.visibility = View.VISIBLE
+                }
+            })
         }
 
         setSupportActionBar(binding.toolbarNokList)

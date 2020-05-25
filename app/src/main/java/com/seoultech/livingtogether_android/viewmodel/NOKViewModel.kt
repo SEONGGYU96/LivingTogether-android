@@ -4,26 +4,34 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NOKViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
         private const val TAG = "NOKViewModel"
     }
 
+    private val db = DataBaseManager.getInstance(application)
+
     var noks : LiveData<List<NOKEntity>>
 
-    val db = DataBaseManager.getInstance(application)
+    var newNok = NOKEntity()
 
     init {
         noks = getAll()
-
-        Log.d(TAG, "noks : ${noks.value}")
     }
 
     fun getAll(): LiveData<List<NOKEntity>> {
         return db.nokDao().getAllObservable()
     }
 
+    fun insert(newNok:NOKEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.nokDao().insert(newNok)
+        }
+    }
 }
