@@ -39,11 +39,6 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
             recyclerNokList.adapter = nokAdapter
             recyclerNokList.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
 
-            buttonAddNokList.setOnClickListener {
-                //Todo: 입력하여 추가하기 vs 주소록에서 추가하기 다이얼로그 띄우기
-                startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
-            }
-
             //debug
             buttonTest.setOnClickListener {
                 startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
@@ -88,6 +83,7 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
                 return true
             }
 
+            //Todo: 입력하여 추가하기 vs 주소록에서 추가하기 다이얼로그 띄우기
             R.id.menu_go_to_add_nok_activity -> {
                 startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
                 return true
