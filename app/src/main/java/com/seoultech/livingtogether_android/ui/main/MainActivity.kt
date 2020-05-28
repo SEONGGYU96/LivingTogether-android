@@ -16,6 +16,7 @@ import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.UserEntity
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
+import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,20 +42,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     RecyclerView.HORIZONTAL
                 )
             )
-
-            recyclerNokListMain.layoutManager = LinearLayoutManager(baseContext)
-            recyclerNokListMain.adapter = nokAdapter
-            recyclerNokListMain.addItemDecoration(
-                MarginDecoration(
-                    baseContext,
-                    15,
-                    RecyclerView.VERTICAL
-                )
-            )
+            //recyclerNokListMain.layoutManager = LinearLayoutManager(baseContext)
+            //recyclerNokListMain.adapter = nokAdapter
+            //recyclerNokListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
 
             textSensorMoreMain.setOnClickListener {
                 val intent = Intent(this@MainActivity, ScanActivity::class.java)
                 startActivity(intent)
+            }
+
+            buttonShowMoreNokMain.setOnClickListener {
+                startActivity(Intent(this@MainActivity, NOKListActivity::class.java))
             }
         }
     }
