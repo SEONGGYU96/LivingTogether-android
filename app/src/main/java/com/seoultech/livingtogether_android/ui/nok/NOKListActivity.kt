@@ -3,6 +3,7 @@ package com.seoultech.livingtogether_android.ui.nok
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
@@ -70,10 +71,28 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.nok_list_acitvity_menu, menu)       // main_menu 메뉴를 toolbar 메뉴 버튼으로 설정
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             finish()
             return true
+        }
+
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+            R.id.menu_go_to_add_nok_activity -> {
+                startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
+                return true
+            }
+
         }
         return super.onOptionsItemSelected(item)
     }
