@@ -57,24 +57,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 startActivity(intent)
             }
         }
-
-        val dataBaseManager = DataBaseManager.getInstance(this)
-
-        //테스트
-        dataBaseManager.userDao().getAllObservable().observe(this, Observer {
-            Log.d("texst", it.toString())
-        })
-
-        binding.testButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                dataBaseManager.userDao().insert(UserEntity("테스트", "공릉동", "010-9885-5658", "노원구", "공릉동"))
-            }
-        }
-
-        binding.textMainLocation.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                dataBaseManager.userDao().deleteAll()
-            }
-        }
     }
 }

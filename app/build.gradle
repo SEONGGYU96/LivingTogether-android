@@ -47,10 +47,12 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.2.5"
     kapt "androidx.room:room-compiler:2.2.5"
 
-    //coroutine lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha02"
-    def lifecycle_version = "2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    //lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+
+    //lottie
+    implementation "com.airbnb.android:lottie:3.4.0"
 }
 
 apply plugin: 'com.google.gms.google-services'

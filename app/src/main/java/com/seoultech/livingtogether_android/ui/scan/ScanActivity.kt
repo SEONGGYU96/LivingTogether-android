@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import android.widget.Toolbar
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityScanBinding
@@ -33,6 +35,14 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
         } else {
             Log.d(TAG, "This device supports Bluetooth.")
         }
+
+        setSupportActionBar(binding.toolbarScan)
+
+        supportActionBar?.let {
+            it.setDisplayShowTitleEnabled(false)
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_24dp)
+        }
     }
 
     override fun onResume() {
@@ -47,5 +57,15 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             //블루투스가 켜져있다면 스캔 시작
             vm.startScan(SCAN_PERIOD)
         }
+    }
+
+    //TODO: 뒤로 가기 버튼 클릭 시 스캔을 종료하겠냐는 다이얼로그 띄우기
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            vm.stopScan()
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
