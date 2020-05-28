@@ -15,6 +15,7 @@ import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.tools.BleCreater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class ScanViewModel(application: Application) : AndroidViewModel(application) {
@@ -87,9 +88,11 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
                 if (bleDevice.uuid == LIVING_TOGETHER_UUID) {
                     Log.d(TAG, "Living Together H/W has been found")
 
+                    val calendar = GregorianCalendar()
+
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
-                        db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), null, null, null, null, true))
+                        db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), null, null, calendar.timeInMillis, calendar.timeInMillis, true))
                     }
 
                     stopScan()
