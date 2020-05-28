@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.R
@@ -18,16 +19,20 @@ import kotlinx.android.synthetic.main.activity_nok_list.*
 
 class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_nok_list) {
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
-    private val vm: NOKViewModel by lazy { NOKViewModel(application) }
+
+    private lateinit var vm: NOKViewModel
+    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
+        vm = ViewModelProvider(this, viewModelFactory).get(NOKViewModel::class.java)
 
         binding.run {
             lifecycleOwner = this@NOKListActivity
 
             viewModel = vm
-
 
             recyclerNokList.layoutManager = LinearLayoutManager(baseContext)
             recyclerNokList.adapter = nokAdapter
@@ -38,7 +43,13 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
                 startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
             }
 
+            //debug
+            buttonTest.setOnClickListener {
+                startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
+            }
+
             //NOKEntity 를 관찰하고 값이 비어있지 않다면 레이아웃을 변경
+            //Fixme: add nok activity에서 보호자 등록 후, 다시 해당 액티비티로 돌아와서 active 상태가 되어도 리사이클러뷰가 갱신되지 않음
             vm.getAll().observe(this@NOKListActivity, Observer {
                 if (it.isEmpty()) {
                     layoutNoNok.visibility = View.VISIBLE
