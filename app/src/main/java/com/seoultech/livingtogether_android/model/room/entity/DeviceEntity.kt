@@ -21,9 +21,9 @@ data class DeviceEntity(
     //TODO: Date에 관련한 Model과 Util 클래스 생성하여 문자열을 대체하기
     @ColumnInfo(name = "init_date") var initDate: String?,
 
-    @ColumnInfo(name = "last_detection_type_one") var lastDetectionTypeOne: String?,
+    @ColumnInfo(name = "last_detection_type_one") var lastDetectionTypeOne: Long?,
 
-    @ColumnInfo(name = "last_detection_type_two") var lastDetectionTypeTwo: String?,
+    @ColumnInfo(name = "last_detection_type_two") var lastDetectionTypeTwo: Long?,
 
     @ColumnInfo(name = "is_available") var isAvailable: Boolean = false
 ) {

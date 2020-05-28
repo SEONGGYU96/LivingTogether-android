@@ -13,12 +13,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background"
+            android:layout_height="wrap_content"
+
             tools:context=".MainActivity">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -156,7 +157,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_sensor_list_main"
+                android:id="@+id/recycler_device_list_main"
                 replaceAll="@{viewModel.sensors}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -178,7 +179,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_sensor_list_main">
+                app:layout_constraintTop_toBottomOf="@+id/recycler_device_list_main">
 
                 <TextView
                     android:id="@+id/button_show_more_nok_main"
@@ -206,6 +207,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
+                    replaceAll="@{viewModel.noks}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView8"
