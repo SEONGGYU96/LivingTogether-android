@@ -8,7 +8,7 @@ import com.seoultech.livingtogether_android.model.room.entity.UserEntity
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user_entity")
-    fun getAllObservable(): List<UserEntity>
+    fun getAllObservable(): LiveData<UserEntity>
 
     @Insert
     fun insert(userEntity: UserEntity)
