@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityScanBinding
@@ -12,6 +13,8 @@ import com.seoultech.livingtogether_android.util.BluetoothUtil
 import com.seoultech.livingtogether_android.viewmodel.ScanViewModel
 
 class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
+    private lateinit var vm: ScanViewModel
+    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     private companion object {
         const val POPPOP_UUID = "53454f55-4c54-4543-4850-6f70506f7030"
@@ -21,11 +24,11 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
 
     }
 
-    //TODO: Context 를 넘기지 않는 방법으로 수
-    private val vm: ScanViewModel by lazy { ScanViewModel(this.applicationContext) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
+        vm = ViewModelProvider(this, viewModelFactory).get(ScanViewModel::class.java)
 
         //TODO: ViewModel 안에 넣기
         if (BluetoothUtil.isBluetoothAvailable(this)) {

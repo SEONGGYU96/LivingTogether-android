@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.viewmodel
 
+import android.app.Application
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
@@ -7,10 +8,8 @@ import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.os.Handler
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.seoultech.livingtogether_android.model.BleDevice
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.tools.BleCreater
@@ -18,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class ScanViewModel(context: Context) : ViewModel() {
+class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object{
         private const val TAG = "ScanViewModel"
@@ -26,14 +25,12 @@ class ScanViewModel(context: Context) : ViewModel() {
         private const val MIN_RSSI = -85
     }
 
-    private val db = DataBaseManager.getInstance(context)
-
-    private lateinit var device: BleDevice
+    private val db = DataBaseManager.getInstance(application)
 
     private var isScanning = false
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
-        val bluetoothManager = context.
+        val bluetoothManager = application.
             getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
@@ -90,8 +87,7 @@ class ScanViewModel(context: Context) : ViewModel() {
                 if (bleDevice.uuid == LIVING_TOGETHER_UUID) {
                     Log.d(TAG, "Living Together H/W has been found")
 
-                    device = bleDevice
-
+                    //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
                         db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), null, null, null, null, true))
                     }
