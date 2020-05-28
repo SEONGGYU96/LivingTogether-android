@@ -17,5 +17,7 @@ data class UserEntity(
 
     @ColumnInfo(name = "last_location") var lastLocation: String = ""
 ) {
-    @PrimaryKey(autoGenerate = true) var userId: Int = 0
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    var userId: Int = 0
 }
