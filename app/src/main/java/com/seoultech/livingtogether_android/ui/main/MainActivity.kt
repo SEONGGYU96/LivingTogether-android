@@ -13,6 +13,7 @@ import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
+import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
 
@@ -49,6 +50,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             buttonShowMoreNokMain.setOnClickListener {
                 startActivity(Intent(this@MainActivity, NOKListActivity::class.java))
             }
+
+            buttonEditProfile.setOnClickListener{
+                startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
+            }
+
         }
     }
 }
