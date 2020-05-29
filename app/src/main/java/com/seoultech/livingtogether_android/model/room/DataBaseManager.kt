@@ -35,9 +35,16 @@ abstract class DataBaseManager : RoomDatabase() {
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
+
+                        //최초 실행 시 User 데이터를 하나 생성
+                        ioThread {
+                            getInstance(context).userDao().insert(UserEntity())
+                        }
                     }
                 }).build()
         }
     }
+
+
 
 }
