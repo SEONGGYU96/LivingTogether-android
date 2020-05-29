@@ -13,20 +13,20 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private val db = DataBaseManager.getInstance(application)
 
-    var user : LiveData<UserEntity>
+    var userLiveData: LiveData<UserEntity>
+
+    lateinit var user: UserEntity
 
     init {
-        user = getAll()
-    }
+        userLiveData = this.getObservable()
 
-    fun getAll(): LiveData<UserEntity> {
-        return db.userDao().getAllObservable()
-    }
-
-    fun insert(newUser: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            db.userDao().insert(newUser)
+            user = db.userDao().getAll()
         }
+    }
+
+    fun getObservable(): LiveData<UserEntity> {
+        return db.userDao().getAllObservable()
     }
 
     fun update(newUser: UserEntity) {

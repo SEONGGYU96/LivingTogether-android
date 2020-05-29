@@ -3,7 +3,9 @@
 <layout>
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.seoultech.livingtogether_android.viewmodel.ProfileViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,6 +70,7 @@
             android:ems="10"
             android:hint="이름"
             android:inputType="textPersonName"
+            android:text="@={viewModel.userLiveData.name}"
             />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -88,6 +91,7 @@
             android:ems="10"
             android:hint="전화번호"
             android:inputType="phone"
+            android:text="@={viewModel.userLiveData.phoneNum}"
             />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -107,7 +111,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="주소"
-            android:inputType="text" />
+            android:inputType="text"
+            android:text="@={viewModel.userLiveData.address}"
+            />
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -10,6 +10,9 @@ interface UserDao {
     @Query("SELECT * FROM user_entity")
     fun getAllObservable(): LiveData<UserEntity>
 
+    @Query("SELECT * FROM user_entity")
+    fun getAll(): UserEntity
+
     @Insert
     fun insert(userEntity: UserEntity)
 
