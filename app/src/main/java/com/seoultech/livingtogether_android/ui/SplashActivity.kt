@@ -1,16 +1,19 @@
 package com.seoultech.livingtogether_android.ui
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.ui.main.MainActivity
 
-
+//Todo: 로직들을 ViewModel로 옮길 순 없을까?
 class SplashActivity : AppCompatActivity() {
     companion object {
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: Int = 1000
@@ -40,8 +43,23 @@ class SplashActivity : AppCompatActivity() {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
-                    //거부가 눌렸을 때 1회 호출되는 부분
-                    //Todo: 권한이 없으면 앱을 사용할 수 없다는 다이얼로그 띄우기
+                    //거부가 되었을 때 다이얼로그 띄우기
+                    val alertDialog: AlertDialog? = this.let {
+                        val builder = AlertDialog.Builder(it)
+
+                        builder.apply {
+                            setPositiveButton(getString(R.string.allow)) { _, _ ->
+                                ActivityCompat.requestPermissions(this@SplashActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+                            }
+                            setNegativeButton(getString(R.string.do_finish)) { _, _ ->
+                                finish()
+                            }
+                        }
+                        builder.setMessage(getString(R.string.notice_permission_must_be_granted))
+                        builder.create()
+                    }
+                    alertDialog?.show()
                 }
                 return
             }
