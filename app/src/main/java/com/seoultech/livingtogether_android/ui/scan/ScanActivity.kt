@@ -24,6 +24,7 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
 
     }
 
+    //Todo: 위치 권한 요청하는 부분 삽입하기
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
