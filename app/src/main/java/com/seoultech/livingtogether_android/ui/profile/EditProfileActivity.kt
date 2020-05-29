@@ -27,6 +27,8 @@ class EditProfileActivity :
             buttonEditProfile.setOnClickListener {
                 vm.user.name = editNameProfile.text.toString()
                 vm.user.phoneNum = editPhoneProfile.text.toString()
+
+                //Todo: 주소록에서 연락처 가져오기 구현
                 vm.user.address = editAddressProfile.text.toString()
 
                 vm.update(vm.user)
@@ -44,6 +46,7 @@ class EditProfileActivity :
         }
     }
 
+    //Todo: 그냥 뒤로가기 버튼을 누르면 저장되지 않았다는 다이얼로그 띄우기
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             finish()
