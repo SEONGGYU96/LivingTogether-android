@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.IBinder
 import android.text.TextUtils
 import android.util.Log
+import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import java.util.*
 
 class ScanService : Service() {
@@ -25,6 +26,8 @@ class ScanService : Service() {
         private const val NOTIFICATION_ID = 100
     }
 
+    private val db = DataBaseManager.getInstance(application)
+
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager =
             application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -32,6 +35,8 @@ class ScanService : Service() {
     }
 
     private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
+
+    val deviceMajorArray = mutableListOf<String>()
 
     //service 가 처음 생성되었을 때 최초 1회 호출되는 부분
     override fun onCreate() {
@@ -85,8 +90,19 @@ class ScanService : Service() {
             return super.onStartCommand(intent, flags, startId)
         }
 
-        //Todo: 디비에서 저장된 기기들의 UUID를 모두 불러온다.
-        //Todo: 저장된 (등록된) 기기가 있는 경우 스캔을 시작, 없다면 스캔을 중지한다.
+        val deviceList = db.deviceDao().getAll()
+
+        if (deviceList.isEmpty()) {
+            Log.d(TAG, "No device in DB")
+            stopService()
+            return START_NOT_STICKY
+        }
+
+        for (device in deviceList) {
+            deviceMajorArray.add(device.deviceMajor)
+        }
+
+        startScanService()
 
         return super.onStartCommand(intent, flags, startId)
     }
