@@ -19,18 +19,10 @@ class ForegroundNotification(private val application: Application) {
     private val notificationManager: NotificationManager by lazy {
         application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
-    init {
-        //Android 8.0 이상은 채널을 할당해주어야 한다.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
-            //앱 아이콘에서 알림이 뜨는 기능. 포그라운드 서비스를 위함이므로 사용안함
-            channel.setShowBadge(false)
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
     fun getNotification(state: Boolean): Notification {
+
+        initNotificationManager()
+
         val text: String = when (state) {
             true -> application.getString(R.string.notification_service_ok)
             false -> application.getString(R.string.notification_bluetooth_off)
@@ -59,5 +51,16 @@ class ForegroundNotification(private val application: Application) {
         }
 
         return builder.build()
+    }
+
+    private fun initNotificationManager() {
+        //Android 8.0 이상은 채널을 할당해주어야 한다.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
+            //앱 아이콘에서 알림이 뜨는 기능. 포그라운드 서비스를 위함이므로 사용안함
+            channel.setShowBadge(false)
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 }

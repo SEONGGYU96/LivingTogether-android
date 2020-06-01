@@ -22,6 +22,7 @@ class ScanService : Service() {
         private const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
         private const val FLAG_BT_CHANGED_VALUE_ON = "ON"
         private const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
+        private const val NOTIFICATION_ID = 100
     }
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
@@ -29,6 +30,8 @@ class ScanService : Service() {
             application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
+
+    private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
 
     //service 가 처음 생성되었을 때 최초 1회 호출되는 부분
     override fun onCreate() {
@@ -54,16 +57,14 @@ class ScanService : Service() {
 
                 if (TextUtils.equals(btChanged, FLAG_BT_CHANGED_VALUE_ON)) {
                     startScanService()
-                    Log.d(
-                        TAG,
-                        "onStartCommand : startScanService() is called because BT is turned on"
-                    )
+                    Log.d(TAG, "onStartCommand : startScanService() is called because BT is turned on")
 
                 } else if (TextUtils.equals(btChanged, FLAG_BT_CHANGED_VALUE_OFF)) {
+                    //블루투스가 꺼졌을 때
                     stopScan()
 
-                    //Todo: 상단바 알림 변경
-                    // showBtOffNotification()
+                    //Notification 상태 변경
+                    startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(false))
 
                     Log.d(TAG, "onStartCommand : stopScan() is called because BT is turned off")
                 }
@@ -78,8 +79,7 @@ class ScanService : Service() {
             //BT adapter 꺼진상태인지 체크
             Log.d(TAG, "onStartCommend : Bluetooth is enabled")
 
-            //Todo: 상단바 알림 변경
-            // showBtOffNotification()
+            startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(false))
 
             //START_STICKY
             return super.onStartCommand(intent, flags, startId)
@@ -102,8 +102,7 @@ class ScanService : Service() {
     private fun startScanService() {
         Log.d(TAG, "ScanService() is invoked")
 
-        //Todo: Foreground Service 시작
-        // startForeground(NOTIFICATION_ID, getServiceRunningNotification())
+        startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(true))
 
         startScan()
 
@@ -147,6 +146,7 @@ class ScanService : Service() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
         //블루투스 스캔 중지
         stopScan()
         //서비스 중단
@@ -187,6 +187,4 @@ class ScanService : Service() {
             }
         }
     }
-
-
 }
