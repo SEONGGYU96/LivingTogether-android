@@ -9,20 +9,22 @@ import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
 import android.text.TextUtils
 import android.util.Log
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
+import com.seoultech.livingtogether_android.receiver.BluetoothStateReceiver
 import java.util.*
 
 class ScanService : Service() {
     companion object {
         private const val TAG = "ScanService"
         private const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
-        private const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
-        private const val FLAG_BT_CHANGED_VALUE_ON = "ON"
-        private const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
+        internal const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
+        internal const val FLAG_BT_CHANGED_VALUE_ON = "ON"
+        internal const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
         private const val NOTIFICATION_ID = 100
     }
 
@@ -33,6 +35,8 @@ class ScanService : Service() {
             application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
+
+    private val btStateReceiver: BluetoothStateReceiver by lazy { BluetoothStateReceiver() }
 
     private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
 
@@ -122,8 +126,8 @@ class ScanService : Service() {
 
         startScan()
 
-        //Todo: 블루투스 리시버 할당
-        // registerBtStateReceiver();
+        //블루투스 상태가 바뀌면 해당 시스템 메시지를 받기로 함
+        registerReceiver(btStateReceiver, IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))
     }
 
     private fun startScan() {
@@ -157,8 +161,8 @@ class ScanService : Service() {
     private fun stopService() {
         Log.d(TAG, "stopService() is invoked")
         try {
-            //Todo: 블루투스 리시버 할당 해제
-            // unregisterReceiver(btStateReceiver);
+            //리시버 할당 해제
+            unregisterReceiver(btStateReceiver);
         } catch (e: Exception) {
             e.printStackTrace()
         }
