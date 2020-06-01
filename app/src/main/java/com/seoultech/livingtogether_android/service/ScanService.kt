@@ -2,7 +2,6 @@ package com.seoultech.livingtogether_android.service
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanFilter
@@ -13,6 +12,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
+import android.os.ParcelUuid
 import android.text.TextUtils
 import android.util.Log
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
@@ -23,6 +23,8 @@ import java.util.*
 class ScanService : Service() {
     companion object {
         private const val TAG = "ScanService"
+
+        private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
 
         internal const val FLAG_BT_CHANGED_VALUE_ON = "ON"
         internal const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
@@ -146,21 +148,22 @@ class ScanService : Service() {
     private fun startScan() {
         Log.d(TAG, "startScan() is invoke")
 
-        val leScanner = bluetoothAdapter?.run {
+        val bluetoothLeScanner = bluetoothAdapter?.run {
             bluetoothLeScanner
         }
 
-        if (leScanner == null) {
+        if (bluetoothLeScanner == null) {
             Log.d(TAG, "BluetoothLeScanner is null")
             return
         }
 
         val filters: MutableList<ScanFilter> = ArrayList()
 
-        //Todo: 등록된 기기들의 uuid들을 불러와 filter에 추가하기
-        // filters.add(ScanFilter.Builder().setDeviceAddress(address).build())
+        filters.add(ScanFilter.Builder().setServiceUuid(ParcelUuid(UUID.fromString(
+            LIVING_TOGETHER_UUID))).build())
 
         val settingsBuilder = ScanSettings.Builder()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //정확한것은 아니지만 MATCH_MODE_AGGRESSIVE(적당히 매칭되면 OK)를 적용하니, 잘되는것 같다.
             settingsBuilder.setScanMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
@@ -168,7 +171,7 @@ class ScanService : Service() {
             settingsBuilder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
         }
 
-        leScanner.startScan(filters, settingsBuilder.build(), scanCallback)
+        bluetoothLeScanner.startScan(filters, settingsBuilder.build(), scanCallback)
     }
 
     private fun stopService() {
