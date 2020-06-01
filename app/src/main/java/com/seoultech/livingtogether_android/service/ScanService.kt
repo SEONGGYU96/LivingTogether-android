@@ -20,9 +20,9 @@ class ScanService : Service() {
     companion object {
         private const val TAG = "ScanService"
         private const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
-        private const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
-        private const val FLAG_BT_CHANGED_VALUE_ON = "ON"
-        private const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
+        internal const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
+        internal const val FLAG_BT_CHANGED_VALUE_ON = "ON"
+        internal const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
         private const val NOTIFICATION_ID = 100
     }
 
