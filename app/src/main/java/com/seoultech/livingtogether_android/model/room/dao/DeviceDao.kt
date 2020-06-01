@@ -9,6 +9,9 @@ interface DeviceDao {
     @Query("SELECT * FROM device_entity")
     fun getAllObservable(): LiveData<List<DeviceEntity>>
 
+    @Query("SELECT * FROM device_entity")
+    fun getAll(): List<DeviceEntity>
+
     @Insert
     fun insert(deviceEntity: DeviceEntity)
 
