@@ -12,6 +12,9 @@ interface DeviceDao {
     @Query("SELECT * FROM device_entity")
     fun getAll(): List<DeviceEntity>
 
+    @Query("SELECT * FROM device_entity WHERE device_major = :major")
+    fun getDeviceFromMajor(major: String): DeviceEntity
+
     @Insert
     fun insert(deviceEntity: DeviceEntity)
 
