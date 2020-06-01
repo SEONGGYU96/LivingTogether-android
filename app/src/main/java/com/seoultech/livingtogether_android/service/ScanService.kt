@@ -12,35 +12,50 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
+import android.os.ParcelUuid
 import android.text.TextUtils
 import android.util.Log
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.receiver.BluetoothStateReceiver
+import com.seoultech.livingtogether_android.tools.BleCreater
 import java.util.*
 
 class ScanService : Service() {
     companion object {
         private const val TAG = "ScanService"
-        private const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
-        internal const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
+
+        private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
+
         internal const val FLAG_BT_CHANGED_VALUE_ON = "ON"
         internal const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
+
+        private const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
+        internal const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
+
         private const val NOTIFICATION_ID = 100
+
+        private const val TYPE_ONE = ""
+        private const val TYPE_TWO = ""
+
+        private const val LOC_CODE1 = 27
+        private const val LOC_CODE2 = 28
     }
 
-    private val db = DataBaseManager.getInstance(application)
+    private var lastDetectedCode1: Byte = 0
+    private var lastDetectedCode2: Byte = 0
+
+    private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
-        val bluetoothManager =
-            application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothManager = application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
 
     private val btStateReceiver: BluetoothStateReceiver by lazy { BluetoothStateReceiver() }
 
-    private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
+    private val db = DataBaseManager.getInstance(application)
 
-    val deviceMajorArray = mutableListOf<String>()
+    private val deviceMajorArray = mutableListOf<String>()
 
     //service 가 처음 생성되었을 때 최초 1회 호출되는 부분
     override fun onCreate() {
@@ -133,21 +148,22 @@ class ScanService : Service() {
     private fun startScan() {
         Log.d(TAG, "startScan() is invoke")
 
-        val leScanner = bluetoothAdapter?.run {
+        val bluetoothLeScanner = bluetoothAdapter?.run {
             bluetoothLeScanner
         }
 
-        if (leScanner == null) {
+        if (bluetoothLeScanner == null) {
             Log.d(TAG, "BluetoothLeScanner is null")
             return
         }
 
         val filters: MutableList<ScanFilter> = ArrayList()
 
-        //Todo: 등록된 기기들의 uuid들을 불러와 filter에 추가하기
-        // filters.add(ScanFilter.Builder().setDeviceAddress(address).build())
+        filters.add(ScanFilter.Builder().setServiceUuid(ParcelUuid(UUID.fromString(
+            LIVING_TOGETHER_UUID))).build())
 
         val settingsBuilder = ScanSettings.Builder()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //정확한것은 아니지만 MATCH_MODE_AGGRESSIVE(적당히 매칭되면 OK)를 적용하니, 잘되는것 같다.
             settingsBuilder.setScanMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
@@ -155,7 +171,7 @@ class ScanService : Service() {
             settingsBuilder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
         }
 
-        leScanner.startScan(filters, settingsBuilder.build(), scanCallback)
+        bluetoothLeScanner.startScan(filters, settingsBuilder.build(), scanCallback)
     }
 
     private fun stopService() {
@@ -192,19 +208,67 @@ class ScanService : Service() {
 
     private val scanCallback: ScanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
-            if (result.scanRecord != null) {
-                //Todo: 새로운 신호인지 확인하고, DB에 등록된 기기인지 확인
-                // 맞으면 DB 정보 업데이트. lastDetectedTIme 등
-            }
+            onScanResult(result)
         }
 
         override fun onBatchScanResults(results: List<ScanResult>) {
             for (result in results) {
-                if (result.scanRecord != null) {
-                    //Todo: 새로운 신호인지 확인하고, DB에 등록된 기기인지 확인
-                    // 맞으면 DB 정보 업데이트. lastDetectedTIme 등
+                onScanResult(result)
+            }
+        }
+    }
+
+    private fun onScanResult(result: ScanResult) {
+        if (result.scanRecord != null) {
+            Log.d(TAG, "Device has been found.")
+
+            if (isNewSignal(result.scanRecord!!.bytes)) {
+                updateDB(result)
+
+            } else {
+                Log.d(TAG, "But signal is duplicated")
+            }
+        }
+    }
+
+    private fun updateDB(result: ScanResult) {
+        val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
+
+        //감지된 신호의 major 와 동일한 기기가 DB에 있다면
+        if (deviceMajorArray.contains(bleDevice?.major)) {
+            val targetDevice = db.deviceDao().getDeviceFromMajor(bleDevice?.major.toString())
+            val currentTime = GregorianCalendar().timeInMillis
+
+            //감지된 신호의 타입을 분석
+            when (bleDevice?.minor.toString()) {
+                TYPE_ONE -> { //Type-I 신호는 두 가지 신호 감지 시간을 모두 업데이트
+                    targetDevice.lastDetectionTypeOne = currentTime
+                    targetDevice.lastDetectionTypeTwo = currentTime
+                }
+                //Type-II 신호는 해당 감지 시간만 업데이트
+                TYPE_TWO -> targetDevice.lastDetectionTypeTwo = currentTime
+
+                //그 외에는 이상한 minor
+                else -> {
+                    Log.d(TAG, "Unresolved minor : ${bleDevice?.minor}")
+                    return
                 }
             }
+            db.deviceDao().update(targetDevice)
+        }
+    }
+
+    // 새로운 신호인지 확인
+    // 신호마다 byte arr를 보내주는데 27, 28번째 byte가 달라짐
+    private fun isNewSignal(codes: ByteArray): Boolean {
+        val decisionCode1 = codes[LOC_CODE1]
+        val decisionCode2 = codes[LOC_CODE2]
+        return if (lastDetectedCode1 != decisionCode1 || lastDetectedCode2 != decisionCode2) {
+            lastDetectedCode1 = decisionCode1
+            lastDetectedCode2 = decisionCode2
+            true
+        } else {
+            false
         }
     }
 }
