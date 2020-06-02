@@ -41,7 +41,10 @@ abstract class DataBaseManager : RoomDatabase() {
                             getInstance(context).userDao().insert(UserEntity())
                         }
                     }
-                }).build()
+                })
+                //Todo: MainThread 허용하지 않도록 변경.
+                .allowMainThreadQueries()
+                .build()
         }
     }
 
