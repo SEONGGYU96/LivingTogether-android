@@ -12,6 +12,7 @@ import com.seoultech.livingtogether_android.ui.main.MainActivity
 
 class ForegroundNotification(private val application: Application) {
     companion object {
+        private const val TAG = "ForegroundNotification"
         private const val CHANNEL_ID = "LivingTogether_channel"
         private const val CHANNEL_NAME = "LivingTogether_channel"
     }
@@ -20,6 +21,7 @@ class ForegroundNotification(private val application: Application) {
         application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
     fun getNotification(state: Boolean): Notification {
+        Log.d(TAG, "getNotification() is invoked. state : $state")
 
         initNotificationManager()
 
@@ -39,7 +41,7 @@ class ForegroundNotification(private val application: Application) {
         val builder = NotificationCompat.Builder(application, CHANNEL_ID)
 
         builder.setContentTitle(application.getString(R.string.app_name))
-            //.setSmallIcon(R.drawable.) Todo: 아이콘 넣기
+            .setSmallIcon(R.drawable.ic_skylight_notification) //Todo: 임시 아이콘. 변경 필요
             .setContentText(text) //알림 타이틀
             .setShowWhen(false) //알림 시간 노출 여부
             .setContentIntent(pendingIntent)

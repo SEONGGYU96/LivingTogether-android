@@ -6,14 +6,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.R
-import com.seoultech.livingtogether_android.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.adapter.DeviceAdapter
+import com.seoultech.livingtogether_android.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
-import com.seoultech.livingtogether_android.ui.scan.ScanActivity
+import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
+import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
 
@@ -54,7 +55,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             buttonEditProfile.setOnClickListener{
                 startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
             }
-
         }
+        //Todo: 디비에 저장된 디바이스가 있는지 확인 후에 실행하기
+        startService(Intent(applicationContext, ScanService::class.java))
     }
 }

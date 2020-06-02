@@ -53,7 +53,7 @@ class ScanService : Service() {
 
     private val btStateReceiver: BluetoothStateReceiver by lazy { BluetoothStateReceiver() }
 
-    private val db = DataBaseManager.getInstance(application)
+    private val db : DataBaseManager by lazy{ DataBaseManager.getInstance(application) }
 
     private val deviceMajorArray = mutableListOf<String>()
 
@@ -130,10 +130,6 @@ class ScanService : Service() {
         return null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     private fun startScanService() {
         Log.d(TAG, "ScanService() is invoked")
 
@@ -159,6 +155,7 @@ class ScanService : Service() {
 
         val filters: MutableList<ScanFilter> = ArrayList()
 
+        //Todo: 테스트 필요
         filters.add(ScanFilter.Builder().setServiceUuid(ParcelUuid(UUID.fromString(
             LIVING_TOGETHER_UUID))).build())
 
@@ -235,12 +232,12 @@ class ScanService : Service() {
         val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
 
         //감지된 신호의 major 와 동일한 기기가 DB에 있다면
-        if (deviceMajorArray.contains(bleDevice?.major)) {
-            val targetDevice = db.deviceDao().getDeviceFromMajor(bleDevice?.major.toString())
+        if (deviceMajorArray.contains(bleDevice!!.major.toString())) {
+            val targetDevice = db.deviceDao().getDeviceFromMajor(bleDevice!!.major.toString())
             val currentTime = GregorianCalendar().timeInMillis
 
             //감지된 신호의 타입을 분석
-            when (bleDevice?.minor.toString()) {
+            when (bleDevice!!.minor.toString()) {
                 TYPE_ONE -> { //Type-I 신호는 두 가지 신호 감지 시간을 모두 업데이트
                     targetDevice.lastDetectionTypeOne = currentTime
                     targetDevice.lastDetectionTypeTwo = currentTime
@@ -250,7 +247,7 @@ class ScanService : Service() {
 
                 //그 외에는 이상한 minor
                 else -> {
-                    Log.d(TAG, "Unresolved minor : ${bleDevice?.minor}")
+                    Log.d(TAG, "Unresolved minor : ${bleDevice!!.minor}")
                     return
                 }
             }
