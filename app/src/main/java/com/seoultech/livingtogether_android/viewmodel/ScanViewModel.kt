@@ -42,7 +42,6 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
     private val handler = Handler()
 
     private var runnable = Runnable {
-        isScanning = false
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan Timeout")
     }
@@ -60,6 +59,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
     fun stopScan() {
         isScanning = false
+        handler.removeCallbacks(runnable)
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan is terminated")
     }
@@ -67,6 +67,11 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
             super.onScanResult(callbackType, result)
+
+            if (!isScanning) {
+                Log.d(TAG, "isScanning is false. return.")
+                return
+            }
 
             result?.let { it ->
                 Log.d(TAG, "find : ${result.device}")
@@ -88,14 +93,14 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
                 if (bleDevice.uuid == LIVING_TOGETHER_UUID) {
                     Log.d(TAG, "Living Together H/W has been found")
 
+                    stopScan()
+
                     val calendar = GregorianCalendar()
 
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
                         db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), null, null, calendar.timeInMillis, calendar.timeInMillis, true))
                     }
-
-                    stopScan()
 
                     return
                 }
