@@ -235,6 +235,7 @@ class ScanService : Service() {
         if (deviceMajorArray.contains(bleDevice!!.major.toString())) {
             val targetDevice = db.deviceDao().getDeviceFromMajor(bleDevice!!.major.toString())
             val currentTime = GregorianCalendar().timeInMillis
+            Log.d(TAG, "The device just been found is the same as the one in the DB.")
 
             //감지된 신호의 타입을 분석
             when (bleDevice!!.minor.toString()) {
