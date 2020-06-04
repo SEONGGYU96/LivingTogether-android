@@ -95,6 +95,11 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
                     stopScan()
 
+                    if (db.deviceDao().getAll().isNotEmpty()) {
+                        //Todo: 이미 등록된 버튼이라는 다이얼로그 띄우기
+                        Log.d(TAG, "This device is already registered. return.")
+                    }
+
                     val calendar = GregorianCalendar()
 
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
