@@ -16,6 +16,7 @@ import android.os.ParcelUuid
 import android.text.TextUtils
 import android.util.Log
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
+import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
 import com.seoultech.livingtogether_android.receiver.BluetoothStateReceiver
 import com.seoultech.livingtogether_android.tools.BleCreater
 import java.util.*
@@ -233,18 +234,23 @@ class ScanService : Service() {
 
         //감지된 신호의 major 와 동일한 기기가 DB에 있다면
         if (deviceMajorArray.contains(bleDevice!!.major.toString())) {
-            val targetDevice = db.deviceDao().getDeviceFromMajor(bleDevice!!.major.toString())
+            val targetDevice = db.deviceDao().getDeviceFromMajor(bleDevice.major.toString())
             val currentTime = GregorianCalendar().timeInMillis
             Log.d(TAG, "The device just been found is the same as the one in the DB.")
 
             //감지된 신호의 타입을 분석
-            when (bleDevice!!.minor.toString()) {
+            when (bleDevice.minor.toString()) {
                 TYPE_ONE -> { //Type-I 신호는 두 가지 신호 감지 시간을 모두 업데이트
                     targetDevice.lastDetectionTypeOne = currentTime
                     targetDevice.lastDetectionTypeTwo = currentTime
+
+                    db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, 0, currentTime))
                 }
                 //Type-II 신호는 해당 감지 시간만 업데이트
-                TYPE_TWO -> targetDevice.lastDetectionTypeTwo = currentTime
+                TYPE_TWO -> {
+                    targetDevice.lastDetectionTypeTwo = currentTime
+                    db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, 1, currentTime))
+                }
 
                 //그 외에는 이상한 minor
                 else -> {
