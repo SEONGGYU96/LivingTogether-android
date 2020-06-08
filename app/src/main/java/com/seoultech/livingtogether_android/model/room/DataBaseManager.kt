@@ -8,15 +8,18 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.seoultech.livingtogether_android.model.room.entity.UserEntity
 import com.seoultech.livingtogether_android.model.room.dao.DeviceDao
 import com.seoultech.livingtogether_android.model.room.dao.NOKDao
+import com.seoultech.livingtogether_android.model.room.dao.SignalHistoryDao
 import com.seoultech.livingtogether_android.model.room.dao.UserDao
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
+import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
 
-@Database(entities = [UserEntity::class, DeviceEntity::class, NOKEntity::class], version = 1)
+@Database(entities = [UserEntity::class, DeviceEntity::class, NOKEntity::class, SignalHistoryEntity::class], version = 1)
 abstract class DataBaseManager : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao
     abstract fun userDao(): UserDao
     abstract fun nokDao(): NOKDao
+    abstract fun signalHistoryDao(): SignalHistoryDao
 
     companion object {
         private val DB_NAME = "livind-togheher-db"
