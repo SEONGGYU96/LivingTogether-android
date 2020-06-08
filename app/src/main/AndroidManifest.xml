@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- For using only BLE device -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
@@ -17,10 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name="com.seoultech.livingtogether_android.debug.scan.ScanServiceTest"></activity>
+
         <service
             android:name=".service.ScanService"
-            android:exported="false"/> <!--다른 앱에서 해당 서비스를 실행하지 못하도록 -->
-        <activity android:name=".ui.profile.EditProfileActivity"/>
+            android:exported="false" /> <!-- 다른 앱에서 해당 서비스를 실행하지 못하도록 -->
+        <activity android:name=".ui.profile.EditProfileActivity" />
         <activity android:name=".ui.nok.AddNOKActivity" />
         <activity android:name=".ui.nok.NOKListActivity" />
         <activity android:name=".ui.scan.ScanActivity" />

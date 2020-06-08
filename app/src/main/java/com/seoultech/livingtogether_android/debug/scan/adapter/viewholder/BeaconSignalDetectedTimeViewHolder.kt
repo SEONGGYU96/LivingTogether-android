@@ -1,0 +1,18 @@
+package com.seoultech.livingtogether_android.debug.scan.adapter.viewholder
+
+import android.view.ViewGroup
+import com.seoultech.livingtogether_android.R
+import com.seoultech.livingtogether_android.base.BaseViewHolder
+import com.seoultech.livingtogether_android.databinding.ItemBeaconSignalDetectedTimeBinding
+import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
+
+class BeaconSignalDetectedTimeViewHolder(parent: ViewGroup) : BaseViewHolder<DeviceEntity, ItemBeaconSignalDetectedTimeBinding>(
+    R.layout.item_beacon_signal_detected_time, parent) {
+
+    override fun bind(data: DeviceEntity) {
+        binding.run {
+            textMajorScanTestItem.text = data.deviceMajor
+            textDetectedTimeScanTestItem.text = data.getLastDetectedTypeOneToString()
+        }
+    }
+}

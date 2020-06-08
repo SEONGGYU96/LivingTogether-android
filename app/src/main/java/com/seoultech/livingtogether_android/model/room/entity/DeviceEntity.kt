@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.util.*
 
 
 @Entity(
@@ -37,4 +38,35 @@ data class DeviceEntity(
         onDelete = ForeignKey.CASCADE
 
     ) var userId: Int = 0
+
+    fun getLastDetectedTypeTwoToString() : String {
+        return if (lastDetectionTypeTwo == null) {
+            "null"
+        } else {
+            getLastDetectedSignalToString(2)
+        }
+    }
+
+    fun getLastDetectedTypeOneToString() : String {
+        return if (lastDetectionTypeOne == null) {
+            "null"
+        } else {
+            getLastDetectedSignalToString(1)
+        }
+    }
+
+    private fun getLastDetectedSignalToString(type: Int) : String {
+        return if (type == 1) {
+            getTimeToString(lastDetectionTypeOne!!)
+        } else {
+            getTimeToString(lastDetectionTypeTwo!!)
+        }
+    }
+
+    private fun getTimeToString(timeInMillis: Long) : String {
+        val calendar = GregorianCalendar()
+        calendar.timeInMillis = timeInMillis
+        return "${calendar.get(Calendar.YEAR)}/${calendar.get(Calendar.MONTH)}/${calendar.get(Calendar.DAY_OF_MONTH)}" +
+                " ${calendar.get(Calendar.HOUR_OF_DAY)} : ${calendar.get(Calendar.MINUTE)}"
+    }
 }
