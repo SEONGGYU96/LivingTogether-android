@@ -2,6 +2,7 @@ package com.seoultech.livingtogether_android.service
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanFilter
@@ -12,9 +13,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
-import android.os.ParcelUuid
 import android.text.TextUtils
 import android.util.Log
+import com.seoultech.livingtogether_android.model.BleDevice
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.receiver.BluetoothStateReceiver
 import com.seoultech.livingtogether_android.tools.BleCreater
@@ -28,6 +29,8 @@ class ScanService : Service() {
 
         internal const val FLAG_BT_CHANGED_VALUE_ON = "ON"
         internal const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
+
+        private const val SIGNAL_TRANSMIT_TIME = 10000
 
         const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
         internal const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
@@ -229,17 +232,30 @@ class ScanService : Service() {
         }
     }
 
+    private fun isRegisterSignal(bleDevice: BleDevice) : Boolean {
+        val device = db.deviceDao().getAll(bleDevice.major.toString())
+            if (GregorianCalendar().timeInMillis - device.lastDetectionTypeOne < SIGNAL_TRANSMIT_TIME) {
+                Log.d(TAG, "This Device has just been registered.")
+                return true
+            }
+        return false
+    }
+
     private fun updateDB(result: ScanResult) {
         val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
 
+        if (isRegisterSignal(bleDevice)) {
+            return
+        }
+
         //감지된 신호의 major 와 동일한 기기가 DB에 있다면
-        if (deviceMajorArray.contains(bleDevice!!.major.toString())) {
-            val targetDevice = db.deviceDao().getDeviceFromMajor(bleDevice!!.major.toString())
+        if (deviceMajorArray.contains(bleDevice.major.toString())) {
+            val targetDevice = db.deviceDao().getAll(bleDevice.major.toString())
             val currentTime = GregorianCalendar().timeInMillis
             Log.d(TAG, "The device just been found is the same as the one in the DB.")
 
             //감지된 신호의 타입을 분석
-            when (bleDevice!!.minor.toString()) {
+            when (bleDevice.minor.toString()) {
                 TYPE_ONE -> { //Type-I 신호는 두 가지 신호 감지 시간을 모두 업데이트
                     targetDevice.lastDetectionTypeOne = currentTime
                     targetDevice.lastDetectionTypeTwo = currentTime
@@ -249,7 +265,7 @@ class ScanService : Service() {
 
                 //그 외에는 이상한 minor
                 else -> {
-                    Log.d(TAG, "Unresolved minor : ${bleDevice!!.minor}")
+                    Log.d(TAG, "Unresolved minor : ${bleDevice.minor}")
                     return
                 }
             }

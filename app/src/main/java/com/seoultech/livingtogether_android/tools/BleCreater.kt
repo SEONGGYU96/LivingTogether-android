@@ -9,7 +9,7 @@ import kotlin.experimental.and
 class BleCreater {
     companion object {
         @ExperimentalUnsignedTypes
-        fun create(device: BluetoothDevice, rssi: Int, scanRecord: ByteArray): BleDevice? {
+        fun create(device: BluetoothDevice, rssi: Int, scanRecord: ByteArray): BleDevice {
 
             val mostByte = ByteArray(8)
             val leastByte = ByteArray(8)
