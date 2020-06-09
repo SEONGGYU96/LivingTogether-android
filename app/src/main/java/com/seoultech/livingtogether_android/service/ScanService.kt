@@ -35,8 +35,8 @@ class ScanService : Service() {
 
         private const val NOTIFICATION_ID = 100
 
-        private const val TYPE_ONE = ""
-        private const val TYPE_TWO = ""
+        private const val TYPE_ONE = "100"
+        private const val TYPE_TWO = "200"
 
         private const val LOC_CODE1 = 27
         private const val LOC_CODE2 = 28

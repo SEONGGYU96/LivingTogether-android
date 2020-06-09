@@ -45,11 +45,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             recyclerNokListMain.adapter = nokAdapter
             recyclerNokListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
 
-            textSensorMoreMain.setOnClickListener {
-                val intent = Intent(this@MainActivity, ScanActivity::class.java)
-                startActivity(intent)
-            }
-
             buttonShowMoreNokMain.setOnClickListener {
                 startActivity(Intent(this@MainActivity, NOKListActivity::class.java))
             }
@@ -58,8 +53,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
             }
 
-            layoutDebug.btScanTestActivity.setOnClickListener {
+            layoutDebug.buttonScanTestActivity.setOnClickListener {
                 startActivity(Intent(this@MainActivity, ScanServiceTest::class.java))
+            }
+
+            layoutDebug.buttonScanTest.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ScanActivity::class.java))
             }
         }
         //Todo: 디비에 저장된 디바이스가 있는지 확인 후에 실행하기

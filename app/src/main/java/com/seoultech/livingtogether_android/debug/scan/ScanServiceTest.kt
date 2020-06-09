@@ -33,9 +33,6 @@ class ScanServiceTest : BaseActivity<ActivityScanServiceTestBinding>(R.layout.ac
             rvPreserveTest.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
             rvPreserveTest.adapter = preserveSignalTestAdapter
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
     }
 }
