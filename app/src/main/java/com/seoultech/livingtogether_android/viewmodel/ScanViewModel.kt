@@ -9,6 +9,8 @@ import android.content.Context
 import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
@@ -30,6 +32,8 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
     private var isScanning = false
 
+    var isFound = MutableLiveData<Boolean>()
+
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager = application.
             getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -44,6 +48,10 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
     private var runnable = Runnable {
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan Timeout")
+    }
+
+    init {
+        isFound.value = false
     }
 
     fun isBluetoothOn(): Boolean {
@@ -106,6 +114,8 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
                     viewModelScope.launch(Dispatchers.IO) {
                         db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
                     }
+
+                    isFound.value = true
 
                     return
                 }
