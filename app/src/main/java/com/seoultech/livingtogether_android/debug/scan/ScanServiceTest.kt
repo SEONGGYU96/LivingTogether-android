@@ -1,41 +1,41 @@
 package com.seoultech.livingtogether_android.debug.scan
 
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityScanServiceTestBinding
 import com.seoultech.livingtogether_android.debug.scan.adapter.ScanServiceTestAdapter
-import com.seoultech.livingtogether_android.model.room.DataBaseManager
-import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
+import com.seoultech.livingtogether_android.viewmodel.ScanTestViewModel
 
 class ScanServiceTest : BaseActivity<ActivityScanServiceTestBinding>(R.layout.activity_scan_service_test) {
     private val actionSignalTestAdapter: ScanServiceTestAdapter by lazy { ScanServiceTestAdapter() }
     private val preserveSignalTestAdapter: ScanServiceTestAdapter by lazy { ScanServiceTestAdapter() }
 
-    private val actionSignalHistory = mutableListOf<SignalHistoryEntity>()
-    private val preserveSignalHistory = mutableListOf<SignalHistoryEntity>()
-
-    private val db = DataBaseManager.getInstance(application)
-
+    private lateinit var vm: ScanTestViewModel
+    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
+        vm = ViewModelProvider(this, viewModelFactory).get(ScanTestViewModel::class.java)
+
         binding.run {
+            lifecycleOwner = this@ScanServiceTest
+
+            viewModel = vm
+
+            rvActionTest.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
             rvActionTest.adapter = actionSignalTestAdapter
+
+            rvPreserveTest.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
             rvPreserveTest.adapter = preserveSignalTestAdapter
         }
     }
 
     override fun onResume() {
         super.onResume()
-
-        actionSignalHistory.clear()
-        actionSignalHistory.addAll(db.signalHistoryDao().getAll(0))
-        preserveSignalHistory.clear()
-        preserveSignalHistory.addAll(db.signalHistoryDao().getAll(1))
-
-        actionSignalTestAdapter.notifyDataSetChanged()
-        preserveSignalTestAdapter.notifyDataSetChanged()
     }
 }

@@ -5,11 +5,16 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.seoultech.livingtogether_android.viewmodel.ScanTestViewModel" />
+
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="16dp"
     tools:context=".debug.scan.ScanServiceTest">
 
     <TextView
@@ -35,14 +40,17 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_action_test"
+        replaceAll="@{viewModel.actionSignalHistory}"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/textView13"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_preserve_test"
@@ -50,6 +58,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        replaceAll="@{viewModel.preserveSignalHistory}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

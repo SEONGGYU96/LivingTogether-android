@@ -10,6 +10,8 @@ import com.seoultech.livingtogether_android.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
+import com.seoultech.livingtogether_android.databinding.DebugLayoutBinding
+import com.seoultech.livingtogether_android.debug.scan.ScanServiceTest
 import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
@@ -54,6 +56,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
             buttonEditProfile.setOnClickListener{
                 startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
+            }
+
+            layoutDebug.btScanTestActivity.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ScanServiceTest::class.java))
             }
         }
         //Todo: 디비에 저장된 디바이스가 있는지 확인 후에 실행하기
