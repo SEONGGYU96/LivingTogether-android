@@ -13,7 +13,7 @@ data class SignalHistoryEntity(
 ) {
     @PrimaryKey(autoGenerate = true) var id:Int = 0
 
-    private fun getDetectedTimeToString() : String {
+    fun getDetectedTimeToString() : String {
         val calendar = GregorianCalendar()
         calendar.timeInMillis = detectiveTime
         return "${calendar.get(Calendar.YEAR)}/${calendar.get(Calendar.MONTH)}/${calendar.get(

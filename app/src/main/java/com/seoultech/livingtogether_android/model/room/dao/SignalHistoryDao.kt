@@ -9,7 +9,7 @@ interface SignalHistoryDao {
     fun getAll(): List<SignalHistoryEntity>
 
     @Query("SELECT * FROM signal_history_entity WHERE signal_type = :type")
-    fun getAll(type: Int)
+    fun getAll(type: Int) : List<SignalHistoryEntity>
 
     @Insert
     fun insert(signalHistoryEntity: SignalHistoryEntity)
