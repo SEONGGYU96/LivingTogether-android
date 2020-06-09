@@ -6,13 +6,16 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
+import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.tools.BleCreater
+import com.seoultech.livingtogether_android.util.ServiceUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -62,6 +65,19 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
         handler.removeCallbacks(runnable)
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan is terminated")
+    }
+
+    fun stopService() {
+        // To service Stop.
+        if (ServiceUtil.isServiceRunning(getApplication(), ScanService::class.java)) {
+            val intent = Intent(getApplication(), ScanService::class.java)
+            intent.putExtra(ScanService.FLAG_STOP_SERVICE, true)
+            getApplication<Application>().startService(intent)
+
+            Log.d(TAG, "Request to terminate Service ")
+        } else {
+            Log.d(TAG, "Service is not running.")
+        }
     }
 
     private val scanCallback = object : ScanCallback() {

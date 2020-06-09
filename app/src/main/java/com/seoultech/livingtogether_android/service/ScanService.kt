@@ -29,7 +29,7 @@ class ScanService : Service() {
         internal const val FLAG_BT_CHANGED_VALUE_ON = "ON"
         internal const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
 
-        private const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
+        const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
         internal const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
 
         private const val NOTIFICATION_ID = 100
