@@ -11,6 +11,8 @@ import com.seoultech.livingtogether_android.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
+import com.seoultech.livingtogether_android.databinding.DebugLayoutBinding
+import com.seoultech.livingtogether_android.debug.scan.ScanServiceTest
 import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
@@ -45,17 +47,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             recyclerNokListMain.adapter = nokAdapter
             recyclerNokListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
 
-            textSensorMoreMain.setOnClickListener {
-                val intent = Intent(this@MainActivity, ScanActivity::class.java)
-                startActivity(intent)
-            }
-
             buttonShowMoreNokMain.setOnClickListener {
                 startActivity(Intent(this@MainActivity, NOKListActivity::class.java))
             }
 
             buttonEditProfile.setOnClickListener{
                 startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
+            }
+
+            layoutDebug.buttonScanTestActivity.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ScanServiceTest::class.java))
+            }
+
+            layoutDebug.buttonScanTest.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ScanActivity::class.java))
             }
         }
     }

@@ -10,11 +10,11 @@ import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
+import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
 import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.tools.BleCreater
 import com.seoultech.livingtogether_android.util.ServiceUtil
@@ -129,6 +129,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
                         db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
+                        db.signalHistoryDao().insert(SignalHistoryEntity(bleDevice.major.toString(), 0, calendar.timeInMillis))
                     }
 
                     isFound.value = true
