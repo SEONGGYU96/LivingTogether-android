@@ -13,7 +13,7 @@ interface DeviceDao {
     fun getAll(): List<DeviceEntity>
 
     @Query("SELECT * FROM device_entity WHERE device_major = :major")
-    fun getDeviceFromMajor(major: String): DeviceEntity
+    fun getAll(major: String): DeviceEntity
 
     @Query("SELECT DISTINCT device_address FROM device_entity")
     fun getAllDeviceAddress(): List<String>

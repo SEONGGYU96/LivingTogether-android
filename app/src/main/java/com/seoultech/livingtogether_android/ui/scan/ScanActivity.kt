@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityScanBinding
+import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.util.BluetoothUtil
 import com.seoultech.livingtogether_android.viewmodel.ScanViewModel
 
@@ -65,6 +66,8 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
 
         } else {
+            vm.stopService()
+
             //블루투스가 켜져있다면 스캔 시작
             vm.startScan(SCAN_PERIOD)
         }
