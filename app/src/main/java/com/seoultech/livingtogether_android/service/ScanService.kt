@@ -153,11 +153,12 @@ class ScanService : Service() {
             return
         }
 
-        val filters: MutableList<ScanFilter> = ArrayList()
+        val filters = mutableListOf<ScanFilter>()
+        val deviceAddresses = db.deviceDao().getAllDeviceAddress()
 
-        //Todo: 테스트 필요
-        filters.add(ScanFilter.Builder().setServiceUuid(ParcelUuid(UUID.fromString(
-            LIVING_TOGETHER_UUID))).build())
+        for (address in deviceAddresses) {
+            filters.add(ScanFilter.Builder().setDeviceAddress(address).build())
+        }
 
         val settingsBuilder = ScanSettings.Builder()
 
@@ -235,6 +236,7 @@ class ScanService : Service() {
         if (deviceMajorArray.contains(bleDevice!!.major.toString())) {
             val targetDevice = db.deviceDao().getDeviceFromMajor(bleDevice!!.major.toString())
             val currentTime = GregorianCalendar().timeInMillis
+            Log.d(TAG, "The device just been found is the same as the one in the DB.")
 
             //감지된 신호의 타입을 분석
             when (bleDevice!!.minor.toString()) {
@@ -252,6 +254,8 @@ class ScanService : Service() {
                 }
             }
             db.deviceDao().update(targetDevice)
+        } else {
+            Log.d(TAG, "There is no same data in DB")
         }
     }
 
