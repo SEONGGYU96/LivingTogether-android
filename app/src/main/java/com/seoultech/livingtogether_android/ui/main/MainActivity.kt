@@ -2,6 +2,7 @@ package com.seoultech.livingtogether_android.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
+import com.seoultech.livingtogether_android.util.ServiceUtil
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
 
@@ -61,7 +63,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 startActivity(Intent(this@MainActivity, ScanActivity::class.java))
             }
         }
-        //Todo: 디비에 저장된 디바이스가 있는지 확인 후에 실행하기
-        startService(Intent(applicationContext, ScanService::class.java))
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        vm.startService()
     }
 }
