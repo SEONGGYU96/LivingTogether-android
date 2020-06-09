@@ -122,6 +122,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
                     if (db.deviceDao().getAll().isNotEmpty()) {
                         //Todo: 이미 등록된 버튼이라는 다이얼로그 띄우기
                         Log.d(TAG, "This device is already registered. return.")
+                        isFound.value = true
                     }
 
                     val calendar = GregorianCalendar()
