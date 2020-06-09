@@ -154,11 +154,12 @@ class ScanService : Service() {
             return
         }
 
-        val filters: MutableList<ScanFilter> = ArrayList()
+        val filters = mutableListOf<ScanFilter>()
+        val deviceAddresses = db.deviceDao().getAllDeviceAddress()
 
-        //Todo: 테스트 필요
-        filters.add(ScanFilter.Builder().setServiceUuid(ParcelUuid(UUID.fromString(
-            LIVING_TOGETHER_UUID))).build())
+        for (address in deviceAddresses) {
+            filters.add(ScanFilter.Builder().setDeviceAddress(address).build())
+        }
 
         val settingsBuilder = ScanSettings.Builder()
 
@@ -259,6 +260,8 @@ class ScanService : Service() {
                 }
             }
             db.deviceDao().update(targetDevice)
+        } else {
+            Log.d(TAG, "There is no same data in DB")
         }
     }
 

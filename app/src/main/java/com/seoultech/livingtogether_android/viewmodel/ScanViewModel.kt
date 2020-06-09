@@ -105,7 +105,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
-                        db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), null, null, calendar.timeInMillis, calendar.timeInMillis, true))
+                        db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
                         db.signalHistoryDao().insert(SignalHistoryEntity(bleDevice.major.toString(), 0, calendar.timeInMillis))
                     }
 
