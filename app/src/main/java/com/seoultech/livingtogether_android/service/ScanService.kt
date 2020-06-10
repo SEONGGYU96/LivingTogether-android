@@ -254,11 +254,15 @@ class ScanService : Service() {
             when (bleDevice.minor.toString()) {
                 ACTION_SIGNAL -> {
                     targetDevice.lastDetectionOfActionSignal = currentTime
+                  
+                    db.deviceDao().update(targetDevice)
                     db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, Signal.ACTION, currentTime))
                 }
 
                 PRESERVE_SIGNAL -> {
                     targetDevice.lastDetectionOfPreserveSignal = currentTime
+                  
+                    db.deviceDao().update(targetDevice)
                     db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, Signal.PRESERVE, currentTime))
                 }
 
@@ -268,7 +272,6 @@ class ScanService : Service() {
                     return
                 }
             }
-            db.deviceDao().update(targetDevice)
         } else {
             Log.d(TAG, "There is no same data in DB")
         }
