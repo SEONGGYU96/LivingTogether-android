@@ -254,12 +254,12 @@ class ScanService : Service() {
             when (bleDevice.minor.toString()) {
                 ACTION_SIGNAL -> {
                     targetDevice.lastDetectionOfActionSignal = currentTime
-                    db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, 0, currentTime))
+                    db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, Signal.ACTION, currentTime))
                 }
 
                 PRESERVE_SIGNAL -> {
                     targetDevice.lastDetectionOfPreserveSignal = currentTime
-                    db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, 1, currentTime))
+                    db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, Signal.PRESERVE, currentTime))
                 }
 
                 //그 외에는 이상한 minor

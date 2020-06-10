@@ -16,6 +16,7 @@ import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
 import com.seoultech.livingtogether_android.service.ScanService
+import com.seoultech.livingtogether_android.service.Signal
 import com.seoultech.livingtogether_android.tools.BleCreater
 import com.seoultech.livingtogether_android.util.ServiceUtil
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,6 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object{
         private const val TAG = "ScanViewModel"
-        private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
         private const val MIN_RSSI = -85
     }
 
@@ -131,7 +131,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
                         db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
-                        db.signalHistoryDao().insert(SignalHistoryEntity(bleDevice.major.toString(), 0, calendar.timeInMillis))
+                        db.signalHistoryDao().insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis))
                     }
 
                     isFound.value = true
