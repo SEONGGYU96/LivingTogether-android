@@ -37,8 +37,8 @@ class ScanService : Service() {
 
         private const val NOTIFICATION_ID = 100
 
-        private const val TYPE_ONE = "100"
-        private const val TYPE_TWO = "200"
+        private const val ACTION_SIGNAL = "100"
+        private const val PRESERVE_SIGNAL = "200"
 
         private const val LOC_CODE1 = 27
         private const val LOC_CODE2 = 28
@@ -229,7 +229,7 @@ class ScanService : Service() {
 
     private fun isNewSignal(bleDevice: BleDevice) : Boolean {
         val device = db.deviceDao().getAll(bleDevice.major.toString())
-            if (GregorianCalendar().timeInMillis - device.lastDetectionTypeOne < SIGNAL_TRANSMIT_TIME) {
+            if (GregorianCalendar().timeInMillis - device.lastDetectionOfActionSignal < SIGNAL_TRANSMIT_TIME) {
                 Log.d(TAG, "This Device has just been registered.")
                 return true
             }
@@ -252,15 +252,13 @@ class ScanService : Service() {
 
             //감지된 신호의 타입을 분석
             when (bleDevice.minor.toString()) {
-                TYPE_ONE -> { //Type-I 신호는 두 가지 신호 감지 시간을 모두 업데이트
-                    targetDevice.lastDetectionTypeOne = currentTime
-                    targetDevice.lastDetectionTypeTwo = currentTime
-
+                ACTION_SIGNAL -> {
+                    targetDevice.lastDetectionOfActionSignal = currentTime
                     db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, 0, currentTime))
                 }
-                //Type-II 신호는 해당 감지 시간만 업데이트
-                TYPE_TWO -> {
-                    targetDevice.lastDetectionTypeTwo = currentTime
+
+                PRESERVE_SIGNAL -> {
+                    targetDevice.lastDetectionOfPreserveSignal = currentTime
                     db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, 1, currentTime))
                 }
 

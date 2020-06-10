@@ -26,9 +26,9 @@ data class DeviceEntity(
     //TODO: Date에 관련한 Model과 Util 클래스 생성하여 문자열을 대체하기
     @ColumnInfo(name = "init_date") var initDate: String?,
 
-    @ColumnInfo(name = "last_detection_type_one") var lastDetectionTypeOne: Long,
+    @ColumnInfo(name = "last_detection_type_one") var lastDetectionOfActionSignal: Long,
 
-    @ColumnInfo(name = "last_detection_type_two") var lastDetectionTypeTwo: Long?,
+    @ColumnInfo(name = "last_detection_type_two") var lastDetectionOfPreserveSignal: Long?,
 
     @ColumnInfo(name = "is_available") var isAvailable: Boolean = false
 ) {
@@ -44,7 +44,7 @@ data class DeviceEntity(
     ) var userId: Int = 0
 
     fun getLastDetectedTypeTwoToString() : String {
-        return if (lastDetectionTypeTwo == null) {
+        return if (lastDetectionOfPreserveSignal == null) {
             "null"
         } else {
             getLastDetectedSignalToString(2)
@@ -52,7 +52,7 @@ data class DeviceEntity(
     }
 
     fun getLastDetectedTypeOneToString() : String {
-        return if (lastDetectionTypeOne == null) {
+        return if (lastDetectionOfActionSignal == null) {
             "null"
         } else {
             getLastDetectedSignalToString(1)
@@ -61,9 +61,9 @@ data class DeviceEntity(
 
     private fun getLastDetectedSignalToString(type: Int) : String {
         return if (type == 1) {
-            getTimeToString(lastDetectionTypeOne!!)
+            getTimeToString(lastDetectionOfActionSignal!!)
         } else {
-            getTimeToString(lastDetectionTypeTwo!!)
+            getTimeToString(lastDetectionOfPreserveSignal!!)
         }
     }
 
