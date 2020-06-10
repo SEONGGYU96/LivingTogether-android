@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
+import com.seoultech.livingtogether_android.service.Signal
 
 class ScanTestViewModel(application: Application) : AndroidViewModel(application) {
     private val db = DataBaseManager.getInstance(application)
@@ -14,10 +15,10 @@ class ScanTestViewModel(application: Application) : AndroidViewModel(application
     var preserveSignalHistory = getPreserveSignalHistoryAll()
 
     fun getActionSignalHistoryAll() : LiveData<List<SignalHistoryEntity>> {
-        return db.signalHistoryDao().getAllObservable(0)
+        return db.signalHistoryDao().getAllOfActionSignal()
     }
 
     fun getPreserveSignalHistoryAll() : LiveData<List<SignalHistoryEntity>> {
-        return db.signalHistoryDao().getAllObservable(1)
+        return db.signalHistoryDao().getAllObservable(Signal.PRESERVE)
     }
 }
