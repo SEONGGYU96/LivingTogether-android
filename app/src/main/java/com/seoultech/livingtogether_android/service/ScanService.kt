@@ -256,11 +256,14 @@ class ScanService : Service() {
                     targetDevice.lastDetectionTypeOne = currentTime
                     targetDevice.lastDetectionTypeTwo = currentTime
 
+                    db.deviceDao().update(targetDevice)
                     db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, 0, currentTime))
                 }
                 //Type-II 신호는 해당 감지 시간만 업데이트
                 TYPE_TWO -> {
                     targetDevice.lastDetectionTypeTwo = currentTime
+
+                    db.deviceDao().update(targetDevice)
                     db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, 1, currentTime))
                 }
 
@@ -270,7 +273,6 @@ class ScanService : Service() {
                     return
                 }
             }
-            db.deviceDao().update(targetDevice)
         } else {
             Log.d(TAG, "There is no same data in DB")
         }
