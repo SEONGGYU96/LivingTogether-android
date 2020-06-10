@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.seoultech.livingtogether_android.model.room.entity.UserEntity
 import com.seoultech.livingtogether_android.model.room.dao.DeviceDao
@@ -15,6 +16,7 @@ import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
 import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
 
 @Database(entities = [UserEntity::class, DeviceEntity::class, NOKEntity::class, SignalHistoryEntity::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class DataBaseManager : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao
     abstract fun userDao(): UserDao

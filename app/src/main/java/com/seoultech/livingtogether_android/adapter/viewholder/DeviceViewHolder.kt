@@ -18,7 +18,7 @@ class DeviceViewHolder(parent: ViewGroup) :
             val calendar = GregorianCalendar()
 
             //Todo: 임시로 현재 시간과 등록 시간의 차로 몇 분 전임을 표현함. 수정 필요
-            val timeGap = calendar.timeInMillis - data.lastDetectionTypeOne!!
+            val timeGap = calendar.timeInMillis - data.lastDetectionOfActionSignal!!
 
             textLastDetectionSensorItem.text = "${timeGap / 10000} 분 전"
             imageSenorItem.setImageResource(
