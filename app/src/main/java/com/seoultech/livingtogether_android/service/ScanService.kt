@@ -2,7 +2,6 @@ package com.seoultech.livingtogether_android.service
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanFilter
@@ -224,16 +223,11 @@ class ScanService : Service() {
         if (result.scanRecord != null) {
             Log.d(TAG, "Device has been found.")
 
-            if (isNewSignal(result.scanRecord!!.bytes)) {
-                updateDB(result)
-
-            } else {
-                Log.d(TAG, "But signal is duplicated")
-            }
+            updateDB(result)
         }
     }
 
-    private fun isRegisterSignal(bleDevice: BleDevice) : Boolean {
+    private fun isNewSignal(bleDevice: BleDevice) : Boolean {
         val device = db.deviceDao().getAll(bleDevice.major.toString())
             if (GregorianCalendar().timeInMillis - device.lastDetectionTypeOne < SIGNAL_TRANSMIT_TIME) {
                 Log.d(TAG, "This Device has just been registered.")
@@ -245,7 +239,7 @@ class ScanService : Service() {
     private fun updateDB(result: ScanResult) {
         val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
 
-        if (isRegisterSignal(bleDevice)) {
+        if (isNewSignal(bleDevice)) {
             return
         }
 
@@ -279,20 +273,6 @@ class ScanService : Service() {
             db.deviceDao().update(targetDevice)
         } else {
             Log.d(TAG, "There is no same data in DB")
-        }
-    }
-
-    // 새로운 신호인지 확인
-    // 신호마다 byte arr를 보내주는데 27, 28번째 byte가 달라짐
-    private fun isNewSignal(codes: ByteArray): Boolean {
-        val decisionCode1 = codes[LOC_CODE1]
-        val decisionCode2 = codes[LOC_CODE2]
-        return if (lastDetectedCode1 != decisionCode1 || lastDetectedCode2 != decisionCode2) {
-            lastDetectedCode1 = decisionCode1
-            lastDetectedCode2 = decisionCode2
-            true
-        } else {
-            false
         }
     }
 }
