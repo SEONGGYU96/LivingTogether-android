@@ -28,6 +28,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object{
         private const val TAG = "ScanViewModel"
+        private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
         private const val MIN_RSSI = -85
     }
 

@@ -227,21 +227,8 @@ class ScanService : Service() {
         }
     }
 
-    private fun isNewSignal(bleDevice: BleDevice) : Boolean {
-        val device = db.deviceDao().getAll(bleDevice.major.toString())
-            if (GregorianCalendar().timeInMillis - device.lastDetectionOfActionSignal < SIGNAL_TRANSMIT_TIME) {
-                Log.d(TAG, "This Device has just been registered.")
-                return true
-            }
-        return false
-    }
-
     private fun updateDB(result: ScanResult) {
         val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
-
-        if (isNewSignal(bleDevice)) {
-            return
-        }
 
         //감지된 신호의 major 와 동일한 기기가 DB에 있다면
         if (deviceMajorArray.contains(bleDevice.major.toString())) {
@@ -253,6 +240,10 @@ class ScanService : Service() {
             //감지된 신호의 타입을 분석
             when (bleDevice.minor.toString()) {
                 ACTION_SIGNAL -> {
+                    if (currentTime - targetDevice.lastDetectionOfActionSignal < SIGNAL_TRANSMIT_TIME) {
+                        Log.d(TAG, "This Device has just been registered.")
+                        return
+                    }
                     targetDevice.lastDetectionOfActionSignal = currentTime
                   
                     db.deviceDao().update(targetDevice)
@@ -260,6 +251,11 @@ class ScanService : Service() {
                 }
 
                 PRESERVE_SIGNAL -> {
+                    if (targetDevice.lastDetectionOfPreserveSignal != null
+                        && currentTime - targetDevice.lastDetectionOfPreserveSignal!! < SIGNAL_TRANSMIT_TIME) {
+                        Log.d(TAG, "This Device has just been registered.")
+                        return
+                    }
                     targetDevice.lastDetectionOfPreserveSignal = currentTime
                   
                     db.deviceDao().update(targetDevice)
