@@ -79,7 +79,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView3">
 
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/text_scan_state_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="센서를 정상적으로 감지하고 있습니다."
@@ -89,45 +89,45 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/text_num_of_sensor_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="3"
+                        android:text="@{String.valueOf(viewModel.sensors.size())}"
                         android:textColor="@color/mainBlue"
                         android:textSize="50sp"
-                        app:layout_constraintStart_toStartOf="@+id/textView"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        app:layout_constraintStart_toStartOf="@+id/text_scan_state_main"
+                        app:layout_constraintTop_toBottomOf="@+id/text_scan_state_main" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/text_num_of_sensor_sentence"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="개의 감지 중인 센서"
                         android:textColor="@color/black"
                         android:textSize="12sp"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-                        app:layout_constraintStart_toEndOf="@+id/textView2" />
+                        app:layout_constraintBaseline_toBaselineOf="@+id/text_num_of_sensor_main"
+                        app:layout_constraintStart_toEndOf="@+id/text_num_of_sensor_main" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/text_address_main"
                         style="@style/MinorText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="서울특별시 노원구 공릉동"
                         android:textColor="@color/gray"
-                        app:layout_constraintStart_toStartOf="@+id/textView2"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                        app:layout_constraintStart_toStartOf="@+id/text_num_of_sensor_main"
+                        app:layout_constraintTop_toBottomOf="@+id/text_num_of_sensor_main" />
 
                     <ImageView
                         android:id="@+id/imageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-                        app:layout_constraintStart_toEndOf="@+id/textView5"
-                        app:layout_constraintTop_toTopOf="@+id/textView5"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_address_main"
+                        app:layout_constraintStart_toEndOf="@+id/text_address_main"
+                        app:layout_constraintTop_toTopOf="@+id/text_address_main"
                         app:srcCompat="@drawable/ic_location_on_24dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

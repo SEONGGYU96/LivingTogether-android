@@ -19,15 +19,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = DataBaseManager.getInstance(application)
 
-    var sensors: LiveData<List<DeviceEntity>>
+    //Todo: 사용가능한 센서들도 따로 가져오기. 메인 화면에 정상 작동 개수 나타내기 위함
+    var sensors = getSensorAll()
 
-    var noks: LiveData<List<NOKEntity>>
-
-    init {
-        sensors = getSensorAll()
-
-        noks = getNOKAll()
-    }
+    var noks = getNOKAll()
 
     fun getNOKAll(): LiveData<List<NOKEntity>> {
         return db.nokDao().getAllObservable()
