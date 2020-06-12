@@ -83,8 +83,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="센서를 정상적으로 감지하고 있습니다."
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -129,6 +127,12 @@
                         app:layout_constraintStart_toEndOf="@+id/text_address_main"
                         app:layout_constraintTop_toTopOf="@+id/text_address_main"
                         app:srcCompat="@drawable/ic_location_on_24dp" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_num_of_sensor_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="text_num_of_sensor_main, text_num_of_sensor_sentence"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
