@@ -14,6 +14,7 @@ import com.seoultech.livingtogether_android.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.scan.ScanServiceTest
+import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
@@ -26,6 +27,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val deviceAdapter: DeviceAdapter by lazy { DeviceAdapter() }
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
     private lateinit var vm: MainViewModel
+    private lateinit var debugVm: DebugViewModel
     private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
         vm = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        debugVm = ViewModelProvider(this, viewModelFactory).get(DebugViewModel::class.java)
 
         binding.run {
             lifecycleOwner = this@MainActivity
@@ -61,6 +64,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
             layoutDebug.buttonScanTest.setOnClickListener {
                 startActivity(Intent(this@MainActivity, ScanActivity::class.java))
+            }
+
+            layoutDebug.buttonAddDeviceTest.setOnClickListener {
+                debugVm.addDevice()
+            }
+
+            layoutDebug.buttonDeleteAllDeviceTest.setOnClickListener {
+                debugVm.deleteAll()
             }
         }
 

@@ -26,4 +26,7 @@ interface DeviceDao {
 
     @Delete
     fun delete(deviceEntity: DeviceEntity)
+
+    @Query("DELETE FROM device_entity")
+    fun deleteAll()
 }

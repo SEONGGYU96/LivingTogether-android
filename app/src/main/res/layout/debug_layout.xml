@@ -27,9 +27,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SCAN TEST"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_scan_test_activity"
+        app:layout_constraintBottom_toTopOf="@id/button_add_device_test"/>
+
+    <Button
+        android:id="@+id/button_add_device_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="ADD_DEVICE_TEST"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_scan_test"
+        app:layout_constraintBottom_toTopOf="@id/button_delete_all_device_test"/>
+
+    <Button
+        android:id="@+id/button_delete_all_device_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DELETE_ALL_TEST"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_scan_test_activity" />
+        app:layout_constraintTop_toBottomOf="@+id/button_add_device_test" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
