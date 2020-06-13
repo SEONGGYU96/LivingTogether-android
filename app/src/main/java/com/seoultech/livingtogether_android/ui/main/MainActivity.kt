@@ -78,15 +78,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         vm.sensors.observe(this@MainActivity, Observer {
             text_scan_state_main.run {
                 if (it.isEmpty()) {
-                    changeStatusBox(this, false, "등록된 센서가 없습니다.")
+                    changeStatusBox(this, false, context.getString(R.string.status_box_no_sensor))
                 } else {
                     if (!vm.isBluetoothOn()) {
-                        changeStatusBox(this, false, "블루투스가 꺼져있어\n" +
-                                "센서를 감지할 수 없습니다.")
+                        changeStatusBox(this, false,  context.getString(R.string.status_box_bluetooth_off))
                     } else if (!vm.isServiceRunning()) {
-                        changeStatusBox(this, false, "알 수 없는 이유로\n 기기를 감지할 수 없습니다.")
+                        changeStatusBox(this, false, context.getString(R.string.status_box_fail))
                     } else {
-                        changeStatusBox(this, true, "센서를 정상적으로 감지하고 있습니다.")
+                         changeStatusBox(this, true, context.getString(R.string.status_box_on_going))
                     }
                 }
             }
