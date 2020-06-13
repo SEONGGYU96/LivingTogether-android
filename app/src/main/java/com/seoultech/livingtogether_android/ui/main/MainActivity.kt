@@ -81,7 +81,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 if (it.isEmpty()) {
                     changeStatusBox(this, false, context.getString(R.string.status_box_no_sensor))
 
-                    changeSensorState(false)
                 } else {
                     if (!vm.isBluetoothOn()) {
                         changeStatusBox(this, false,  context.getString(R.string.status_box_bluetooth_off))
@@ -90,24 +89,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     } else {
                          changeStatusBox(this, true, context.getString(R.string.status_box_on_going))
                     }
-
-                    changeSensorState(true)
                 }
             }
         })
-    }
-
-    private fun changeSensorState(isExist: Boolean) {
-        if (isExist) {
-            recycler_device_list_main.visibility = View.VISIBLE
-            text_sensor_more_main.visibility = View.VISIBLE
-            layout_no_sensor.visibility = View.GONE
-        } else {
-            recycler_device_list_main.visibility = View.GONE
-            text_sensor_more_main.visibility = View.GONE
-            layout_no_sensor.visibility = View.VISIBLE
-
-        }
     }
 
     private fun changeStatusBox(view: TextView, on: Boolean, text: String) {
