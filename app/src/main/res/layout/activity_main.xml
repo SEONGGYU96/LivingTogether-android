@@ -124,7 +124,7 @@
                         android:id="@+id/group_num_of_sensor_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="text_num_of_sensor_main, text_num_of_sensor_sentence"/>
+                        app:constraint_referenced_ids="text_num_of_sensor_main, text_num_of_sensor_sentence" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -186,38 +186,38 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_no_sensor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:layout_marginTop="16dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-                <TextView
-                    android:id="@+id/text_no_sensor_main"
+                    android:id="@+id/layout_no_sensor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="등록된 센서가 없습니다."
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="16dp"
+                    android:padding="20dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <Button
-                    android:id="@+id/button_register_sensor_main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="등록하기"
-                    android:background="@null"
-                    android:padding="5dp"
-                    app:layout_constraintTop_toBottomOf="@id/text_no_sensor_main"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    <TextView
+                        android:id="@+id/text_no_sensor_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="등록된 센서가 없습니다."
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <Button
+                        android:id="@+id/button_register_sensor_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:padding="5dp"
+                        android:text="등록하기"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_no_sensor_main" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -247,6 +247,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="더 보기"
+                    visible="@{viewModel.noks}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -268,10 +269,44 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     replaceAll="@{viewModel.noks}"
+                    visible="@{viewModel.noks}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView8"
                     tools:listitem="@layout/nok_item_main" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_no_nok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="20dp"
+                    visible="@{viewModel.noks}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+                    <TextView
+                        android:id="@+id/text_no_nok_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="등록된 보호자가 없습니다."
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_register_nok_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:padding="5dp"
+                        android:text="등록하기"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_no_nok_main" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
