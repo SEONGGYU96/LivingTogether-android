@@ -9,6 +9,10 @@
         <variable
             name="viewModel"
             type="com.seoultech.livingtogether_android.viewmodel.MainViewModel" />
+
+        <variable
+            name="constant"
+            type="com.seoultech.livingtogether_android.util.Constant" />
     </data>
 
     <ScrollView
@@ -210,6 +214,7 @@
 
                     <Button
                         android:id="@+id/button_register_sensor_main"
+                        android:onClick="@{constant.SCAN_ACTIVITY}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -304,6 +309,7 @@
                         android:background="@null"
                         android:padding="5dp"
                         android:text="등록하기"
+                        android:onClick="@{constant.ADD_NOK_ACTIVITY}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/text_no_nok_main" />
