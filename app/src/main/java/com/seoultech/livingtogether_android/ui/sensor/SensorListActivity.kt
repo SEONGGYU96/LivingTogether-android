@@ -1,6 +1,8 @@
 package com.seoultech.livingtogether_android.ui.sensor
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,6 +10,8 @@ import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivitySensorListBinding
+import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
+import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.viewmodel.DeviceViewModel
 import kotlinx.android.synthetic.main.activity_sensor_list.*
 
@@ -36,7 +40,7 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
 
             recyclerDeviceList.layoutManager = GridLayoutManager(baseContext, NUM_OF_COLUMN)
             recyclerDeviceList.adapter = deviceAdapter
-            //recyclerDeviceList.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
+            recyclerDeviceList.addItemDecoration(MarginDecoration(baseContext, NUM_OF_COLUMN, 60, 60))
         }
 
         setSupportActionBar(toolbar_device_list)
@@ -48,11 +52,23 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.add_menu, menu)       // main_menu 메뉴를 toolbar 메뉴 버튼으로 설정
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+
+            R.id.menu_go_to_add_activity -> {
+                startActivity(Intent(this, ScanActivity::class.java))
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 }
