@@ -19,6 +19,7 @@ import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
+import com.seoultech.livingtogether_android.ui.sensor.SensorListActivity
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -56,6 +57,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
             buttonEditProfile.setOnClickListener{
                 startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
+            }
+
+            buttonSensorMoreMain.setOnClickListener {
+                startActivity(Intent(this@MainActivity, SensorListActivity::class.java))
             }
 
             layoutDebug.buttonScanTestActivity.setOnClickListener {

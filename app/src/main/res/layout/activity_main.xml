@@ -145,12 +145,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
                 <TextView
-                    android:id="@+id/text_sensor_more_main"
+                    android:id="@+id/button_sensor_more_main"
                     style="@style/MinorText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="더 보기"
                     visible="@{viewModel.sensors}"
+                    android:padding="5dp"
                     android:textColor="@color/gray"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
                     app:layout_constraintEnd_toEndOf="parent" />
