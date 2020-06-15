@@ -27,7 +27,7 @@ class DeviceViewHolder(parent: ViewGroup) :
                 }
             )
             
-            viewIsWorkingSensorItem.backgroundTintList = when (data.isAvailable) {
+            viewStateCircleItem.backgroundTintList = when (data.isAvailable) {
                 true -> ColorStateList.valueOf(ContextCompat.getColor(this.root.context, R.color.stateGrean))
                 else -> ColorStateList.valueOf(ContextCompat.getColor(this.root.context, R.color.gray))
             }
