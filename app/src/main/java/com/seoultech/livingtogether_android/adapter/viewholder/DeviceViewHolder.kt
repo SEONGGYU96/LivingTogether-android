@@ -1,6 +1,9 @@
 package com.seoultech.livingtogether_android.adapter.viewholder
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseViewHolder
 import com.seoultech.livingtogether_android.databinding.DeviceItemMainBinding
@@ -23,14 +26,11 @@ class DeviceViewHolder(parent: ViewGroup) :
                     else -> R.drawable.ic_foothole_switch
                 }
             )
-            /*viewIsWorkingSensorItem.setBackgroundColor(
-                when (data.isAvailable) {
-                    true -> R.color.stateGrean
-                    else -> R.color.gray
-                }
-            )*/
-            //FIXME : View 의 색이 제대로 먹지 않음. 상태에 따라 정확한 색을 표현하도록 고쳐야함
-
+            
+            viewIsWorkingSensorItem.backgroundTintList = when (data.isAvailable) {
+                true -> ColorStateList.valueOf(ContextCompat.getColor(this.root.context, R.color.stateGrean))
+                else -> ColorStateList.valueOf(ContextCompat.getColor(this.root.context, R.color.gray))
+            }
         }
     }
 }

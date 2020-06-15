@@ -28,7 +28,7 @@
                 android:id="@+id/view_is_working_sensor_item"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:background="@color/stateGrean"
+                android:background="@drawable/circle_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
