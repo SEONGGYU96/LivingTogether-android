@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.lang.StringBuilder
 import java.util.*
 
 
@@ -72,5 +73,26 @@ data class DeviceEntity(
         calendar.timeInMillis = timeInMillis
         return "${calendar.get(Calendar.YEAR)}/${calendar.get(Calendar.MONTH)}/${calendar.get(Calendar.DAY_OF_MONTH)}" +
                 " ${calendar.get(Calendar.HOUR_OF_DAY)} : ${calendar.get(Calendar.MINUTE)}"
+    }
+
+    fun getLastDetectedTimeToMinuet() : String {
+        val timeGap = GregorianCalendar().timeInMillis - lastDetectionOfActionSignal
+        val string = StringBuilder()
+
+        when {
+            timeGap < 3600000 -> {
+                string.append(timeGap / (1000 * 60))
+                string.append("분 전")
+            }
+            timeGap < 86400000 -> {
+                string.append(timeGap / (1000 * 60 * 60 ))
+                string.append("시간 전")
+            }
+            else -> {
+                string.append(timeGap / (1000 * 60 * 60 * 24))
+                string.append("일 전")
+            }
+        }
+        return string.toString()
     }
 }
