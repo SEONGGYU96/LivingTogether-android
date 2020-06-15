@@ -2,7 +2,6 @@ package com.seoultech.livingtogether_android.ui.nok
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +15,6 @@ import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityNokListBinding
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.NOKViewModel
-import kotlinx.android.synthetic.main.activity_nok_list.*
 
 class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_nok_list) {
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
@@ -67,7 +65,7 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.nok_list_acitvity_menu, menu)       // main_menu 메뉴를 toolbar 메뉴 버튼으로 설정
+        menuInflater.inflate(R.menu.add_menu, menu)       // main_menu 메뉴를 toolbar 메뉴 버튼으로 설정
         return true
     }
 
@@ -84,7 +82,7 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
             }
 
             //Todo: 입력하여 추가하기 vs 주소록에서 추가하기 다이얼로그 띄우기
-            R.id.menu_go_to_add_nok_activity -> {
+            R.id.menu_go_to_add_activity -> {
                 startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
                 return true
             }
