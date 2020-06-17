@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -9,9 +11,6 @@
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -97,7 +96,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_field_address_profile"
+            android:id="@+id/text_field_district_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -106,14 +105,35 @@
             app:layout_constraintEnd_toEndOf="@id/text_field_phone_profile">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edit_address_profile"
+            android:id="@+id/edit_district_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="주소"
+            android:hint="시"
             android:inputType="text"
-            android:text="@={viewModel.userLiveData.address}"
+            android:text="@={viewModel.userLiveData.district}"
             />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_field_address_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="@id/text_field_district_profile"
+            app:layout_constraintTop_toBottomOf="@id/text_field_district_profile"
+            app:layout_constraintEnd_toEndOf="@id/text_field_district_profile">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edit_address_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="구, 동, 나머지 주소"
+                android:inputType="text"
+                android:text="@={viewModel.userLiveData.address}"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,6 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_background"
+            android:onClick="@{()->viewModel.update()}"
             app:srcCompat="@drawable/ic_check_60dp" />
 
     </androidx.cardview.widget.CardView>

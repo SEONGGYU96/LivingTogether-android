@@ -30,6 +30,10 @@ android {
 
     dataBinding { enabled = true }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -42,11 +46,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "com.google.android.material:material:$project.android_x_version"
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation "androidx.cardview:cardview:1.0.0"
 
     //firebase init
     implementation 'com.google.firebase:firebase-core:17.3.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation "androidx.cardview:cardview:1.0.0"
 
     //room
     implementation "androidx.room:room-runtime:2.2.5"
@@ -59,6 +63,11 @@ dependencies {
 
     //lottie
     implementation "com.airbnb.android:lottie:3.4.0"
+
+    //retrofit2
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
