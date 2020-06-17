@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
@@ -31,23 +32,13 @@ class EditProfileActivity :
         binding.run {
             lifecycleOwner = this@EditProfileActivity
             viewModel = vm
-
-            //Todo: 새로운 객체 user를 만들고 이런식으로 값을 매핑하는 방법 말고 데이터바인딩 선에서 해결할 수 있는 방법 찾기
-            buttonEditProfile.setOnClickListener {
-                vm.user.name = editNameProfile.text.toString()
-                vm.user.phoneNum = editPhoneProfile.text.toString()
-
-                //Todo: 주소록에서 연락처 가져오기 구현
-                vm.user.address = editAddressProfile.text.toString()
-
-                vm.update(vm.user)
-
-                vm.updateServer()
-
-                finish()
-
-            }
         }
+
+        vm.finishHandler.observe(this, Observer {
+            if (it) {
+                finish()
+            }
+        })
 
         setSupportActionBar(binding.toolbarEditProfile)
 

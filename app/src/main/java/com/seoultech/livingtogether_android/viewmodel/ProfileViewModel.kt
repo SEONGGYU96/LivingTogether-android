@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.UserEntity
@@ -26,31 +27,33 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private val db = DataBaseManager.getInstance(application)
 
-    var userLiveData: LiveData<UserEntity>
+    var finishHandler = MutableLiveData<Boolean>()
 
-    lateinit var user: UserEntity
+    var userLiveData = getObservable()
 
-    init {
-        userLiveData = this.getObservable()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            user = db.userDao().getAll()
-        }
-    }
-
-    fun getObservable(): LiveData<UserEntity> {
+    private fun getObservable(): LiveData<UserEntity> {
         return db.userDao().getAllObservable()
     }
 
-    fun update(newUser: UserEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            db.userDao().update(newUser)
+    fun update() {
+        if (userLiveData.value == null) {
+            Log.d(TAG, "userData is null yet.")
+            return
         }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            db.userDao().update(userLiveData.value!!)
+        }
+        updateServer()
+
+        finishHandler.value = true
     }
 
     //Todo: request 객체 정리하기. 필드 맞추기
-    fun updateServer() {
-        val requestUser = RequestUserData(user.name, user.address, user.address, user.phoneNum, 25)
+    private fun updateServer() {
+        val requestUser = RequestUserData(userLiveData.value!!.name,
+            userLiveData.value!!.district, userLiveData.value!!.address, userLiveData.value!!.phoneNum, 25)
+
         RetrofitClient.create(RequestUser::class.java).requestUpdateUserData(requestUser).enqueue(object : Callback<ResponseUserData> {
 
             override fun onResponse(call: Call<ResponseUserData>, response: Response<ResponseUserData>) {
