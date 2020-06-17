@@ -21,7 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".ui.sensor.SensorListActivity"></activity>
+        
+        <activity android:name=".ui.scan.InsertLocationActivity"/>
+        <activity android:name=".ui.sensor.SensorListActivity" />
         <activity android:name=".debug.scan.ScanServiceTest" />
 
         <service

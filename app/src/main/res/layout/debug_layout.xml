@@ -46,9 +46,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DELETE_ALL_TEST"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/button_insert_location_test"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_add_device_test" />
+
+    <Button
+        android:id="@+id/button_insert_location_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INSERT_LOCATION"
+        app:layout_constraintTop_toBottomOf="@id/button_delete_all_device_test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
