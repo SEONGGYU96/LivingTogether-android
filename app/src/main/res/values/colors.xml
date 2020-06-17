@@ -13,5 +13,6 @@
     <color name="background_gray">#EDEDED</color>
 
     <color name="shadow">#3284E5</color>
+    <color name="skyBlue">#5CAFFD</color>
 
 </resources>

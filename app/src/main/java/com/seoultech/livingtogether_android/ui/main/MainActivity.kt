@@ -18,6 +18,7 @@ import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
+import com.seoultech.livingtogether_android.ui.scan.InsertLocationActivity
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.ui.sensor.SensorListActivity
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
@@ -77,6 +78,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
             layoutDebug.buttonDeleteAllDeviceTest.setOnClickListener {
                 debugVm.deleteAll()
+            }
+
+            layoutDebug.buttonInsertLocationTest.setOnClickListener {
+                startActivity(Intent(this@MainActivity, InsertLocationActivity::class.java))
             }
         }
 

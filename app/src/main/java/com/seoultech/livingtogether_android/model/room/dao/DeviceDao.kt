@@ -18,6 +18,9 @@ interface DeviceDao {
     @Query("SELECT DISTINCT device_address FROM device_entity")
     fun getAllDeviceAddress(): List<String>
 
+    @Query(" SELECT * FROM device_entity ORDER BY last_detection_type_one DESC LIMIT 1")
+    fun getMostRecentDevice(): DeviceEntity?
+
     @Insert
     fun insert(deviceEntity: DeviceEntity)
 
