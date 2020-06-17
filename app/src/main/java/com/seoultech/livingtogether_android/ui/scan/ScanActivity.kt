@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.seoultech.livingtogether_android.R
@@ -51,7 +52,13 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
 
         vm.isFound.observe(this, Observer {
             if (it) {
-                //Todo: 위치 입력 액티비티로 이동
+                startActivity(Intent(this, InsertLocationActivity::class.java))
+                finish()
+            }
+        })
+
+        vm.hasAlready.observe(this, Observer {
+            if (it) {
                 finish()
             }
         })

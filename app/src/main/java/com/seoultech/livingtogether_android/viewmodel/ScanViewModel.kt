@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -37,6 +38,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
     private var isScanning = false
 
     var isFound = MutableLiveData<Boolean>()
+    var hasAlready = MutableLiveData<Boolean>()
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager = application.
@@ -56,6 +58,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         isFound.value = false
+        hasAlready.value = false
     }
 
     fun isBluetoothOn(): Boolean {
@@ -121,9 +124,9 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
                     stopScan()
 
                     if (db.deviceDao().getAll().isNotEmpty()) {
-                        //Todo: 이미 등록된 버튼이라는 다이얼로그 띄우기
+                        Toast.makeText(getApplication(), "이미 등록된 버튼입니다.", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "This device is already registered. return.")
-                        isFound.value = true
+                        hasAlready.value = true
                         return
                     }
 
