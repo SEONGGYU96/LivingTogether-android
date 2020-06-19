@@ -19,9 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProfileViewModel(application: Application) : BaseViewModel(application) {
-
-    var finishHandler = MutableLiveData<Boolean>()
-
+    
     var userLiveData = getObservable()
 
     private fun getObservable(): LiveData<UserEntity> {

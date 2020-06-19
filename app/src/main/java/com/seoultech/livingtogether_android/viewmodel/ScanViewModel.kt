@@ -34,7 +34,6 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
     private var isScanning = false
 
     var isFound = MutableLiveData<Boolean>()
-    var hasAlready = MutableLiveData<Boolean>()
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager = application.
@@ -50,11 +49,6 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
     private var runnable = Runnable {
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan Timeout")
-    }
-
-    init {
-        isFound.value = false
-        hasAlready.value = false
     }
 
     fun isBluetoothOn(): Boolean {
@@ -122,7 +116,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
                     if (db.deviceDao().getAll().isNotEmpty()) {
                         Toast.makeText(getApplication(), "이미 등록된 버튼입니다.", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "This device is already registered. return.")
-                        hasAlready.value = true
+                        finishHandler.value = true
                         return
                     }
 

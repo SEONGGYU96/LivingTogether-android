@@ -16,11 +16,7 @@ class InsertLocationActivity : BaseActivity<ActivityInsertLocationBinding>(R.lay
 
         vm = viewModelProvider.get(LocationViewModel::class.java)
 
-        vm.finishHandler.observe(this, Observer {
-            if (it) {
-                finish()
-            }
-        })
+        vm.finishHandler.observe(this, finishObserver)
 
         binding.run {
             viewModel = vm

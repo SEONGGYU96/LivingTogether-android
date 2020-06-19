@@ -33,11 +33,6 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
             recyclerNokList.adapter = nokAdapter
             recyclerNokList.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
 
-            //debug
-            buttonTest.setOnClickListener {
-                startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
-            }
-
             //NOKEntity 를 관찰하고 값이 비어있지 않다면 레이아웃을 변경
             vm.getAll().observe(this@NOKListActivity, Observer {
                 if (it.isEmpty()) {

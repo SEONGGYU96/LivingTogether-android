@@ -5,6 +5,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 
@@ -17,6 +18,12 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes var layoutResId : In
     protected lateinit var viewModelProvider: ViewModelProvider
 
     protected val TAG = javaClass.simpleName
+
+    protected val finishObserver = Observer<Boolean> {
+        if(it) {
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -31,11 +31,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.ac
             viewModel = vm
         }
 
-        vm.finishHandler.observe(this, Observer {
-            if (it) {
-                finish()
-            }
-        })
+        vm.finishHandler.observe(this, finishObserver)
 
         setSupportActionBar(binding.toolbarEditProfile)
 

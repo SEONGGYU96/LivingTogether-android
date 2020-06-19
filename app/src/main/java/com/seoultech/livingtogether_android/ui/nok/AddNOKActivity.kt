@@ -18,13 +18,9 @@ class AddNOKActivity : BaseActivity<ActivityAddNokBinding>(R.layout.activity_add
 
         binding.run {
             viewModel = vm
-
-            //Todo: 데이터바인딩으로 해결해보자. 지금은 너무 못났다.
-            buttonAddNokList.setOnClickListener {
-                vm.insert(vm.newNok)
-                finish()
-            }
         }
+
+        vm.finishHandler.observe(this, finishObserver)
 
         setSupportActionBar(binding.toolbarAddNok)
 

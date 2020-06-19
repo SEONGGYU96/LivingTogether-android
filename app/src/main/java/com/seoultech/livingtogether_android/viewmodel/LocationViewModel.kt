@@ -8,7 +8,6 @@ import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 
 class LocationViewModel(application: Application) : BaseViewModel(application) {
-    var finishHandler = MutableLiveData<Boolean>()
 
     var location: String? = null
 

@@ -55,11 +55,7 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             }
         })
 
-        vm.hasAlready.observe(this, Observer {
-            if (it) {
-                finish()
-            }
-        })
+        vm.finishHandler.observe(this, finishObserver)
     }
 
     override fun onResume() {

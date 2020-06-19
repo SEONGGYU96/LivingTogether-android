@@ -18,9 +18,10 @@ class NOKViewModel(application: Application) : BaseViewModel(application) {
         return db.nokDao().getAllObservable()
     }
 
-    fun insert(newNok:NOKEntity) {
+    fun insert() {
         viewModelScope.launch(Dispatchers.IO) {
             db.nokDao().insert(newNok)
         }
+        finishHandler.value = true
     }
 }
