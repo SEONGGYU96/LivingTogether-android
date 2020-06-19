@@ -6,22 +6,15 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
 import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.util.ServiceUtil
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    companion object {
-        private const val TAG = "MainViewModel"
-    }
-
-    private val db = ApplicationImpl.db
+class MainViewModel(application: Application) : BaseViewModel(application) {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager = application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager

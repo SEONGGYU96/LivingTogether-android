@@ -10,10 +10,9 @@ import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
 import com.seoultech.livingtogether_android.service.ScanService
@@ -25,15 +24,12 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class ScanViewModel(application: Application) : AndroidViewModel(application) {
+class ScanViewModel(application: Application) : BaseViewModel(application) {
 
     companion object{
-        private const val TAG = "ScanViewModel"
         private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
         private const val MIN_RSSI = -85
     }
-
-    private val db = ApplicationImpl.db
 
     private var isScanning = false
 

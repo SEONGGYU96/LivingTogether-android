@@ -3,19 +3,11 @@ package com.seoultech.livingtogether_android.viewmodel
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 
-class LocationViewModel(application: Application) : AndroidViewModel(application) {
-
-    companion object {
-        private const val TAG = "LocationViewModel"
-    }
-
-    private val db = ApplicationImpl.db
-
+class LocationViewModel(application: Application) : BaseViewModel(application) {
     var finishHandler = MutableLiveData<Boolean>()
 
     var location: String? = null

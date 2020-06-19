@@ -1,15 +1,11 @@
 package com.seoultech.livingtogether_android.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 
-class DeviceViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val db = ApplicationImpl.db
-
+class DeviceViewModel(application: Application) : BaseViewModel(application) {
     var devices = getAllObservable()
 
     fun getAllObservable() : LiveData<List<DeviceEntity>> {
