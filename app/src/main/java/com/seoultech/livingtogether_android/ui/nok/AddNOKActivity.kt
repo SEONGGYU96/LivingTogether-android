@@ -10,12 +10,11 @@ import com.seoultech.livingtogether_android.viewmodel.NOKViewModel
 
 class AddNOKActivity : BaseActivity<ActivityAddNokBinding>(R.layout.activity_add_nok) {
     private lateinit var vm: NOKViewModel
-    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
-        vm = ViewModelProvider(this, viewModelFactory).get(NOKViewModel::class.java)
+        vm = viewModelProvider.get(NOKViewModel::class.java)
 
         binding.run {
             viewModel = vm

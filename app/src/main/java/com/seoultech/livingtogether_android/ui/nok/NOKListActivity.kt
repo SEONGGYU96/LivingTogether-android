@@ -20,17 +20,13 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
 
     private lateinit var vm: NOKViewModel
-    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
-        vm = ViewModelProvider(this, viewModelFactory).get(NOKViewModel::class.java)
+        vm = viewModelProvider.get(NOKViewModel::class.java)
 
         binding.run {
-            lifecycleOwner = this@NOKListActivity
-
             viewModel = vm
 
             recyclerNokList.layoutManager = LinearLayoutManager(baseContext)
