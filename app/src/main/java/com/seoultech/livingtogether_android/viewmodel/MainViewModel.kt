@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.seoultech.livingtogether_android.ApplicationImpl
-import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
 import com.seoultech.livingtogether_android.service.ScanService

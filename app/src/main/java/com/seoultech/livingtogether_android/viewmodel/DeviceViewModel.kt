@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.seoultech.livingtogether_android.ApplicationImpl
-import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 
 class DeviceViewModel(application: Application) : AndroidViewModel(application) {
