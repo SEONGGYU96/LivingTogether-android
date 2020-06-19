@@ -34,7 +34,9 @@ abstract class DataBaseManager : RoomDatabase() {
             }
         }
 
-        private fun buildDatabase(context: Context): DataBaseManager {
+
+
+        fun buildDatabase(context: Context): DataBaseManager {
 
             return Room.databaseBuilder(context.applicationContext, DataBaseManager::class.java, DB_NAME)
                 .addCallback(object : RoomDatabase.Callback() {
@@ -52,7 +54,4 @@ abstract class DataBaseManager : RoomDatabase() {
                 .build()
         }
     }
-
-
-
 }

@@ -3,6 +3,7 @@ package com.seoultech.livingtogether_android.debug.viewmodel
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.model.room.DataBaseManager
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import java.util.*
@@ -16,7 +17,7 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
         private const val DEBUG_LOCATION = "디버그"
     }
 
-    private val db : DataBaseManager by lazy { DataBaseManager.getInstance(application) }
+    private val db = ApplicationImpl.db
 
     fun addDevice() {
         val calendar = GregorianCalendar()

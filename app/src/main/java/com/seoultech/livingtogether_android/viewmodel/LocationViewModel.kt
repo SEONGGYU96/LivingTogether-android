@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.seoultech.livingtogether_android.model.room.DataBaseManager
+import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
@@ -14,7 +14,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
         private const val TAG = "LocationViewModel"
     }
 
-    val db = DataBaseManager.getInstance(application)
+    private val db = ApplicationImpl.db
 
     var finishHandler = MutableLiveData<Boolean>()
 

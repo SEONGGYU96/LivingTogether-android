@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.seoultech.livingtogether_android.model.room.DataBaseManager
+import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
 import com.seoultech.livingtogether_android.service.ScanService
@@ -33,7 +33,7 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
         private const val MIN_RSSI = -85
     }
 
-    private val db = DataBaseManager.getInstance(application)
+    private val db = ApplicationImpl.db
 
     private var isScanning = false
 

@@ -43,7 +43,6 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
             }
 
             //NOKEntity 를 관찰하고 값이 비어있지 않다면 레이아웃을 변경
-            //Fixme: add nok activity에서 보호자 등록 후, 다시 해당 액티비티로 돌아와서 active 상태가 되어도 리사이클러뷰가 갱신되지 않음
             vm.getAll().observe(this@NOKListActivity, Observer {
                 if (it.isEmpty()) {
                     layoutNoNok.visibility = View.VISIBLE
