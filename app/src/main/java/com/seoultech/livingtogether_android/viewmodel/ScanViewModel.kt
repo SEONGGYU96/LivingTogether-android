@@ -18,6 +18,7 @@ import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntit
 import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.service.Signal
 import com.seoultech.livingtogether_android.tools.BleCreater
+import com.seoultech.livingtogether_android.util.BluetoothUtil
 import com.seoultech.livingtogether_android.util.ServiceUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,6 +50,19 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
     private var runnable = Runnable {
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan Timeout")
+    }
+
+    init {
+        isBluetoothAvailable()
+    }
+
+    private fun isBluetoothAvailable() {
+        if (BluetoothUtil.isBluetoothAvailable(getApplication())) {
+            Log.d(TAG, "This device does not support Bluetooth.")
+            finishHandler.value = true
+        } else {
+            Log.d(TAG, "This device supports Bluetooth.")
+        }
     }
 
     fun isBluetoothOn(): Boolean {

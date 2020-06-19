@@ -32,14 +32,6 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
 
         vm = viewModelProvider.get(ScanViewModel::class.java)
 
-        //TODO: ViewModel 안에 넣기
-        if (BluetoothUtil.isBluetoothAvailable(this)) {
-            Log.d(TAG, "This device does not support Bluetooth.")
-            finish()
-        } else {
-            Log.d(TAG, "This device supports Bluetooth.")
-        }
-
         setSupportActionBar(binding.toolbarScan)
 
         supportActionBar?.let {
