@@ -8,6 +8,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
@@ -32,6 +33,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     var noks = getNOKAll()
 
+    val sensorObserver = Observer<List<DeviceEntity>> {
+        if (it.isNotEmpty()) {
+            startService()
+        } else {
+            stopService()
+        }
+    }
+
+    init {
+        sensors.observeForever(sensorObserver)
+    }
+
     fun getNOKAll(): LiveData<List<NOKEntity>> {
         return db.nokDao().getAllObservable()
     }
@@ -41,14 +54,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun startService() {
-        if (db.deviceDao().getAll().isNotEmpty()
-            && !isServiceRunning()) {
+        if (!isServiceRunning()) {
             // 등록된 버튼 있는데 스캔 Service 미 동작중이면 서비스 실행 시킴
             getApplication<Application>().startService(Intent(getApplication(), ScanService::class.java))
 
             Log.d(TAG, "Devices registered are exist and service is not running. start service.")
         } else {
             Log.d(TAG, "No device registered or service is already running")
+        }
+    }
+
+    //Todo: ScanViewModel과 중복된 코드. 중복 제거
+    fun stopService() {
+        // To service Stop.
+        if (ServiceUtil.isServiceRunning(getApplication(), ScanService::class.java)) {
+            val intent = Intent(getApplication(), ScanService::class.java)
+            intent.putExtra(ScanService.FLAG_STOP_SERVICE, true)
+            getApplication<Application>().startService(intent)
+
+            Log.d(TAG, "Request to terminate Service ")
+        } else {
+            Log.d(TAG, "Service is not running.")
         }
     }
 
@@ -63,5 +89,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun isBluetoothOn() : Boolean {
         return bluetoothAdapter?.isEnabled?: false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        sensors.removeObserver(sensorObserver)
     }
 }
