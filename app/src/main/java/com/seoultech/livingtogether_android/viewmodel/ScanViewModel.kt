@@ -15,6 +15,8 @@ import androidx.lifecycle.viewModelScope
 import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
+import com.seoultech.livingtogether_android.model.room.repository.DeviceRepository
+import com.seoultech.livingtogether_android.model.room.repository.SignalHistoryRepository
 import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.service.Signal
 import com.seoultech.livingtogether_android.tools.BleCreater
@@ -31,6 +33,9 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
         private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
         private const val MIN_RSSI = -85
     }
+
+    private val signalHistoryRepository: SignalHistoryRepository by lazy { SignalHistoryRepository() }
+    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
 
     private var isScanning = false
 
@@ -127,7 +132,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
                     stopScan()
 
-                    if (db.deviceDao().getAll().isNotEmpty()) {
+                    if (deviceRepository.getAll().isNotEmpty()) {
                         Toast.makeText(getApplication(), "이미 등록된 버튼입니다.", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "This device is already registered. return.")
                         finishHandler.value = true
@@ -138,8 +143,8 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
-                        db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
-                        db.signalHistoryDao().insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis))
+                        deviceRepository.insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
+                        signalHistoryRepository.insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis))
                     }
 
                     isFound.value = true

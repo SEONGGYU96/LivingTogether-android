@@ -18,17 +18,17 @@ class NOKRepository : BaseRepository<NOKEntity>() {
         return observableNOK
     }
 
-    override fun insert(entity: NOKEntity) {
+    public override fun insert(entity: NOKEntity) {
         super.insert(entity)
         return dao.insert(entity)
     }
 
-    override fun delete(entity: NOKEntity) {
+    public override fun delete(entity: NOKEntity) {
         super.delete(entity)
         return dao.delete(entity)
     }
 
-    override fun update(entity: NOKEntity) {
+    public override fun update(entity: NOKEntity) {
         super.update(entity)
         return dao.update(entity)
     }

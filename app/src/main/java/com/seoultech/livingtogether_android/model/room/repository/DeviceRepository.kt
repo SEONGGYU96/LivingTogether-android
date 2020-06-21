@@ -17,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DeviceRepository(val application: Application) : BaseRepository<DeviceEntity>() {
+class DeviceRepository : BaseRepository<DeviceEntity>() {
 
     private val dao: DeviceDao by lazy { ApplicationImpl.db.deviceDao() }
 
@@ -58,17 +58,17 @@ class DeviceRepository(val application: Application) : BaseRepository<DeviceEnti
         dao.deleteAll()
     }
 
-    override fun insert(entity: DeviceEntity) {
+    public override fun insert(entity: DeviceEntity) {
         super.insert(entity)
         dao.insert(entity)
     }
 
-    override fun delete(entity: DeviceEntity) {
+    public override fun delete(entity: DeviceEntity) {
         super.delete(entity)
         dao.delete(entity)
     }
 
-    override fun update(entity: DeviceEntity) {
+    public override fun update(entity: DeviceEntity) {
         super.update(entity)
         dao.update(entity)
     }

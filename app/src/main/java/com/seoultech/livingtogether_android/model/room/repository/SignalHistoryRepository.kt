@@ -31,15 +31,15 @@ class SignalHistoryRepository : BaseRepository<SignalHistoryEntity>() {
         return result
     }
 
-    override fun insert(entity: SignalHistoryEntity) {
+    public override fun insert(entity: SignalHistoryEntity) {
         super.insert(entity)
     }
 
-    override fun delete(entity: SignalHistoryEntity) {
+    public override fun delete(entity: SignalHistoryEntity) {
         super.delete(entity)
     }
 
-    override fun update(entity: SignalHistoryEntity) {
+    public override fun update(entity: SignalHistoryEntity) {
         super.update(entity)
     }
 }

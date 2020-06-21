@@ -22,22 +22,22 @@ class UserRepository(val application: Application) : BaseRepository<UserEntity>(
 
     private val observableUser: LiveData<UserEntity> by lazy { dao.getAllObservable() }
 
-    fun getAll() : LiveData<UserEntity> {
+    fun getAllObservable() : LiveData<UserEntity> {
         Log.d(TAG, "getAll() : ${observableUser.value}")
         return observableUser
     }
 
-    override fun insert(entity: UserEntity) {
+    public override fun insert(entity: UserEntity) {
         super.insert(entity)
         return dao.insert(entity)
     }
 
-    override fun delete(entity: UserEntity) {
+    public override fun delete(entity: UserEntity) {
         super.delete(entity)
         return dao.delete(entity)
     }
 
-    override fun update(entity: UserEntity) {
+    public override fun update(entity: UserEntity) {
         super.update(entity)
         return dao.update(entity)
     }
