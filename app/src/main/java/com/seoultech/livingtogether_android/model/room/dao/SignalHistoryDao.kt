@@ -9,12 +9,6 @@ import com.seoultech.livingtogether_android.service.Signal
 @Dao
 abstract class SignalHistoryDao : BaseDao<SignalHistoryEntity> {
     @Query("SELECT * FROM signal_history_entity")
-    abstract fun getAll(): List<SignalHistoryEntity>
-
-    @Query("SELECT * FROM signal_history_entity WHERE signal_type = :type")
-    abstract fun getAll(type: Signal) : List<SignalHistoryEntity>
-
-    @Query("SELECT * FROM signal_history_entity")
     abstract fun getAllObservable(): LiveData<List<SignalHistoryEntity>>
 
     @Query("SELECT * FROM signal_history_entity WHERE signal_type = :type")
