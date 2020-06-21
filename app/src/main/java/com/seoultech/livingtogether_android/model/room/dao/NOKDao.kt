@@ -2,22 +2,14 @@ package com.seoultech.livingtogether_android.model.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.seoultech.livingtogether_android.base.BaseDao
 import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
 
 @Dao
-interface NOKDao {
+abstract class NOKDao : BaseDao<NOKEntity> {
     @Query("SELECT * FROM nok_entity")
-    fun getAllObservable(): LiveData<List<NOKEntity>>
-
-    @Insert
-    fun insert(nokEntity: NOKEntity)
-
-    @Update
-    fun update(nokEntity: NOKEntity)
-
-    @Delete
-    fun delete(nokEntity: NOKEntity)
+    abstract fun getAllObservable(): LiveData<List<NOKEntity>>
 
     @Query("Delete From nok_entity")
-    fun deleteAll()
+    abstract fun deleteAll()
 }

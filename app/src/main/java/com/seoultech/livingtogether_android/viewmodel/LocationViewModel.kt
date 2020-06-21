@@ -3,18 +3,20 @@ package com.seoultech.livingtogether_android.viewmodel
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
+import com.seoultech.livingtogether_android.model.room.repository.DeviceRepository
 
 class LocationViewModel(application: Application) : BaseViewModel(application) {
 
     var location: String? = null
 
+    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
+
     private val device = getMostRecentDevice()
 
     private fun getMostRecentDevice() : DeviceEntity? {
-        val mostResentDevice = db.deviceDao().getMostRecentDevice()
+        val mostResentDevice = deviceRepository.getMostRecentDevice()
 
         if (mostResentDevice == null) {
             Log.d(TAG, "empty device")
@@ -23,18 +25,13 @@ class LocationViewModel(application: Application) : BaseViewModel(application) {
             finishHandler.value = true
             return null
         }
-
-        Log.d(TAG, "most recent device : ${db.deviceDao().getMostRecentDevice()}")
-
         return mostResentDevice
     }
 
     fun updateLocation() {
         device!!.location = location
 
-        Log.d(TAG, "update Location : ${device.location}")
-
-        db.deviceDao().update(device)
+        deviceRepository.update(device)
         finishHandler.value = true
     }
 }
