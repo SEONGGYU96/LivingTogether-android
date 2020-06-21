@@ -30,18 +30,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
     private lateinit var vm: MainViewModel
     private lateinit var debugVm: DebugViewModel
-    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
-        vm = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-        debugVm = ViewModelProvider(this, viewModelFactory).get(DebugViewModel::class.java)
+        vm = viewModelProvider.get(MainViewModel::class.java)
+        debugVm = viewModelProvider.get(DebugViewModel::class.java)
 
         binding.run {
-            lifecycleOwner = this@MainActivity
-
             viewModel = vm
 
             recyclerDeviceListMain.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
@@ -113,11 +110,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             view.setTextAppearance(R.style.NormalStateText)
             group_num_of_sensor_main.visibility = View.VISIBLE
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        vm.startService()
     }
 }

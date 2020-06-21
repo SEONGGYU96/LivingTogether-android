@@ -10,35 +10,36 @@ import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
+import com.seoultech.livingtogether_android.model.room.repository.DeviceRepository
+import com.seoultech.livingtogether_android.model.room.repository.SignalHistoryRepository
 import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.service.Signal
 import com.seoultech.livingtogether_android.tools.BleCreater
+import com.seoultech.livingtogether_android.util.BluetoothUtil
 import com.seoultech.livingtogether_android.util.ServiceUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
 
-class ScanViewModel(application: Application) : AndroidViewModel(application) {
+class ScanViewModel(application: Application) : BaseViewModel(application) {
 
     companion object{
-        private const val TAG = "ScanViewModel"
         private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
         private const val MIN_RSSI = -85
     }
 
-    private val db = ApplicationImpl.db
+    private val signalHistoryRepository: SignalHistoryRepository by lazy { SignalHistoryRepository() }
+    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
 
     private var isScanning = false
 
     var isFound = MutableLiveData<Boolean>()
-    var hasAlready = MutableLiveData<Boolean>()
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager = application.
@@ -57,8 +58,16 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     init {
-        isFound.value = false
-        hasAlready.value = false
+        isBluetoothAvailable()
+    }
+
+    private fun isBluetoothAvailable() {
+        if (BluetoothUtil.isBluetoothAvailable(getApplication())) {
+            Log.d(TAG, "This device does not support Bluetooth.")
+            finishHandler.value = true
+        } else {
+            Log.d(TAG, "This device supports Bluetooth.")
+        }
     }
 
     fun isBluetoothOn(): Boolean {
@@ -123,10 +132,10 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
                     stopScan()
 
-                    if (db.deviceDao().getAll().isNotEmpty()) {
+                    if (deviceRepository.getAll().isNotEmpty()) {
                         Toast.makeText(getApplication(), "이미 등록된 버튼입니다.", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "This device is already registered. return.")
-                        hasAlready.value = true
+                        finishHandler.value = true
                         return
                     }
 
@@ -134,8 +143,8 @@ class ScanViewModel(application: Application) : AndroidViewModel(application) {
 
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
-                        db.deviceDao().insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
-                        db.signalHistoryDao().insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis))
+                        deviceRepository.insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
+                        signalHistoryRepository.insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis))
                     }
 
                     isFound.value = true

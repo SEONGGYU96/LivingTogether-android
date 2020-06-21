@@ -18,27 +18,20 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EditProfileActivity :
-    BaseActivity<ActivityEditProfileBinding>(R.layout.activity_edit_profile) {
+class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.activity_edit_profile) {
+
     private lateinit var vm: ProfileViewModel
-    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
-        vm = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
+        vm = viewModelProvider.get(ProfileViewModel::class.java)
 
         binding.run {
-            lifecycleOwner = this@EditProfileActivity
             viewModel = vm
         }
 
-        vm.finishHandler.observe(this, Observer {
-            if (it) {
-                finish()
-            }
-        })
+        vm.finishHandler.observe(this, finishObserver)
 
         setSupportActionBar(binding.toolbarEditProfile)
 

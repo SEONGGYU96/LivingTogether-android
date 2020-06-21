@@ -6,34 +6,32 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
 import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
+import com.seoultech.livingtogether_android.model.room.repository.DeviceRepository
+import com.seoultech.livingtogether_android.model.room.repository.NOKRepository
 import com.seoultech.livingtogether_android.service.ScanService
 import com.seoultech.livingtogether_android.util.ServiceUtil
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    companion object {
-        private const val TAG = "MainViewModel"
-    }
-
-    private val db = ApplicationImpl.db
+class MainViewModel(application: Application) : BaseViewModel(application) {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager = application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
 
+    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
+    private val nokRepository: NOKRepository by lazy { NOKRepository() }
+
     //Todo: 사용가능한 센서들도 따로 가져오기. 메인 화면에 정상 작동 개수 나타내기 위함
     var sensors = getSensorAll()
 
     var noks = getNOKAll()
 
-    val sensorObserver = Observer<List<DeviceEntity>> {
+    private val sensorObserver = Observer<List<DeviceEntity>> {
         if (it.isNotEmpty()) {
             startService()
         } else {
@@ -46,11 +44,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getNOKAll(): LiveData<List<NOKEntity>> {
-        return db.nokDao().getAllObservable()
+        return nokRepository.getAllObservable()
     }
 
     fun getSensorAll(): LiveData<List<DeviceEntity>> {
-        return db.deviceDao().getAllObservable()
+        return deviceRepository.getAllObservable()
     }
 
     fun startService() {

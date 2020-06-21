@@ -1,24 +1,25 @@
 package com.seoultech.livingtogether_android.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.model.room.entity.SignalHistoryEntity
+import com.seoultech.livingtogether_android.model.room.repository.SignalHistoryRepository
 import com.seoultech.livingtogether_android.service.Signal
 
-class ScanTestViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = ApplicationImpl.db
+class ScanTestViewModel(application: Application) : BaseViewModel(application) {
+
+    private val signalHistoryRepository: SignalHistoryRepository by lazy { SignalHistoryRepository() }
 
     var actionSignalHistory = getActionSignalHistoryAll()
 
     var preserveSignalHistory = getPreserveSignalHistoryAll()
 
-    fun getActionSignalHistoryAll() : LiveData<List<SignalHistoryEntity>> {
-        return db.signalHistoryDao().getAllOfActionSignal()
+    private fun getActionSignalHistoryAll() : LiveData<List<SignalHistoryEntity>> {
+        return signalHistoryRepository.getAllOfActionSignal()
     }
 
-    fun getPreserveSignalHistoryAll() : LiveData<List<SignalHistoryEntity>> {
-        return db.signalHistoryDao().getAllObservable(Signal.PRESERVE)
+    private fun getPreserveSignalHistoryAll() : LiveData<List<SignalHistoryEntity>> {
+        return signalHistoryRepository.getAllObservable(Signal.PRESERVE)
     }
 }

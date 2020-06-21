@@ -20,27 +20,18 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
 
     private lateinit var vm: NOKViewModel
-    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
-        vm = ViewModelProvider(this, viewModelFactory).get(NOKViewModel::class.java)
+        vm = viewModelProvider.get(NOKViewModel::class.java)
 
         binding.run {
-            lifecycleOwner = this@NOKListActivity
-
             viewModel = vm
 
             recyclerNokList.layoutManager = LinearLayoutManager(baseContext)
             recyclerNokList.adapter = nokAdapter
             recyclerNokList.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
-
-            //debug
-            buttonTest.setOnClickListener {
-                startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
-            }
 
             //NOKEntity 를 관찰하고 값이 비어있지 않다면 레이아웃을 변경
             vm.getAll().observe(this@NOKListActivity, Observer {

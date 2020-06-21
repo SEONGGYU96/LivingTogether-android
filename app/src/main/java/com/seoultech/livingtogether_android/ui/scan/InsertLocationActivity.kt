@@ -10,22 +10,15 @@ import com.seoultech.livingtogether_android.viewmodel.LocationViewModel
 
 class InsertLocationActivity : BaseActivity<ActivityInsertLocationBinding>(R.layout.activity_insert_location) {
     private lateinit var vm: LocationViewModel
-    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
-        vm = ViewModelProvider(this, viewModelFactory).get(LocationViewModel::class.java)
+        vm = viewModelProvider.get(LocationViewModel::class.java)
 
-        vm.finishHandler.observe(this, Observer {
-            if (it) {
-                finish()
-            }
-        })
+        vm.finishHandler.observe(this, finishObserver)
 
         binding.run {
-            lifecycleOwner = this@InsertLocationActivity
             viewModel = vm
         }
     }

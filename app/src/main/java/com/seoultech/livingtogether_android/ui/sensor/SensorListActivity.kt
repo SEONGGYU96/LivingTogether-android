@@ -24,18 +24,13 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
     private val deviceAdapter: DeviceAdapter by lazy { DeviceAdapter() }
 
     private lateinit var vm: DeviceViewModel
-    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModelFactory = ViewModelProvider.AndroidViewModelFactory(application)
-        vm = ViewModelProvider(this, viewModelFactory).get(DeviceViewModel::class.java)
+        vm = viewModelProvider.get(DeviceViewModel::class.java)
 
         binding.run {
-            lifecycleOwner = this@SensorListActivity
-
             viewModel = vm
 
             recyclerDeviceList.layoutManager = GridLayoutManager(baseContext, NUM_OF_COLUMN)
