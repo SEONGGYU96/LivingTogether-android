@@ -26,7 +26,7 @@ object BindingAdapters {
             if (onOff) {
                 view.visibility = View.VISIBLE
             } else {
-                view.visibility = View.GONE
+                view.visibility = View.INVISIBLE
             }
         }
     }
