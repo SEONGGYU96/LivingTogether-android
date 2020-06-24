@@ -86,6 +86,12 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
         handler.removeCallbacks(runnable)
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan is terminated")
+
+        startService()
+    }
+
+    fun startService() {
+        getApplication<Application>().startService(Intent(getApplication(), ScanService::class.java))
     }
 
     fun stopService() {
