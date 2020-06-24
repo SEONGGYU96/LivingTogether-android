@@ -149,7 +149,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
                     //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
-                        deviceRepository.insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
+                        deviceRepository.insert(DeviceEntity("발판", bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
                         signalHistoryRepository.insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis))
                     }
 

@@ -43,10 +43,6 @@ class ScanService : Service() {
         private const val LOC_CODE1 = 27
         private const val LOC_CODE2 = 28
     }
-
-    private var lastDetectedCode1: Byte = 0
-    private var lastDetectedCode2: Byte = 0
-
     private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
@@ -118,10 +114,6 @@ class ScanService : Service() {
             Log.d(TAG, "No device in DB")
             stopService()
             return START_NOT_STICKY
-        }
-
-        for (device in deviceList) {
-            deviceMajorArray.add(device.deviceMajor)
         }
 
         startScanService()
@@ -230,46 +222,40 @@ class ScanService : Service() {
     private fun updateDB(result: ScanResult) {
         val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
 
-        //감지된 신호의 major 와 동일한 기기가 DB에 있다면
-        if (deviceMajorArray.contains(bleDevice.major.toString())) {
-            val targetDevice = db.deviceDao().getAll(bleDevice.major.toString())
+        val targetDevice = db.deviceDao().getAll(result.device.address)
 
-            val currentTime = GregorianCalendar().timeInMillis
-            Log.d(TAG, "The device just been found is the same as the one in the DB.")
+        val currentTime = GregorianCalendar().timeInMillis
 
-            //감지된 신호의 타입을 분석
-            when (bleDevice.minor.toString()) {
-                ACTION_SIGNAL -> {
-                    if (currentTime - targetDevice.lastDetectionOfActionSignal < SIGNAL_TRANSMIT_TIME) {
-                        Log.d(TAG, "This Device has just been registered.")
-                        return
-                    }
-                    targetDevice.lastDetectionOfActionSignal = currentTime
-                  
-                    db.deviceDao().update(targetDevice)
-                    db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, Signal.ACTION, currentTime))
-                }
-
-                PRESERVE_SIGNAL -> {
-                    if (targetDevice.lastDetectionOfPreserveSignal != null
-                        && currentTime - targetDevice.lastDetectionOfPreserveSignal!! < SIGNAL_TRANSMIT_TIME) {
-                        Log.d(TAG, "This Device has just been registered.")
-                        return
-                    }
-                    targetDevice.lastDetectionOfPreserveSignal = currentTime
-                  
-                    db.deviceDao().update(targetDevice)
-                    db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceMajor, Signal.PRESERVE, currentTime))
-                }
-
-                //그 외에는 이상한 minor
-                else -> {
-                    Log.d(TAG, "Unresolved minor : ${bleDevice.minor}")
+        //감지된 신호의 타입을 분석
+        when (bleDevice.minor.toString()) {
+            ACTION_SIGNAL -> {
+                if (currentTime - targetDevice.lastDetectionOfActionSignal < SIGNAL_TRANSMIT_TIME) {
+                    Log.d(TAG, "This Device has just been registered.")
                     return
                 }
+                targetDevice.lastDetectionOfActionSignal = currentTime
+
+                db.deviceDao().update(targetDevice)
+                db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceAddress, Signal.ACTION, currentTime))
             }
-        } else {
-            Log.d(TAG, "There is no same data in DB")
+
+            PRESERVE_SIGNAL -> {
+                if (targetDevice.lastDetectionOfPreserveSignal != null
+                    && currentTime - targetDevice.lastDetectionOfPreserveSignal!! < SIGNAL_TRANSMIT_TIME) {
+                    Log.d(TAG, "This Device has just been registered.")
+                    return
+                }
+                targetDevice.lastDetectionOfPreserveSignal = currentTime
+
+                db.deviceDao().update(targetDevice)
+                db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceAddress, Signal.PRESERVE, currentTime))
+            }
+
+            //그 외에는 이상한 minor
+            else -> {
+                Log.d(TAG, "Unresolved minor : ${bleDevice.minor}")
+                return
+            }
         }
     }
 }

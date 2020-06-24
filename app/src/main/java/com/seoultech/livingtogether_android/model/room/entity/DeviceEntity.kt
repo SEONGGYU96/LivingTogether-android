@@ -16,10 +16,6 @@ data class DeviceEntity(
 
     @ColumnInfo(name = "device_type") var deviceType: String = "",
 
-    @ColumnInfo(name = "device_major") var deviceMajor: String = "",
-
-    @ColumnInfo(name = "device_minor") var deviceMinor: String,
-
     @ColumnInfo(name = "device_address") var deviceAddress: String,
 
     @ColumnInfo(name = "location") var location: String?,
