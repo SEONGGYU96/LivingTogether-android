@@ -23,7 +23,6 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
         const val SCAN_PERIOD = 10000L
         const val REQUEST_ENABLE_BT = 1000
         const val TAG = "ScanActivity"
-
     }
 
     //Todo: 위치 권한 요청하는 부분 삽입하기
@@ -47,7 +46,7 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             }
         })
 
-        vm.finishHandler.observe(this, finishObserver)
+        vm.finishHandler.observe(this, finishObserver);
     }
 
     override fun onResume() {
