@@ -35,6 +35,12 @@ class DeviceRepository : BaseRepository<DeviceEntity>() {
         return devices
     }
 
+    fun getAll(deviceAddress: String): DeviceEntity? {
+        val result = dao.getAll(deviceAddress)
+        Log.d(TAG, "getAll : $result")
+        return result
+    }
+
     fun getAllDeviceAddress(): List<String> {
         val result = dao.getAllDeviceAddress()
         Log.d(TAG, "getAllDeviceAddress : $result")

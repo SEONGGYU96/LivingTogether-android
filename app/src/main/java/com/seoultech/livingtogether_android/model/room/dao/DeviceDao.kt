@@ -14,7 +14,7 @@ abstract class DeviceDao : BaseDao<DeviceEntity> {
     abstract fun getAll(): List<DeviceEntity>
 
     @Query("SELECT * FROM device_entity WHERE device_address = :deviceAddress")
-    abstract fun getAll(deviceAddress: String): DeviceEntity
+    abstract fun getAll(deviceAddress: String): DeviceEntity?
 
     @Query("SELECT DISTINCT device_address FROM device_entity")
     abstract fun getAllDeviceAddress(): List<String>

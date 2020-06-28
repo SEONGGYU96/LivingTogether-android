@@ -25,12 +25,8 @@ class ScanService : Service() {
     companion object {
         private const val TAG = "ScanService"
 
-        private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
-
         internal const val FLAG_BT_CHANGED_VALUE_ON = "ON"
         internal const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
-
-        private const val SIGNAL_TRANSMIT_TIME = 10000
 
         const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
         internal const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
@@ -43,6 +39,10 @@ class ScanService : Service() {
         private const val LOC_CODE1 = 27
         private const val LOC_CODE2 = 28
     }
+
+    private var lastDetectedCode2: Byte? = null
+    private var lastDetectedCode1: Byte? = null
+    
     private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
@@ -53,8 +53,6 @@ class ScanService : Service() {
     private val btStateReceiver: BluetoothStateReceiver by lazy { BluetoothStateReceiver() }
 
     private val db : DataBaseManager by lazy{ DataBaseManager.getInstance(application) }
-
-    private val deviceMajorArray = mutableListOf<String>()
 
     //service 가 처음 생성되었을 때 최초 1회 호출되는 부분
     override fun onCreate() {
@@ -201,12 +199,20 @@ class ScanService : Service() {
 
     private val scanCallback: ScanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
-            onScanResult(result)
+            if (isNewSignal(result.scanRecord!!.bytes)) {
+                onScanResult(result)
+            } else {
+                Log.d(TAG, "This Device has just been registered.")
+            }
         }
 
         override fun onBatchScanResults(results: List<ScanResult>) {
             for (result in results) {
-                onScanResult(result)
+                if (isNewSignal(result.scanRecord!!.bytes)) {
+                    onScanResult(result)
+                } else {
+                    Log.d(TAG, "This Device has just been registered.")
+                }
             }
         }
     }
@@ -219,43 +225,56 @@ class ScanService : Service() {
         }
     }
 
+    @ExperimentalUnsignedTypes
     private fun updateDB(result: ScanResult) {
         val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
 
         val targetDevice = db.deviceDao().getAll(result.device.address)
 
+        if (targetDevice == null) {
+            Log.d(TAG, "Unresolved address : ${result.device.address}")
+            return
+        }
+
         val currentTime = GregorianCalendar().timeInMillis
 
         //감지된 신호의 타입을 분석
-        when (bleDevice.minor.toString()) {
+        when (bleDevice.major.toString()) {
             ACTION_SIGNAL -> {
-                if (currentTime - targetDevice.lastDetectionOfActionSignal < SIGNAL_TRANSMIT_TIME) {
-                    Log.d(TAG, "This Device has just been registered.")
-                    return
-                }
                 targetDevice.lastDetectionOfActionSignal = currentTime
+                targetDevice.isAvailable = true
 
                 db.deviceDao().update(targetDevice)
                 db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceAddress, Signal.ACTION, currentTime))
             }
 
             PRESERVE_SIGNAL -> {
-                if (targetDevice.lastDetectionOfPreserveSignal != null
-                    && currentTime - targetDevice.lastDetectionOfPreserveSignal!! < SIGNAL_TRANSMIT_TIME) {
-                    Log.d(TAG, "This Device has just been registered.")
-                    return
-                }
                 targetDevice.lastDetectionOfPreserveSignal = currentTime
+                targetDevice.isAvailable = true
 
                 db.deviceDao().update(targetDevice)
                 db.signalHistoryDao().insert(SignalHistoryEntity(targetDevice.deviceAddress, Signal.PRESERVE, currentTime))
             }
 
-            //그 외에는 이상한 minor
+            //그 외에는 이상한 major
             else -> {
-                Log.d(TAG, "Unresolved minor : ${bleDevice.minor}")
+                Log.d(TAG, "Unresolved major : ${bleDevice.major}")
                 return
             }
+        }
+    }
+
+    // 새로운 신호인지 확인
+    // 신호마다 byte arr를 보내주는데 27, 28번째 byte가 달라짐
+    private fun isNewSignal(codes: ByteArray): Boolean {
+        val decisionCode1 = codes[LOC_CODE1]
+        val decisionCode2 = codes[LOC_CODE2]
+        return if (lastDetectedCode1 != decisionCode1 || lastDetectedCode2 != decisionCode2) {
+            lastDetectedCode1 = decisionCode1
+            lastDetectedCode2 = decisionCode2
+            true
+        } else {
+            false
         }
     }
 }
