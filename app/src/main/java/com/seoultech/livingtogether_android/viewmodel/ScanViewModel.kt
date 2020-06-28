@@ -107,6 +107,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
+    @ExperimentalUnsignedTypes
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
             super.onScanResult(callbackType, result)
@@ -131,14 +132,14 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
                 val bleDevice = BleCreater.create(it.device, it.rssi, it.scanRecord!!.bytes)
 
-                Log.d(TAG, "uuid : ${bleDevice!!.uuid}, major : ${bleDevice.major}, minor : ${bleDevice.minor}, ${bleDevice.rssi}")
+                Log.d(TAG, "uuid : ${bleDevice.uuid}, major : ${bleDevice.major}, minor : ${bleDevice.minor}, ${bleDevice.rssi}")
 
                 if (bleDevice.uuid == LIVING_TOGETHER_UUID) {
                     Log.d(TAG, "Living Together H/W has been found")
 
                     stopScan()
 
-                    if (deviceRepository.getAll().isNotEmpty()) {
+                    if (deviceRepository.getAll(bleDevice.address) != null) {
                         Toast.makeText(getApplication(), "이미 등록된 버튼입니다.", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "This device is already registered. return.")
                         finishHandler.value = true
@@ -147,9 +148,8 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
                     val calendar = GregorianCalendar()
 
-                    //Todo: null 처리한 정보들 받아올 수 있도록 하기
                     viewModelScope.launch(Dispatchers.IO) {
-                        deviceRepository.insert(DeviceEntity("발판", bleDevice.major.toString(), bleDevice.minor.toString(), bleDevice.address, null, null, calendar.timeInMillis, calendar.timeInMillis, true))
+                        deviceRepository.insert(DeviceEntity("발판", bleDevice.address, null, calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis, true))
                         signalHistoryRepository.insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis))
                     }
 

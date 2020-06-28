@@ -16,16 +16,11 @@ data class DeviceEntity(
 
     @ColumnInfo(name = "device_type") var deviceType: String = "",
 
-    @ColumnInfo(name = "device_major") var deviceMajor: String = "",
-
-    @ColumnInfo(name = "device_minor") var deviceMinor: String,
-
     @ColumnInfo(name = "device_address") var deviceAddress: String,
 
     @ColumnInfo(name = "location") var location: String?,
 
-    //TODO: Date에 관련한 Model과 Util 클래스 생성하여 문자열을 대체하기
-    @ColumnInfo(name = "init_date") var initDate: String?,
+    @ColumnInfo(name = "init_date") var initDate: Long?,
 
     @ColumnInfo(name = "last_detection_type_one") var lastDetectionOfActionSignal: Long,
 
