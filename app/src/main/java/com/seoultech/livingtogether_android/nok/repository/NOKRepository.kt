@@ -18,6 +18,12 @@ class NOKRepository : BaseRepository<NOKEntity>() {
         return observableNOK
     }
 
+    fun getAll() : List<NOKEntity> {
+        val value = dao.getAll()
+        Log.d(TAG, "getAll : $value")
+        return value
+    }
+
     public override fun insert(entity: NOKEntity) {
         super.insert(entity)
         return dao.insert(entity)
