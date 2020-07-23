@@ -1,5 +1,7 @@
 package com.seoultech.livingtogether_android.bluetooth.service
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
@@ -12,8 +14,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
+import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.seoultech.livingtogether_android.alarm.AlarmReceiver
 import com.seoultech.livingtogether_android.database.DataBaseManager
 import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateReceiver
@@ -38,7 +43,11 @@ class ScanService : Service() {
 
         private const val LOC_CODE1 = 27
         private const val LOC_CODE2 = 28
+
+        private const val REQUEST_ALARM = 200
+        private const val ALARM_TRIGGER_TIME = 20
     }
+
 
     private var lastDetectedCode2: Byte? = null
     private var lastDetectedCode1: Byte? = null
@@ -252,6 +261,8 @@ class ScanService : Service() {
                         currentTime
                     )
                 )
+                setAlarm()
+                Log.d(TAG, "Alarm is set")
             }
 
             PRESERVE_SIGNAL -> {
@@ -288,5 +299,18 @@ class ScanService : Service() {
         } else {
             false
         }
+    }
+
+    private fun setAlarm() {
+        val alarmManager = getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(applicationContext, AlarmReceiver::class.java)
+
+        val intentSender = PendingIntent.getBroadcast(applicationContext, REQUEST_ALARM, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+
+        val triggerTime = (SystemClock.elapsedRealtime() + ALARM_TRIGGER_TIME * 1000)
+
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, intentSender)
+        Log.d(TAG, "Alarm is registered after $ALARM_TRIGGER_TIME (seconds)")
     }
 }
