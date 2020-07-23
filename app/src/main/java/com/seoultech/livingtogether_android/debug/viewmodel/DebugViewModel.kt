@@ -4,8 +4,7 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import com.seoultech.livingtogether_android.ApplicationImpl
-import com.seoultech.livingtogether_android.model.room.DataBaseManager
-import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
+import com.seoultech.livingtogether_android.device.model.DeviceEntity
 import java.util.*
 
 class DebugViewModel(application: Application) : AndroidViewModel(application) {
@@ -19,8 +18,12 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
 
     fun addDevice() {
         val calendar = GregorianCalendar()
-        db.deviceDao().insert(DeviceEntity("발판", DEBUG_ADDRESS, DEBUG_LOCATION,
-            null, calendar.timeInMillis, null, true))
+        db.deviceDao().insert(
+            DeviceEntity(
+                "발판", DEBUG_ADDRESS, DEBUG_LOCATION,
+                null, calendar.timeInMillis, null, true
+            )
+        )
         Toast.makeText(getApplication(), "디버깅 디바이스가 추가되었습니다.", Toast.LENGTH_SHORT).show()
     }
 

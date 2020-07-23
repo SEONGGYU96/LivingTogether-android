@@ -4,15 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.seoultech.livingtogether_android.R
-import com.seoultech.livingtogether_android.adapter.DeviceAdapter
+import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivitySensorListBinding
-import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
+import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
-import com.seoultech.livingtogether_android.viewmodel.DeviceViewModel
+import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
 import kotlinx.android.synthetic.main.activity_sensor_list.*
 
 class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.activity_sensor_list) {
@@ -35,7 +34,14 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
 
             recyclerDeviceList.layoutManager = GridLayoutManager(baseContext, NUM_OF_COLUMN)
             recyclerDeviceList.adapter = deviceAdapter
-            recyclerDeviceList.addItemDecoration(MarginDecoration(baseContext, NUM_OF_COLUMN, 60, 60))
+            recyclerDeviceList.addItemDecoration(
+                MarginDecoration(
+                    baseContext,
+                    NUM_OF_COLUMN,
+                    60,
+                    60
+                )
+            )
         }
 
         setSupportActionBar(toolbar_device_list)

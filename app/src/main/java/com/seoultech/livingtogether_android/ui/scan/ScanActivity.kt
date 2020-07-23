@@ -3,17 +3,12 @@ package com.seoultech.livingtogether_android.ui.scan
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityScanBinding
-import com.seoultech.livingtogether_android.service.ScanService
-import com.seoultech.livingtogether_android.util.BluetoothUtil
-import com.seoultech.livingtogether_android.viewmodel.ScanViewModel
+import com.seoultech.livingtogether_android.bluetooth.viewmodel.ScanViewModel
 
 class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
     private lateinit var vm: ScanViewModel

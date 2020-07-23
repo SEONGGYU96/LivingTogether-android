@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.viewmodel.ScanTestViewModel" />
+            type="com.seoultech.livingtogether_android.bluetooth.viewmodel.ScanTestViewModel" />
 
     </data>
 
@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
-    tools:context=".debug.scan.ScanServiceTest">
+    tools:context=".debug.ScanServiceTest">
 
     <TextView
         android:id="@+id/textView12"

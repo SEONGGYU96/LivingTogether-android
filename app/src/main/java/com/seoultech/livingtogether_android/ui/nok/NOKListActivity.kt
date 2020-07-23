@@ -6,15 +6,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.R
-import com.seoultech.livingtogether_android.adapter.NOKAdapter
+import com.seoultech.livingtogether_android.nok.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityNokListBinding
-import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
-import com.seoultech.livingtogether_android.viewmodel.NOKViewModel
+import com.seoultech.livingtogether_android.util.MarginDecoration
+import com.seoultech.livingtogether_android.nok.viewmodel.NOKViewModel
 
 class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_nok_list) {
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
@@ -31,7 +30,13 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
 
             recyclerNokList.layoutManager = LinearLayoutManager(baseContext)
             recyclerNokList.adapter = nokAdapter
-            recyclerNokList.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
+            recyclerNokList.addItemDecoration(
+                MarginDecoration(
+                    baseContext,
+                    15,
+                    RecyclerView.VERTICAL
+                )
+            )
 
             //NOKEntity 를 관찰하고 값이 비어있지 않다면 레이아웃을 변경
             vm.getAll().observe(this@NOKListActivity, Observer {

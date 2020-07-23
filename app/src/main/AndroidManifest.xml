@@ -25,10 +25,10 @@
         
         <activity android:name=".ui.scan.InsertLocationActivity"/>
         <activity android:name=".ui.sensor.SensorListActivity" />
-        <activity android:name=".debug.scan.ScanServiceTest" />
+        <activity android:name=".debug.ScanServiceTest" />
 
         <service
-            android:name=".service.ScanService"
+            android:name="com.seoultech.livingtogether_android.bluetooth.service.ScanService"
             android:exported="false" /> <!-- 다른 앱에서 해당 서비스를 실행하지 못하도록 -->
         <activity android:name=".ui.profile.EditProfileActivity" />
         <activity android:name=".ui.nok.AddNOKActivity" />

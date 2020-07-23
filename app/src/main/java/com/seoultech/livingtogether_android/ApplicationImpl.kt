@@ -1,7 +1,7 @@
 package com.seoultech.livingtogether_android
 
 import android.app.Application
-import com.seoultech.livingtogether_android.model.room.DataBaseManager
+import com.seoultech.livingtogether_android.database.DataBaseManager
 
 class ApplicationImpl : Application() {
 

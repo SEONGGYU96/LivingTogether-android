@@ -9,11 +9,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.seoultech.livingtogether_android.base.BaseViewModel
-import com.seoultech.livingtogether_android.model.room.entity.DeviceEntity
-import com.seoultech.livingtogether_android.model.room.entity.NOKEntity
-import com.seoultech.livingtogether_android.model.room.repository.DeviceRepository
-import com.seoultech.livingtogether_android.model.room.repository.NOKRepository
-import com.seoultech.livingtogether_android.service.ScanService
+import com.seoultech.livingtogether_android.device.model.DeviceEntity
+import com.seoultech.livingtogether_android.nok.model.NOKEntity
+import com.seoultech.livingtogether_android.device.repository.DeviceRepository
+import com.seoultech.livingtogether_android.nok.repository.NOKRepository
+import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 import com.seoultech.livingtogether_android.util.ServiceUtil
 
 class MainViewModel(application: Application) : BaseViewModel(application) {

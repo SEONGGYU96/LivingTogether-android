@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.viewmodel.NOKViewModel" />
+            type="com.seoultech.livingtogether_android.nok.viewmodel.NOKViewModel" />
 
     </data>
 

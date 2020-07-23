@@ -2,11 +2,10 @@ package com.seoultech.livingtogether_android.ui.nok
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityAddNokBinding
-import com.seoultech.livingtogether_android.viewmodel.NOKViewModel
+import com.seoultech.livingtogether_android.nok.viewmodel.NOKViewModel
 
 class AddNOKActivity : BaseActivity<ActivityAddNokBinding>(R.layout.activity_add_nok) {
     private lateinit var vm: NOKViewModel
