@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.scan
 
+import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
@@ -41,7 +42,24 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             }
         })
 
-        vm.finishHandler.observe(this, finishObserver);
+        vm.finishHandler.observe(this, finishObserver)
+
+        vm.timeoutHandler.observe(this, Observer {
+            if (it) {
+                AlertDialog.Builder(this)
+                    .setTitle("스캔 실패")
+                    .setMessage("센서를 찾지 못하였습니다.")
+                    .setPositiveButton("재시도") { dialog, _ ->
+                        vm.startScan(SCAN_PERIOD)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton("종료") { dialog, _ ->
+                        dialog.dismiss()
+                        finish()
+                    }
+                    .show()
+            }
+        })
     }
 
     override fun onResume() {
