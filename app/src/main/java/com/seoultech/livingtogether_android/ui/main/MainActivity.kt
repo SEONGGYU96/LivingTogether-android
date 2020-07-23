@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
+    companion object {
+        private const val BACK_KEY_TIME = 1500L
+    }
+
+    private var backKeyPressedTime = 0L
     private val deviceAdapter: DeviceAdapter by lazy { DeviceAdapter() }
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
     private lateinit var vm: MainViewModel
@@ -120,6 +126,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         } else {
             view.setTextAppearance(R.style.NormalStateText)
             group_num_of_sensor_main.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + BACK_KEY_TIME) {
+            backKeyPressedTime = System.currentTimeMillis()
+            Toast.makeText(this, getString(R.string.toast_back_key_exit), Toast.LENGTH_SHORT).show()
+            return
+        } else {
+            finish()
         }
     }
 }
