@@ -45,6 +45,8 @@ class ScanService : Service() {
         private const val LOC_CODE2 = 28
 
         private const val REQUEST_ALARM = 200
+
+        //Todo: 알람 트리거 시간 변경하여야 함. 지금은 디버깅 용도로 20초
         private const val ALARM_TRIGGER_TIME = 20
     }
 
