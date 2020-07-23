@@ -1,14 +1,16 @@
 package com.seoultech.livingtogether_android.ui.scan
 
+import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
-import com.seoultech.livingtogether_android.databinding.ActivityScanBinding
 import com.seoultech.livingtogether_android.bluetooth.viewmodel.ScanViewModel
+import com.seoultech.livingtogether_android.databinding.ActivityScanBinding
 
 class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
     private lateinit var vm: ScanViewModel
@@ -68,5 +70,19 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+            .setTitle("스캔 종료")
+            .setMessage("아직 센서를 찾지 못했습니다.\n스캔을 종료하시겠습니까?")
+            .setPositiveButton("종료") { _: DialogInterface, _: Int ->
+                vm.stopScan()
+                finish()
+            }
+            .setNegativeButton("취소") { dialog: DialogInterface, _: Int ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }
