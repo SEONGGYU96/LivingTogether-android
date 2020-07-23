@@ -39,6 +39,8 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
     private var isScanning = false
 
+    val timeoutHandler = MutableLiveData<Boolean>()
+
     var isFound = MutableLiveData<Boolean>()
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
@@ -54,6 +56,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
     private var runnable = Runnable {
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
+        timeoutHandler.value = true
         Log.d(TAG, "Scan Timeout")
     }
 
