@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.viewmodel.DeviceViewModel" />
+            type="com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel" />
 
     </data>
 

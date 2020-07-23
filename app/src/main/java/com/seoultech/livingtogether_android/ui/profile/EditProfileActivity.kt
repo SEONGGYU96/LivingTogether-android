@@ -1,22 +1,11 @@
 package com.seoultech.livingtogether_android.ui.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityEditProfileBinding
-import com.seoultech.livingtogether_android.network.RetrofitClient
-import com.seoultech.livingtogether_android.user.RequestUser
-import com.seoultech.livingtogether_android.user.RequestUserData
-import com.seoultech.livingtogether_android.user.ResponseUserData
-import com.seoultech.livingtogether_android.viewmodel.ProfileViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.seoultech.livingtogether_android.user.viewmodel.ProfileViewModel
 
 class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.activity_edit_profile) {
 

@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.viewmodel.ProfileViewModel" />
+            type="com.seoultech.livingtogether_android.user.viewmodel.ProfileViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout

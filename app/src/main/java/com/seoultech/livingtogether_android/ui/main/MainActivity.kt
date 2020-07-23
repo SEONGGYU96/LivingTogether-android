@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.R
-import com.seoultech.livingtogether_android.adapter.DeviceAdapter
-import com.seoultech.livingtogether_android.adapter.NOKAdapter
+import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
+import com.seoultech.livingtogether_android.nok.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
-import com.seoultech.livingtogether_android.debug.scan.ScanServiceTest
+import com.seoultech.livingtogether_android.debug.ScanServiceTest
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
-import com.seoultech.livingtogether_android.ui.main.decoration.MarginDecoration
+import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
 import com.seoultech.livingtogether_android.ui.scan.InsertLocationActivity
@@ -43,11 +42,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
             recyclerDeviceListMain.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
             recyclerDeviceListMain.adapter = deviceAdapter
-            recyclerDeviceListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.HORIZONTAL))
+            recyclerDeviceListMain.addItemDecoration(
+                MarginDecoration(
+                    baseContext,
+                    15,
+                    RecyclerView.HORIZONTAL
+                )
+            )
 
             recyclerNokListMain.layoutManager = LinearLayoutManager(baseContext)
             recyclerNokListMain.adapter = nokAdapter
-            recyclerNokListMain.addItemDecoration(MarginDecoration(baseContext, 15, RecyclerView.VERTICAL))
+            recyclerNokListMain.addItemDecoration(
+                MarginDecoration(
+                    baseContext,
+                    15,
+                    RecyclerView.VERTICAL
+                )
+            )
 
             buttonShowMoreNokMain.setOnClickListener {
                 startActivity(Intent(this@MainActivity, NOKListActivity::class.java))
