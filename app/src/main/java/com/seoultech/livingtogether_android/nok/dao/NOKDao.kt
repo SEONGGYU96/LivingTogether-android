@@ -10,6 +10,9 @@ abstract class NOKDao : BaseDao<NOKEntity> {
     @Query("SELECT * FROM nok_entity")
     abstract fun getAllObservable(): LiveData<List<NOKEntity>>
 
+    @Query("SELECT * FROM nok_entity")
+    abstract fun getAll(): List<NOKEntity>
+
     @Query("Delete From nok_entity")
     abstract fun deleteAll()
 }
