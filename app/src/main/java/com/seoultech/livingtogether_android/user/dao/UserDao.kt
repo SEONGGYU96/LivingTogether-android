@@ -10,6 +10,9 @@ abstract class UserDao : BaseDao<UserEntity> {
     @Query("SELECT * FROM user_entity")
     abstract fun getAllObservable(): LiveData<UserEntity>
 
+    @Query("SELECT * FROM user_entity")
+    abstract fun getAll(): UserEntity
+
     @Query("DELETE FROM user_entity")
     abstract fun deleteAll()
 }

@@ -2,6 +2,7 @@ package com.seoultech.livingtogether_android.user.viewmodel
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.seoultech.livingtogether_android.base.BaseViewModel
@@ -12,11 +13,7 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(application: Application) : BaseViewModel(application) {
 
-    private val userRepository: UserRepository by lazy {
-        UserRepository(
-            application
-        )
-    }
+    private val userRepository: UserRepository by lazy { UserRepository() }
     
     var userLiveData = getObservable()
 
@@ -34,7 +31,19 @@ class ProfileViewModel(application: Application) : BaseViewModel(application) {
             userRepository.update(userLiveData.value!!)
         }
 
-        userRepository.updateServer(userLiveData)
+        userRepository.updateServer(userLiveData, object: UserRepository.UserUpdateCallback {
+            override fun onResponse(isSuccessful: Boolean) {
+                if (isSuccessful) {
+                    Toast.makeText(getApplication(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(getApplication(), "알 수 없는 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(t: Throwable) {
+                Toast.makeText(getApplication(), "네트워크 연결에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         finishHandler.value = true
     }

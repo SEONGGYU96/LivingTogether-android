@@ -16,15 +16,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository(val application: Application) : BaseRepository<UserEntity>() {
+class UserRepository : BaseRepository<UserEntity>() {
 
     private val dao: UserDao by lazy { ApplicationImpl.db.userDao() }
 
     private val observableUser: LiveData<UserEntity> by lazy { dao.getAllObservable() }
 
     fun getAllObservable() : LiveData<UserEntity> {
-        Log.d(TAG, "getAll() : ${observableUser.value}")
+        Log.d(TAG, "getAllObservable() : ${observableUser.value}")
         return observableUser
+    }
+
+    fun getAll() : UserEntity {
+        val value = dao.getAll()
+        Log.d(TAG, "getAll() : $value")
+        return value
     }
 
     public override fun insert(entity: UserEntity) {
@@ -43,7 +49,7 @@ class UserRepository(val application: Application) : BaseRepository<UserEntity>(
     }
 
 
-    fun updateServer(userLiveData: LiveData<UserEntity>) {
+    fun updateServer(userLiveData: LiveData<UserEntity>, callback: UserUpdateCallback) {
         val requestUser =
             RequestUserData(
                 userLiveData.value!!.name,
@@ -59,18 +65,21 @@ class UserRepository(val application: Application) : BaseRepository<UserEntity>(
             override fun onResponse(call: Call<ResponseUserData>, response: Response<ResponseUserData>) {
                 if (response.isSuccessful) {
                     Log.d(TAG, "updating to server is success. (${response.body()!!.status})")
-                    Toast.makeText(application, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-
                 } else {
                     Log.d(TAG, "response is not successful (${response.message()})")
-                    Toast.makeText(application, "알 수 없는 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
                 }
+                callback.onResponse(response.isSuccessful)
             }
 
             override fun onFailure(call: Call<ResponseUserData>, t: Throwable) {
                 Log.d(TAG, "updating to server is failed. \n($t)")
-                Toast.makeText(application, "네트워크 연결에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                callback.onFailure(t)
             }
         })
+    }
+
+    interface UserUpdateCallback {
+        fun onResponse(isSuccessful: Boolean)
+        fun onFailure(t: Throwable)
     }
 }
