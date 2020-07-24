@@ -29,7 +29,7 @@ object SMSSender {
     fun sendSMSAll(content: String?) {
         val contactList = NOKRepository().getAll()
         for (contact in contactList) {
-            Log.e("SMSSender.class", contact.toString())
+            Log.d("SMSSender.class", contact.toString())
             sendSMS(contact.phoneNum, content)
         }
     }
