@@ -55,8 +55,8 @@ class ContactListActivity : BaseActivity<ActivityContactListBinding>(R.layout.ac
                 return true
             }
 
-            R.id.menu_go_to_add_activity -> {
-                //startActivity(Intent(this@ContactListActivity, SearchContactActivity::class.java))
+            R.id.item_contactlistmenu_search -> {
+                startActivity(Intent(this@ContactListActivity, SearchContactActivity::class.java))
                 return true
             }
         }
