@@ -24,7 +24,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recycler_contact_contaclist">
+        app:layout_constraintBottom_toTopOf="@id/recycler_contact">
 
         <TextView
             android:id="@+id/textview_toolbar_title"
@@ -37,7 +37,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_contact_contaclist"
+        android:id="@+id/recycler_contact"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         replaceAll="@{viewModel.contact}"
