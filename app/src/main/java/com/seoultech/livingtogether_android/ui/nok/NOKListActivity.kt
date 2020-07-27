@@ -24,6 +24,8 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setToolbar(binding.toolbar, "보호자")
+
         vm = viewModelProvider.get(NOKViewModel::class.java)
 
         binding.run {
@@ -51,13 +53,6 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
             })
         }
 
-        setSupportActionBar(binding.toolbarNokList)
-
-        supportActionBar?.let {
-            it.setDisplayShowTitleEnabled(false)
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_32dp)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -66,17 +61,8 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
-        }
 
         when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-
             R.id.item_noklist_addnok -> {
                 startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
                 return true
