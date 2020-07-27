@@ -10,10 +10,8 @@ data class NOKEntity (
     @ColumnInfo(name = "nok_name")
     var name: String = "",
 
+    @PrimaryKey
     @ColumnInfo(name = "nok_phone_num")
     var phoneNum: String = ""
 
-    ) {
-    @PrimaryKey(autoGenerate = true)
-    var nokId: Int = 0
-}
+)
