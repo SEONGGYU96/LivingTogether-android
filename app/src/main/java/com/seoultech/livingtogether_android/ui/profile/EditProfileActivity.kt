@@ -14,6 +14,8 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.ac
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setToolbar(binding.toolbar, "사용자 정보 등록")
+
         vm = viewModelProvider.get(ProfileViewModel::class.java)
 
         binding.run {
@@ -21,14 +23,6 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.ac
         }
 
         vm.finishHandler.observe(this, finishObserver)
-
-        setSupportActionBar(binding.toolbarEditProfile)
-
-        supportActionBar?.let {
-            it.setDisplayShowTitleEnabled(false)
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_32dp)
-        }
     }
 
     //Todo: 그냥 뒤로가기 버튼을 누르면 저장되지 않았다는 다이얼로그 띄우기

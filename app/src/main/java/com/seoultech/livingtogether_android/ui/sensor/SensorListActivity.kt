@@ -12,7 +12,6 @@ import com.seoultech.livingtogether_android.databinding.ActivitySensorListBindin
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
-import kotlinx.android.synthetic.main.activity_sensor_list.*
 
 class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.activity_sensor_list) {
 
@@ -26,6 +25,8 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setToolbar(binding.toolbar,"센서")
 
         vm = viewModelProvider.get(DeviceViewModel::class.java)
 
@@ -43,14 +44,6 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
                 )
             )
         }
-
-        setSupportActionBar(toolbar_device_list)
-
-        supportActionBar?.let {
-            it.setDisplayShowTitleEnabled(false)
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_32dp)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -59,17 +52,13 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
+        when (item.itemId) {
             R.id.item_noklist_addnok -> {
                 startActivity(Intent(this, ScanActivity::class.java))
                 return true
             }
-            else -> return super.onOptionsItemSelected(item)
         }
+
+        return super.onOptionsItemSelected(item)
     }
 }

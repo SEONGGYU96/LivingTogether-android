@@ -16,24 +16,15 @@
     android:background="@color/background"
     tools:context=".ui.contacts.ContactListActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recycler_contact">
-
-        <TextView
-            android:id="@+id/textview_toolbar_title"
-            style="@style/TitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="연락처" />
-
-    </androidx.appcompat.widget.Toolbar>
+        app:layout_constraintBottom_toTopOf="@id/recycler_contact"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
