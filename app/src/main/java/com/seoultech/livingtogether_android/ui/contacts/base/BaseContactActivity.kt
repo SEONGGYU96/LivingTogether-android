@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.contacts.base
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
@@ -20,6 +21,13 @@ open class BaseContactActivity<B: ViewDataBinding>(@LayoutRes layoutResId: Int) 
         vm = viewModelProvider.get(ContactViewModel::class.java)
 
         binding.lifecycleOwner = this
+
+        contactListAdapter.setOnContactClickListener(object: ContactListAdapter.OnContactClickListener {
+            override fun onClick() {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+        })
 
         recycler_contact.run {
             layoutManager = LinearLayoutManager(this@BaseContactActivity, RecyclerView.VERTICAL, false)

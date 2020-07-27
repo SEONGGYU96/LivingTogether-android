@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.contacts
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +10,10 @@ import com.seoultech.livingtogether_android.databinding.ActivityContactListBindi
 import com.seoultech.livingtogether_android.ui.contacts.base.BaseContactActivity
 
 class ContactListActivity : BaseContactActivity<ActivityContactListBinding>(R.layout.activity_contact_list) {
+
+    companion object {
+        private const val REQUEST_SEARCH = 1000
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +26,13 @@ class ContactListActivity : BaseContactActivity<ActivityContactListBinding>(R.la
             it.setDisplayShowTitleEnabled(false)
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_32dp)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            finish()
         }
     }
 
@@ -42,7 +54,7 @@ class ContactListActivity : BaseContactActivity<ActivityContactListBinding>(R.la
             }
 
             R.id.item_contactlistmenu_search -> {
-                startActivity(Intent(this@ContactListActivity, SearchContactActivity::class.java))
+                startActivityForResult(Intent(this@ContactListActivity, SearchContactActivity::class.java), REQUEST_SEARCH)
                 return true
             }
         }
