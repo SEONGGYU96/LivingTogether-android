@@ -74,7 +74,7 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
                 val number = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
                 val name = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
                 do {
-                    contacts.add(NOKEntity(it.getString(name), StringUtil.removeDash(it.getColumnName(number))))
+                    contacts.add(NOKEntity(it.getString(name), StringUtil.removeDash(it.getString(number))))
                 } while (it.moveToNext())
                 it.close()
             }
