@@ -9,12 +9,39 @@ import com.seoultech.livingtogether_android.nok.model.NOKEntity
 
 class ContactViewModel(application: Application) : BaseViewModel(application) {
 
-    val contact = getContactsAll()
+    var contact = getContactsAllObservable()
 
+    fun initContactResult(name: String) {
+        if (name.isEmpty()) {
+            contact.value = null
+        } else {
+            contact.value = getContactsAll(name)
+        }
+    }
 
-    private fun getContactsAll() : MutableLiveData<List<NOKEntity>> {
-        val contacts = mutableListOf<NOKEntity>()
+    private fun getContactsAll(name: String) : List<NOKEntity> {
+        val selectedContacts = mutableListOf<NOKEntity>()
+        val contacts = getContactsAll()
+
+        for (contact in contacts) {
+            if (contact.name.contains(name)) {
+                selectedContacts.add(contact)
+            }
+        }
+
+        return selectedContacts
+    }
+
+    private fun getContactsAllObservable() : MutableLiveData<List<NOKEntity>> {
         val contactLiveData = MutableLiveData<List<NOKEntity>>()
+        contactLiveData.value = getContactsAll()
+
+        return contactLiveData
+    }
+
+    private fun getContactsAll() : List<NOKEntity> {
+        val contacts = mutableListOf<NOKEntity>()
+
 
         val projection = arrayOf(
             ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
@@ -38,11 +65,6 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
                 it.close()
             }
         }
-
-
-        contactLiveData.value = contacts
-
-        return contactLiveData
+        return contacts
     }
-
 }

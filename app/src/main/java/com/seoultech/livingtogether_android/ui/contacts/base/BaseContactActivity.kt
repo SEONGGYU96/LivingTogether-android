@@ -19,6 +19,8 @@ open class BaseContactActivity<B: ViewDataBinding>(@LayoutRes layoutResId: Int) 
         super.onCreate(savedInstanceState)
         vm = viewModelProvider.get(ContactViewModel::class.java)
 
+        binding.lifecycleOwner = this
+
         recycler_contact.run {
             layoutManager = LinearLayoutManager(this@BaseContactActivity, RecyclerView.VERTICAL, false)
             adapter = contactListAdapter
