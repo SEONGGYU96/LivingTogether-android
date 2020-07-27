@@ -14,6 +14,7 @@ import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityNokListBinding
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.nok.viewmodel.NOKViewModel
+import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
 
 class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_nok_list) {
     private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
@@ -76,13 +77,17 @@ class NOKListActivity : BaseActivity<ActivityNokListBinding>(R.layout.activity_n
                 return true
             }
 
-            //Todo: 입력하여 추가하기 vs 주소록에서 추가하기 다이얼로그 띄우기
-            R.id.menu_go_to_add_activity -> {
+            R.id.item_noklist_addnok -> {
                 startActivity(Intent(this@NOKListActivity, AddNOKActivity::class.java))
                 return true
             }
 
+            R.id.item_noklist_addfromcontacts -> {
+                startActivity(Intent(this@NOKListActivity, ContactListActivity::class.java))
+                return true
+            }
         }
+
         return super.onOptionsItemSelected(item)
     }
 }

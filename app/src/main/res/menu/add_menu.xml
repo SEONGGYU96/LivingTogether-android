@@ -4,9 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_go_to_add_activity"
-        android:title="search"
+        android:id="@+id/item_noklist_addnok"
+        android:title="직접 추가하기"
         android:icon="@drawable/ic_add_30dp"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/item_noklist_addfromcontacts"
+        android:title="연락처에서 추가하기"
+        app:showAsAction="never"/>
 </menu>
