@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.loader.content.CursorLoader
 import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.nok.model.NOKEntity
+import com.seoultech.livingtogether_android.util.StringUtil
+import java.lang.StringBuilder
 
 class ContactViewModel(application: Application) : BaseViewModel(application) {
 
@@ -60,7 +62,7 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
                 val number = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
                 val name = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
                 do {
-                    contacts.add(NOKEntity(it.getString(name), it.getString(number)))
+                    contacts.add(NOKEntity(it.getString(name), StringUtil.removeDash(it.getColumnName(number))))
                 } while (it.moveToNext())
                 it.close()
             }
