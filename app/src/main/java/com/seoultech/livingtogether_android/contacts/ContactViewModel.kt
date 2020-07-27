@@ -2,7 +2,9 @@ package com.seoultech.livingtogether_android.contacts
 
 import android.app.Application
 import android.provider.ContactsContract
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.loader.content.CursorLoader
 import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.nok.model.NOKEntity
@@ -12,6 +14,16 @@ import java.lang.StringBuilder
 class ContactViewModel(application: Application) : BaseViewModel(application) {
 
     var contact = getContactsAllObservable()
+
+    val contactCount: LiveData<String> = Transformations.map(contact) {
+        val count = StringBuilder()
+        if (it != null) {
+            count.append(it.size)
+        } else {
+            count.append(0)
+        }
+        count.append("개 검색 완료").toString()
+    }
 
     fun initContactResult(name: String) {
         if (name.isEmpty()) {
