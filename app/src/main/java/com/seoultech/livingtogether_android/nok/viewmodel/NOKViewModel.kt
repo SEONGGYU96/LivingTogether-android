@@ -22,9 +22,7 @@ class NOKViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun insert() {
-        viewModelScope.launch(Dispatchers.IO) {
-            nokRepository.insert(newNok)
-        }
+        nokRepository.insert(newNok)
         finishHandler.value = true
     }
 }

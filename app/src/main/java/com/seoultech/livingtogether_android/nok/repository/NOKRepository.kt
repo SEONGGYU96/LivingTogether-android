@@ -1,11 +1,13 @@
 package com.seoultech.livingtogether_android.nok.repository
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.base.BaseRepository
 import com.seoultech.livingtogether_android.nok.dao.NOKDao
 import com.seoultech.livingtogether_android.nok.model.NOKEntity
+import java.lang.Exception
 
 class NOKRepository : BaseRepository<NOKEntity>() {
 
@@ -26,7 +28,11 @@ class NOKRepository : BaseRepository<NOKEntity>() {
 
     public override fun insert(entity: NOKEntity) {
         super.insert(entity)
-        return dao.insert(entity)
+        try {
+            dao.insert(entity)
+        } catch (e: Exception) {
+            Toast.makeText(ApplicationImpl.getInstance(), "이미 보호자로 등록되어 있습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     public override fun delete(entity: NOKEntity) {

@@ -65,7 +65,7 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
                 true
             }
 
-            R.id.menu_go_to_add_activity -> {
+            R.id.item_noklist_addnok -> {
                 startActivity(Intent(this, ScanActivity::class.java))
                 return true
             }
