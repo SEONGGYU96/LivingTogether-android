@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
@@ -32,6 +33,12 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
         setToolbar(binding.toolbar,"센서")
 
         vm = viewModelProvider.get(DeviceViewModel::class.java)
+
+        vm.devices.observe(this, Observer {
+            if (it.isEmpty()) {
+                finish()
+            }
+        })
 
         initDeviceAdapterListener()
 
@@ -64,16 +71,34 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
                 dialog.show()
 
                 view.button_dialogdevice_confirm.setOnClickListener {
-
                     if (view.edittext_dialogdevice_locationpresent.text.toString() != data.location) {
                         data.location = view.edittext_dialogdevice_locationpresent.text.toString()
                         vm.updateDevice(data)
                     }
                     dialog.dismiss()
                 }
+
+                view.button_dialogdevice_delete.setOnClickListener {
+                    showRecheckDialog(dialog, data)
+                }
             }
 
         })
+    }
+
+    private fun showRecheckDialog(dialog: AlertDialog, data: DeviceEntity) {
+        AlertDialog.Builder(this)
+            .setTitle("등록된 센서 삭제")
+            .setMessage("정말 해당 센서를 삭제하시겠습니까?\n더 이상 센서의 신호를 감지하지 않습니다.")
+            .setPositiveButton("삭제") { thisDialog, _ ->
+                vm.deleteDevice(data)
+                thisDialog.dismiss()
+                dialog.dismiss()
+            }
+            .setNegativeButton("취소") { thisDialog, _ ->
+                thisDialog.dismiss()
+            }
+            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

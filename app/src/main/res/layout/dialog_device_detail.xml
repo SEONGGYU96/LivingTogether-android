@@ -156,15 +156,27 @@
 
     <Button
         android:id="@+id/button_dialogdevice_confirm"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="확인"
         android:background="@null"
         android:foreground="?android:selectableItemBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edittext_dialogdevice_locationpresent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_dialogdevice_delete"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/button_dialogdevice_delete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="삭제"
+        android:background="@null"
+        android:foreground="?android:selectableItemBackground"
+        app:layout_constraintStart_toEndOf="@id/button_dialogdevice_confirm"
+        app:layout_constraintTop_toTopOf="@id/button_dialogdevice_confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/button_dialogdevice_confirm"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
