@@ -19,6 +19,7 @@ import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 import com.seoultech.livingtogether_android.device.repository.DeviceRepository
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
+import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.signal.Signal
 import com.seoultech.livingtogether_android.util.BluetoothUtil
 import com.seoultech.livingtogether_android.util.ServiceUtil

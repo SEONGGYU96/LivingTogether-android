@@ -12,9 +12,12 @@ import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.nok.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
+import com.seoultech.livingtogether_android.bluetooth.model.BluetoothLiveData
+import com.seoultech.livingtogether_android.bluetooth.service.ServiceLiveData
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.ScanServiceTest
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
+import com.seoultech.livingtogether_android.device.model.DeviceEntity
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
@@ -36,6 +39,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private lateinit var vm: MainViewModel
     private lateinit var debugVm: DebugViewModel
 
+    private lateinit var serviceObserver: Observer<Boolean>
+    private lateinit var stateObserver: Observer<List<DeviceEntity>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,21 +104,33 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
         }
 
-        //Todo: BidingAdapter로 변경
-        vm.sensors.observe(this@MainActivity, Observer {
+        serviceObserver = Observer {
+            if (!it) {
+                changeStatusBox(text_scan_state_main, false, getString(R.string.status_box_fail))
+            } else {
+                changeStatusBox(text_scan_state_main, true, getString(R.string.status_box_on_going))
+            }
+        }
+
+        stateObserver = Observer {
             text_scan_state_main.run {
                 if (it.isEmpty()) {
+                    ServiceLiveData.removeObserver(serviceObserver)
                     changeStatusBox(this, false, context.getString(R.string.status_box_no_sensor))
-
                 } else {
-                    if (!vm.isBluetoothOn()) {
-                        changeStatusBox(this, false,  context.getString(R.string.status_box_bluetooth_off))
-                    } else if (!vm.isServiceRunning()) {
-                        changeStatusBox(this, false, context.getString(R.string.status_box_fail))
-                    } else {
-                         changeStatusBox(this, true, context.getString(R.string.status_box_on_going))
-                    }
+                    ServiceLiveData.observe(this@MainActivity, serviceObserver)
+                    changeStatusBox(this, true, context.getString(R.string.status_box_on_going))
                 }
+            }
+        }
+
+        BluetoothLiveData.observe(this, Observer {
+            if (!it) {
+                changeStatusBox(text_scan_state_main, false,  this.getString(R.string.status_box_bluetooth_off))
+                vm.sensors.removeObserver(stateObserver)
+                ServiceLiveData.removeObserver(serviceObserver)
+            } else {
+                vm.sensors.observe(this@MainActivity, stateObserver)
             }
         })
     }
