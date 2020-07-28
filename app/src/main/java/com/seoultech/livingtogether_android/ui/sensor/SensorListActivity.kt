@@ -33,6 +33,18 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
 
         vm = viewModelProvider.get(DeviceViewModel::class.java)
 
+        initDeviceAdapterListener()
+
+        binding.run {
+            viewModel = vm
+
+            recyclerDeviceList.layoutManager = GridLayoutManager(baseContext, NUM_OF_COLUMN)
+            recyclerDeviceList.adapter = deviceAdapter
+            recyclerDeviceList.addItemDecoration(MarginDecoration(baseContext, NUM_OF_COLUMN, 12, 12))
+        }
+    }
+
+    private fun initDeviceAdapterListener() {
         deviceAdapter.setOnDeviceClickListener(object: DeviceAdapter.OnDeviceClickListener {
             val view = layoutInflater.inflate(R.layout.dialog_device_detail, null)
             val dialog = AlertDialog.Builder(this@SensorListActivity)
@@ -62,21 +74,6 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
             }
 
         })
-
-        binding.run {
-            viewModel = vm
-
-            recyclerDeviceList.layoutManager = GridLayoutManager(baseContext, NUM_OF_COLUMN)
-            recyclerDeviceList.adapter = deviceAdapter
-            recyclerDeviceList.addItemDecoration(
-                MarginDecoration(
-                    baseContext,
-                    NUM_OF_COLUMN,
-                    60,
-                    60
-                )
-            )
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
