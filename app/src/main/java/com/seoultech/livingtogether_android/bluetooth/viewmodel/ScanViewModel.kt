@@ -158,23 +158,13 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
                     viewModelScope.launch(Dispatchers.IO) {
                         deviceRepository.insert(
-                            DeviceEntity(
-                                "발판",
-                                bleDevice.address,
-                                null,
-                                calendar.timeInMillis,
-                                calendar.timeInMillis,
-                                calendar.timeInMillis,
-                                true
-                            )
+                            DeviceEntity("발판", bleDevice.address, null,
+                                calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis, true)
                         )
-                        signalHistoryRepository.insert(
-                            SignalHistoryEntity(
-                                bleDevice.major.toString(),
-                                Signal.RESIST,
-                                calendar.timeInMillis
-                            )
+                        signalHistoryRepository
+                            .insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis)
                         )
+                        AlarmUtil.setAlarm(application)
                     }
 
                     isFound.value = true
