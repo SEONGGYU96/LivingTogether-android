@@ -22,8 +22,11 @@ import com.seoultech.livingtogether_android.alarm.AlarmReceiver
 import com.seoultech.livingtogether_android.database.DataBaseManager
 import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateReceiver
+import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
+import com.seoultech.livingtogether_android.device.repository.DeviceRepository
 import com.seoultech.livingtogether_android.signal.Signal
+import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
 import java.util.*
 
 class ScanService : Service() {
@@ -43,14 +46,7 @@ class ScanService : Service() {
 
         private const val LOC_CODE1 = 27
         private const val LOC_CODE2 = 28
-
-        private const val REQUEST_ALARM = 200
-
-        //Todo: 알람 트리거 시간 변경하여야 함. 지금은 디버깅 용도로 20초
-        private const val ALARM_TRIGGER_TIME = 20
     }
-
-
     private var lastDetectedCode2: Byte? = null
     private var lastDetectedCode1: Byte? = null
     
@@ -63,7 +59,8 @@ class ScanService : Service() {
 
     private val btStateReceiver: BluetoothStateReceiver by lazy { BluetoothStateReceiver() }
 
-    private val db : DataBaseManager by lazy{ DataBaseManager.getInstance(application) }
+    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
+    private val signalHistoryRepository: SignalHistoryRepository by lazy { SignalHistoryRepository() }
 
     //service 가 처음 생성되었을 때 최초 1회 호출되는 부분
     override fun onCreate() {
@@ -117,7 +114,7 @@ class ScanService : Service() {
             return super.onStartCommand(intent, flags, startId)
         }
 
-        val deviceList = db.deviceDao().getAll()
+        val deviceList = deviceRepository.getAll()
 
         if (deviceList.isEmpty()) {
             Log.d(TAG, "No device in DB")
@@ -158,7 +155,7 @@ class ScanService : Service() {
         }
 
         val filters = mutableListOf<ScanFilter>()
-        val deviceAddresses = db.deviceDao().getAllDeviceAddress()
+        val deviceAddresses = deviceRepository.getAllDeviceAddress()
 
         for (address in deviceAddresses) {
             filters.add(ScanFilter.Builder().setDeviceAddress(address).build())
@@ -240,7 +237,7 @@ class ScanService : Service() {
     private fun updateDB(result: ScanResult) {
         val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
 
-        val targetDevice = db.deviceDao().getAll(result.device.address)
+        val targetDevice = deviceRepository.getAll(result.device.address)
 
         if (targetDevice == null) {
             Log.d(TAG, "Unresolved address : ${result.device.address}")
@@ -255,15 +252,15 @@ class ScanService : Service() {
                 targetDevice.lastDetectionOfActionSignal = currentTime
                 targetDevice.isAvailable = true
 
-                db.deviceDao().update(targetDevice)
-                db.signalHistoryDao().insert(
+                deviceRepository.update(targetDevice)
+                signalHistoryRepository.insert(
                     SignalHistoryEntity(
                         targetDevice.deviceAddress,
                         Signal.ACTION,
                         currentTime
                     )
                 )
-                setAlarm()
+                AlarmUtil.setAlarm(application)
                 Log.d(TAG, "Alarm is set")
             }
 
@@ -271,8 +268,8 @@ class ScanService : Service() {
                 targetDevice.lastDetectionOfPreserveSignal = currentTime
                 targetDevice.isAvailable = true
 
-                db.deviceDao().update(targetDevice)
-                db.signalHistoryDao().insert(
+                deviceRepository.update(targetDevice)
+                signalHistoryRepository.insert(
                     SignalHistoryEntity(
                         targetDevice.deviceAddress,
                         Signal.PRESERVE,
@@ -301,18 +298,5 @@ class ScanService : Service() {
         } else {
             false
         }
-    }
-
-    private fun setAlarm() {
-        val alarmManager = getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
-
-        val intent = Intent(applicationContext, AlarmReceiver::class.java)
-
-        val intentSender = PendingIntent.getBroadcast(applicationContext, REQUEST_ALARM, intent, PendingIntent.FLAG_CANCEL_CURRENT)
-
-        val triggerTime = (SystemClock.elapsedRealtime() + ALARM_TRIGGER_TIME * 1000)
-
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, intentSender)
-        Log.d(TAG, "Alarm is registered after $ALARM_TRIGGER_TIME (seconds)")
     }
 }
