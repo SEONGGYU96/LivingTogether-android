@@ -21,11 +21,11 @@ data class DeviceEntity(
 
     @ColumnInfo(name = "location") var location: String?,
 
-    @ColumnInfo(name = "init_date") var initDate: Long?,
+    @ColumnInfo(name = "init_date") var initDate: Long,
 
     @ColumnInfo(name = "last_detection_type_one") var lastDetectionOfActionSignal: Long,
 
-    @ColumnInfo(name = "last_detection_type_two") var lastDetectionOfPreserveSignal: Long?,
+    @ColumnInfo(name = "last_detection_type_two") var lastDetectionOfPreserveSignal: Long,
 
     @ColumnInfo(name = "is_available") var isAvailable: Boolean = false
 ) {
@@ -39,37 +39,6 @@ data class DeviceEntity(
         onDelete = ForeignKey.CASCADE
 
     ) var userId: Int = 0
-
-    fun getLastDetectedTypeTwoToString() : String {
-        return if (lastDetectionOfPreserveSignal == null) {
-            "null"
-        } else {
-            getLastDetectedSignalToString(2)
-        }
-    }
-
-    fun getLastDetectedTypeOneToString() : String {
-        return if (lastDetectionOfActionSignal == null) {
-            "null"
-        } else {
-            getLastDetectedSignalToString(1)
-        }
-    }
-
-    private fun getLastDetectedSignalToString(type: Int) : String {
-        return if (type == 1) {
-            getTimeToString(lastDetectionOfActionSignal!!)
-        } else {
-            getTimeToString(lastDetectionOfPreserveSignal!!)
-        }
-    }
-
-    private fun getTimeToString(timeInMillis: Long) : String {
-        val calendar = GregorianCalendar()
-        calendar.timeInMillis = timeInMillis
-        return "${calendar.get(Calendar.YEAR)}/${calendar.get(Calendar.MONTH)}/${calendar.get(Calendar.DAY_OF_MONTH)}" +
-                " ${calendar.get(Calendar.HOUR_OF_DAY)} : ${calendar.get(Calendar.MINUTE)}"
-    }
 
     fun getLastDetectedTimeToMinuet() : String {
         val timeGap = GregorianCalendar().timeInMillis - lastDetectionOfActionSignal
@@ -90,5 +59,53 @@ data class DeviceEntity(
             }
         }
         return string.toString()
+    }
+
+    fun getLastDetectedActiveTimeToString(): String {
+        return getTimeToString(lastDetectionOfActionSignal)
+    }
+
+    fun getLastDetectedPreserveTimeToString(): String {
+        return getTimeToString(lastDetectionOfPreserveSignal)
+    }
+
+    private fun getTimeToString(timeInMillis: Long) : String {
+        val calendar = GregorianCalendar()
+        val str = StringBuilder()
+
+        calendar.timeInMillis = timeInMillis
+
+        str.append(calendar.get(Calendar.MONTH) + 1)
+            .append("-")
+            .append(calendar.get(Calendar.DAY_OF_MONTH))
+            .append(" ")
+            .append(calendar.get(Calendar.HOUR_OF_DAY))
+            .append(":")
+            .append(calendar.get(Calendar.MINUTE))
+
+        return str.toString()
+    }
+
+    fun getInitDateToString(): String {
+        val calendar = GregorianCalendar()
+        val str = StringBuilder()
+
+        calendar.timeInMillis = initDate
+
+        str.append(calendar.get(Calendar.YEAR).toString().substring(2))
+            .append("-")
+            .append(calendar.get(Calendar.MONTH) + 1)
+            .append("-")
+            .append(calendar.get(Calendar.DAY_OF_MONTH))
+
+        return str.toString()
+    }
+
+    fun getDeviceAvailable(): String {
+        return if (isAvailable) {
+            "양호"
+        } else {
+            "불량"
+        }
     }
 }

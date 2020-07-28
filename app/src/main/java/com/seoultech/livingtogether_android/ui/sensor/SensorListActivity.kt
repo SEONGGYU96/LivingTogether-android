@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.sensor
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -9,9 +10,11 @@ import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivitySensorListBinding
+import com.seoultech.livingtogether_android.device.model.DeviceEntity
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
+import kotlinx.android.synthetic.main.dialog_device_detail.view.*
 
 class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.activity_sensor_list) {
 
@@ -29,6 +32,36 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
         setToolbar(binding.toolbar,"센서")
 
         vm = viewModelProvider.get(DeviceViewModel::class.java)
+
+        deviceAdapter.setOnDeviceClickListener(object: DeviceAdapter.OnDeviceClickListener {
+            val view = layoutInflater.inflate(R.layout.dialog_device_detail, null)
+            val dialog = AlertDialog.Builder(this@SensorListActivity)
+                .setView(view)
+                .create()
+
+            override fun onClick(data: DeviceEntity) {
+                view.run {
+                    textview_dialogdevice_macpresent.text = data.deviceAddress
+                    textview_dialogdevice_activepresent.text = data.getLastDetectedActiveTimeToString()
+                    textview_dialogdevice_initdatepresent.text = data.getInitDateToString()
+                    textview_dialogdevice_kindpresent.text = data.deviceType
+                    textview_dialogdevice_availablepresent.text = data.getDeviceAvailable()
+                    textview_dialogdevice_preservepresent.text = data.getLastDetectedPreserveTimeToString()
+                    edittext_dialogdevice_locationpresent.setText(data.location)
+                }
+                dialog.show()
+
+                view.button_dialogdevice_confirm.setOnClickListener {
+
+                    if (view.edittext_dialogdevice_locationpresent.text.toString() != data.location) {
+                        data.location = view.edittext_dialogdevice_locationpresent.text.toString()
+                        vm.updateDevice(data)
+                    }
+                    dialog.dismiss()
+                }
+            }
+
+        })
 
         binding.run {
             viewModel = vm

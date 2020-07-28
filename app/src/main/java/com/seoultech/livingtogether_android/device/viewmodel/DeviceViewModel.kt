@@ -15,4 +15,8 @@ class DeviceViewModel(application: Application) : BaseViewModel(application) {
     fun getAllObservable() : LiveData<List<DeviceEntity>> {
         return deviceRepository.getAllObservable()
     }
+
+    fun updateDevice(deviceEntity: DeviceEntity) {
+        deviceRepository.update(deviceEntity)
+    }
 }
