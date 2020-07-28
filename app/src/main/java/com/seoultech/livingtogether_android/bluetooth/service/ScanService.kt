@@ -65,6 +65,7 @@ class ScanService : Service() {
     //service 가 처음 생성되었을 때 최초 1회 호출되는 부분
     override fun onCreate() {
         super.onCreate()
+        ServiceLiveData.value = true
         Log.d(TAG, "Service is created")
     }
 
@@ -181,6 +182,8 @@ class ScanService : Service() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+        ServiceLiveData.value = false
 
         //블루투스 스캔 중지
         stopScan()

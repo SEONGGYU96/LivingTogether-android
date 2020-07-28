@@ -1,6 +1,7 @@
 package com.seoultech.livingtogether_android
 
 import android.app.Application
+import com.seoultech.livingtogether_android.bluetooth.service.ServiceLiveData
 import com.seoultech.livingtogether_android.database.DataBaseManager
 
 class ApplicationImpl : Application() {
@@ -17,5 +18,7 @@ class ApplicationImpl : Application() {
         instance = this
 
         db = DataBaseManager.buildDatabase(applicationContext)
+
+        ServiceLiveData.value = false
     }
 }

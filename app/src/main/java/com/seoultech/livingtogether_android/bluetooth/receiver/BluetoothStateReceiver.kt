@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.seoultech.livingtogether_android.bluetooth.model.BluetoothLiveData
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 
 class BluetoothStateReceiver : BroadcastReceiver() {
@@ -23,10 +24,14 @@ class BluetoothStateReceiver : BroadcastReceiver() {
 
                 sendBtState(context, false)
 
+                BluetoothLiveData.value = false
+
             } else if (state == BluetoothAdapter.STATE_ON) {
                 Log.d(TAG, "onReceive() : BluetoothAdapter.STATE_ON")
 
                 sendBtState(context, true)
+
+                BluetoothLiveData.value = true
             }
         }
     }
