@@ -26,6 +26,12 @@ class NOKRepository : BaseRepository<NOKEntity>() {
         return value
     }
 
+    fun getNOK(phone: String) : NOKEntity {
+        val value = dao.getNOK(phone)
+        Log.d(TAG, "getAll : $value")
+        return value
+    }
+
     public override fun insert(entity: NOKEntity) {
         super.insert(entity)
         try {

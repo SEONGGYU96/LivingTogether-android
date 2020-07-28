@@ -25,4 +25,8 @@ class NOKViewModel(application: Application) : BaseViewModel(application) {
         nokRepository.insert(newNok)
         finishHandler.value = true
     }
+    
+    fun removeItem(phone: String) {
+        nokRepository.delete(nokRepository.getNOK(phone))
+    }
 }

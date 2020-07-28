@@ -21,7 +21,7 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
         db.deviceDao().insert(
             DeviceEntity(
                 "발판", DEBUG_ADDRESS, DEBUG_LOCATION,
-                null, calendar.timeInMillis, null, true
+                calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis, true
             )
         )
         Toast.makeText(getApplication(), "디버깅 디바이스가 추가되었습니다.", Toast.LENGTH_SHORT).show()
