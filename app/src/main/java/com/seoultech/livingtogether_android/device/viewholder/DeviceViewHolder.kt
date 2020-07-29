@@ -27,7 +27,7 @@ class DeviceViewHolder(parent: ViewGroup, val listener: DeviceAdapter.OnDeviceCl
                 }
             )
             
-            viewStateCircleItem.backgroundTintList = when (data.isAvailable) {
+            viewStateCircleItem.backgroundTintList = when (data.updateIsAvailable()) {
                 true -> ColorStateList.valueOf(ContextCompat.getColor(this.root.context, R.color.stateGrean))
                 else -> ColorStateList.valueOf(ContextCompat.getColor(this.root.context, R.color.gray))
             }
