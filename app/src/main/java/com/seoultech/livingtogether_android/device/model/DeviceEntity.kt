@@ -40,6 +40,11 @@ data class DeviceEntity(
 
     ) var userId: Int = 0
 
+    companion object {
+        //preserve 갭 6시간
+        private const val PRESERVE_GAP = 21600000
+    }
+
     fun getLastDetectedTimeToMinuet() : String {
         val timeGap = GregorianCalendar().timeInMillis - lastDetectionOfActionSignal
         val string = StringBuilder()
@@ -102,10 +107,25 @@ data class DeviceEntity(
     }
 
     fun getDeviceAvailable(): String {
-        return if (isAvailable) {
+        return if (updateIsAvailable()) {
             "양호"
         } else {
             "불량"
         }
+    }
+
+    fun updateIsAvailable(): Boolean {
+        val calendar = GregorianCalendar()
+        val gap = calendar.timeInMillis - lastDetectionOfPreserveSignal
+        if (isAvailable) {
+            if (gap > PRESERVE_GAP) {
+                isAvailable = false
+            }
+        } else {
+            if (gap <= PRESERVE_GAP) {
+                isAvailable = true
+            }
+        }
+        return isAvailable
     }
 }
