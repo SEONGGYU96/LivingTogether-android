@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".ui.contacts.SearchContactActivity"></activity>
+        <activity android:name=".ui.profile.WebViewActivity"></activity>
+        <activity android:name=".ui.contacts.SearchContactActivity" />
         <activity android:name=".ui.contacts.ContactListActivity" />
 
         <service
