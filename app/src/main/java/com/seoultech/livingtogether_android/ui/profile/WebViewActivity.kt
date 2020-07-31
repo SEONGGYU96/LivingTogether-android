@@ -28,14 +28,15 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>(R.layout.activity_w
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        webView_postalcode.settings.javaScriptEnabled = true
-        webView_postalcode.addJavascriptInterface(MyJavaScriptInterface(), "Android")
-        webView_postalcode.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                webView_postalcode!!.loadUrl("javascript:sample2_execDaumPostcode();")
+        webView_postalcode.run {
+            settings.javaScriptEnabled = true
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView, url: String) {
+                    this@run.loadUrl("javascript:daumPostalCode();")
+                }
             }
-        }
 
-        webView_postalcode.loadUrl("file:///android_asset/KakaoPostalCode.html");
+            loadUrl("file:///android_asset/KakaoPostalCode.html");
+        }
     }
 }
