@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.user.model.UserEntity
 import com.seoultech.livingtogether_android.user.repository.UserRepository
+import com.seoultech.livingtogether_android.util.SharedPreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -16,6 +17,8 @@ class ProfileViewModel(application: Application) : BaseViewModel(application) {
     private val userRepository: UserRepository by lazy { UserRepository() }
     
     var userLiveData = getObservable()
+
+    val isInitialized = SharedPreferenceManager.getInitializing()
 
     private fun getObservable(): LiveData<UserEntity> {
         return userRepository.getAllObservable()
@@ -44,6 +47,8 @@ class ProfileViewModel(application: Application) : BaseViewModel(application) {
                 Toast.makeText(getApplication(), "네트워크 연결에 실패하였습니다.", Toast.LENGTH_SHORT).show()
             }
         })
+
+        SharedPreferenceManager.setInitializing(true)
 
         finishHandler.value = true
     }

@@ -3,6 +3,7 @@ package com.seoultech.livingtogether_android
 import android.app.Application
 import com.seoultech.livingtogether_android.bluetooth.service.ServiceLiveData
 import com.seoultech.livingtogether_android.database.DataBaseManager
+import com.seoultech.livingtogether_android.util.SharedPreferenceManager
 
 class ApplicationImpl : Application() {
 
@@ -20,5 +21,7 @@ class ApplicationImpl : Application() {
         db = DataBaseManager.buildDatabase(applicationContext)
 
         ServiceLiveData.value = false
+
+        SharedPreferenceManager.init(this)
     }
 }

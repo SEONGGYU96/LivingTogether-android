@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.main
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -50,6 +51,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         binding.run {
             viewModel = vm
+
+            if (!vm.isInitialized) {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("환영합니다!")
+                    .setMessage("사용하기 전에 사용자 정보를 먼저 등록해주세요")
+                    .setPositiveButton("확인") { dialog, _ ->
+                        startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
 
             recyclerDeviceListMain.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
             recyclerDeviceListMain.adapter = deviceAdapter
