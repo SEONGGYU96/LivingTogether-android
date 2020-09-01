@@ -15,6 +15,7 @@ import com.seoultech.livingtogether_android.device.repository.DeviceRepository
 import com.seoultech.livingtogether_android.nok.repository.NOKRepository
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 import com.seoultech.livingtogether_android.util.ServiceUtil
+import com.seoultech.livingtogether_android.util.SharedPreferenceManager
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
 
@@ -30,6 +31,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     var sensors = getSensorAll()
 
     var noks = getNOKAll()
+
+    var isInitialized = SharedPreferenceManager.getInitializing()
 
     private val sensorObserver = Observer<List<DeviceEntity>> {
         if (it.isNotEmpty()) {
