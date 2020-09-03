@@ -259,7 +259,7 @@ class ScanService : Service() {
                 signalHistoryRepository.insert(
                     SignalHistoryEntity(
                         targetDevice.deviceAddress,
-                        Signal.ACTION,
+                        1,
                         currentTime
                     )
                 )
@@ -275,7 +275,7 @@ class ScanService : Service() {
                 signalHistoryRepository.insert(
                     SignalHistoryEntity(
                         targetDevice.deviceAddress,
-                        Signal.PRESERVE,
+                        2,
                         currentTime
                     )
                 )

@@ -163,7 +163,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
                                 calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis, true)
                         )
                         signalHistoryRepository
-                            .insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis)
+                            .insert(SignalHistoryEntity(bleDevice.address, 3, calendar.timeInMillis)
                         )
                         AlarmUtil.setAlarm(application)
                     }
