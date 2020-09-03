@@ -17,7 +17,12 @@ class SignalHistoryRepository : BaseRepository<SignalHistoryEntity>() {
     }
 
     fun getAllObservable(type: Signal) : LiveData<List<SignalHistoryEntity>> {
-        val result = dao.getAllObservable(type)
+        val signalType = when (type) {
+            Signal.ACTION -> 1
+            Signal.PRESERVE -> 2
+            else -> 3
+        }
+        val result = dao.getAllObservable(signalType)
         Log.d(TAG, "getAllObservable($type) : ${result.value}")
         return result
     }
@@ -30,13 +35,16 @@ class SignalHistoryRepository : BaseRepository<SignalHistoryEntity>() {
 
     public override fun insert(entity: SignalHistoryEntity) {
         super.insert(entity)
+        dao.insert(entity)
     }
 
     public override fun delete(entity: SignalHistoryEntity) {
         super.delete(entity)
+        dao.delete(entity)
     }
 
     public override fun update(entity: SignalHistoryEntity) {
         super.update(entity)
+        dao.update(entity)
     }
 }

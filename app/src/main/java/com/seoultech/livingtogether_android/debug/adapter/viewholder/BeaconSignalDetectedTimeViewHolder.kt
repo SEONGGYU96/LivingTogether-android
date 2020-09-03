@@ -11,7 +11,7 @@ class BeaconSignalDetectedTimeViewHolder(parent: ViewGroup) : BaseViewHolder<Sig
 
     override fun bind(data: SignalHistoryEntity) {
         binding.run {
-            textMajorScanTestItem.text = data.deviceMajor
+            textMajorScanTestItem.text = data.deviceAddress
             textDetectedTimeScanTestItem.text = data.getDetectedTimeToString()
         }
     }
