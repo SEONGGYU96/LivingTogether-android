@@ -3,12 +3,14 @@ package com.seoultech.livingtogether_android.ui.main
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.nok.adapter.NOKAdapter
@@ -19,6 +21,7 @@ import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.ScanServiceTest
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.device.model.DeviceEntity
+import com.seoultech.livingtogether_android.signal.SignalHistoryDao
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
@@ -145,6 +148,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 vm.sensors.observe(this@MainActivity, stateObserver)
             }
         })
+
+        Log.d(TAG, ApplicationImpl.db.signalHistoryDao().getAll().toString())
     }
 
     private fun changeStatusBox(view: TextView, on: Boolean, text: String) {

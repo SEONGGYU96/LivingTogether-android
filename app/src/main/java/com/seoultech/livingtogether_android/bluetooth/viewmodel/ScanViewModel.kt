@@ -31,7 +31,7 @@ import java.util.*
 class ScanViewModel(application: Application) : BaseViewModel(application) {
 
     companion object{
-        private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
+        private const val LIVING_TOGETHER_UUID = "53454f55-4c54-4543-4850-6f70506f7030"
         private const val MIN_RSSI = -85
     }
 
@@ -163,7 +163,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
                                 calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis, true)
                         )
                         signalHistoryRepository
-                            .insert(SignalHistoryEntity(bleDevice.major.toString(), Signal.RESIST, calendar.timeInMillis)
+                            .insert(SignalHistoryEntity(bleDevice.address, 3, calendar.timeInMillis)
                         )
                         AlarmUtil.setAlarm(application)
                     }
