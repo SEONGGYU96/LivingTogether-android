@@ -52,8 +52,8 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.ac
 
         when (requestCode) {
             SEARCH_ADDRESS_ACTIVITY -> if (resultCode == Activity.RESULT_OK) {
-                val data = intent.extras!!.getString("data")
-                if (data != null) edit_address_profile.setText(data)
+                val mData = data?.getStringExtra("data")
+                if (data != null) edit_address_profile.setText(mData)
             }
         }
     }

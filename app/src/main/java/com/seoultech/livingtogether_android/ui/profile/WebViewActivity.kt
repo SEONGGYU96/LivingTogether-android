@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.profile
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -16,27 +17,28 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>(R.layout.activity_w
 
     internal inner class MyJavaScriptInterface {
         @JavascriptInterface
-        fun processDATA(data: String?) {
-            val extra = Bundle()
+        fun processDATA(data: String) {
             val intent = Intent()
-            extra.putString("data", data)
-            intent.putExtras(extra)
+            intent.putExtra("data", data)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         webView_postalcode.run {
             settings.javaScriptEnabled = true
+            addJavascriptInterface(MyJavaScriptInterface(), "Android")
+
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView, url: String) {
                     this@run.loadUrl("javascript:daumPostalCode();")
                 }
             }
 
-            loadUrl("file:///android_asset/KakaoPostalCode.html");
+            loadUrl("https://daumpostcode.firebaseapp.com/index");
         }
     }
 }
