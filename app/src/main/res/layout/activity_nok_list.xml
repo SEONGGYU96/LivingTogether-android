@@ -5,9 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.nok.viewmodel.NOKViewModel" />
+            type="com.seoultech.livingtogether_android.nok.viewmodel.NextOfKinViewModel" />
 
     </data>
 
@@ -15,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context=".ui.nok.NOKListActivity">
+        tools:context=".ui.nok.NextOfKinListActivity">
 
         <include
             layout="@layout/layout_toolbar"
@@ -46,7 +48,7 @@
                 android:text="@string/notice_no_nok"
                 android:textSize="18sp"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="@{viewModel.empty ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +68,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_nok_list"
-                replaceAll="@{viewModel.noks}"
+                android:visibility="@{viewModel.empty ? View.GONE : View.VISIBLE}"
+                replaceAll="@{viewModel.items}"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:paddingHorizontal="15dp"

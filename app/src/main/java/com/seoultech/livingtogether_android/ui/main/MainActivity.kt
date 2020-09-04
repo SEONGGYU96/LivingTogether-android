@@ -21,9 +21,8 @@ import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.ScanServiceTest
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.device.model.DeviceEntity
-import com.seoultech.livingtogether_android.signal.SignalHistoryDao
 import com.seoultech.livingtogether_android.util.MarginDecoration
-import com.seoultech.livingtogether_android.ui.nok.NOKListActivity
+import com.seoultech.livingtogether_android.ui.nok.NextOfKinListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
 import com.seoultech.livingtogether_android.ui.scan.InsertLocationActivity
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
@@ -87,7 +86,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             )
 
             buttonShowMoreNokMain.setOnClickListener {
-                startActivity(Intent(this@MainActivity, NOKListActivity::class.java))
+                startActivity(Intent(this@MainActivity, NextOfKinListActivity::class.java))
             }
 
             buttonEditProfile.setOnClickListener{

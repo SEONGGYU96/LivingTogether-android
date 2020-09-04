@@ -2,7 +2,7 @@ package com.seoultech.livingtogether_android.util
 
 import android.telephony.SmsManager
 import android.util.Log
-import com.seoultech.livingtogether_android.nok.repository.NOKRepository
+import com.seoultech.livingtogether_android.nok.data.source.NextOfKinRepository
 
 /**
  * SMS를 전송하기 위한 유틸 클래스
@@ -27,10 +27,11 @@ object SMSSender {
      * @param content 내용
      */
     fun sendSMSAll(content: String?) {
-        val contactList = NOKRepository().getAll()
+        val contactList = NextOfKinRepository()
+            .getAll()
         for (contact in contactList) {
             Log.d("SMSSender.class", contact.toString())
-            sendSMS(contact.phoneNum, content)
+            sendSMS(contact.phoneNumber, content)
         }
     }
 }

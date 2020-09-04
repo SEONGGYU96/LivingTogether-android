@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.loader.content.CursorLoader
 import com.seoultech.livingtogether_android.base.BaseViewModel
-import com.seoultech.livingtogether_android.nok.model.NOKEntity
+import com.seoultech.livingtogether_android.nok.data.NextOfKin
 import com.seoultech.livingtogether_android.util.StringUtil
 import java.lang.StringBuilder
 
@@ -33,8 +33,8 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
-    private fun getContactsAll(name: String) : List<NOKEntity> {
-        val selectedContacts = mutableListOf<NOKEntity>()
+    private fun getContactsAll(name: String) : List<NextOfKin> {
+        val selectedContacts = mutableListOf<NextOfKin>()
         val contacts = getContactsAll()
 
         for (contact in contacts) {
@@ -46,15 +46,15 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
         return selectedContacts
     }
 
-    private fun getContactsAllObservable() : MutableLiveData<List<NOKEntity>> {
-        val contactLiveData = MutableLiveData<List<NOKEntity>>()
+    private fun getContactsAllObservable() : MutableLiveData<List<NextOfKin>> {
+        val contactLiveData = MutableLiveData<List<NextOfKin>>()
         contactLiveData.value = getContactsAll()
 
         return contactLiveData
     }
 
-    private fun getContactsAll() : List<NOKEntity> {
-        val contacts = mutableListOf<NOKEntity>()
+    private fun getContactsAll() : List<NextOfKin> {
+        val contacts = mutableListOf<NextOfKin>()
 
 
         val projection = arrayOf(
@@ -74,7 +74,12 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
                 val number = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
                 val name = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
                 do {
-                    contacts.add(NOKEntity(it.getString(name), StringUtil.removeDash(it.getString(number))))
+                    contacts.add(
+                        NextOfKin(
+                            it.getString(name),
+                            StringUtil.removeDash(it.getString(number))
+                        )
+                    )
                 } while (it.moveToNext())
                 it.close()
             }

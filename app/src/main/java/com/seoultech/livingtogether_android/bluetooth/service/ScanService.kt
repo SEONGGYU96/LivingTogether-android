@@ -1,7 +1,5 @@
 package com.seoultech.livingtogether_android.bluetooth.service
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
@@ -14,18 +12,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
-import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import com.seoultech.livingtogether_android.alarm.AlarmReceiver
-import com.seoultech.livingtogether_android.database.DataBaseManager
 import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateReceiver
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
 import com.seoultech.livingtogether_android.device.repository.DeviceRepository
-import com.seoultech.livingtogether_android.signal.Signal
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
 import java.util.*
 

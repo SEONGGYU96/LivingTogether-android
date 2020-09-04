@@ -10,9 +10,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.device.model.DeviceEntity
-import com.seoultech.livingtogether_android.nok.model.NOKEntity
+import com.seoultech.livingtogether_android.nok.data.NextOfKin
 import com.seoultech.livingtogether_android.device.repository.DeviceRepository
-import com.seoultech.livingtogether_android.nok.repository.NOKRepository
+import com.seoultech.livingtogether_android.nok.data.source.NextOfKinRepository
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 import com.seoultech.livingtogether_android.util.ServiceUtil
 import com.seoultech.livingtogether_android.util.SharedPreferenceManager
@@ -25,7 +25,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
-    private val nokRepository: NOKRepository by lazy { NOKRepository() }
+    private val nextOfKinRepository: NextOfKinRepository by lazy { NextOfKinRepository() }
 
     //Todo: 사용가능한 센서들도 따로 가져오기. 메인 화면에 정상 작동 개수 나타내기 위함
     var sensors = getSensorAll()
@@ -46,8 +46,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         sensors.observeForever(sensorObserver)
     }
 
-    fun getNOKAll(): LiveData<List<NOKEntity>> {
-        return nokRepository.getAllObservable()
+    fun getNOKAll(): LiveData<List<NextOfKin>> {
+        return nextOfKinRepository.getAllObservable()
     }
 
     fun getSensorAll(): LiveData<List<DeviceEntity>> {
