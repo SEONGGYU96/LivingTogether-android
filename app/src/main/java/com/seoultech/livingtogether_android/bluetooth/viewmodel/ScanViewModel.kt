@@ -1,6 +1,5 @@
 package com.seoultech.livingtogether_android.bluetooth.viewmodel
 
-import android.app.Application
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
@@ -11,32 +10,33 @@ import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.seoultech.livingtogether_android.base.BaseViewModel
+import androidx.lifecycle.ViewModel
+import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
+import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
-import com.seoultech.livingtogether_android.device.repository.DeviceRepository
+import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
-import com.seoultech.livingtogether_android.signal.Signal
+import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.util.BluetoothUtil
 import com.seoultech.livingtogether_android.util.ServiceUtil
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 
 
-class ScanViewModel(application: Application) : BaseViewModel(application) {
+class ScanViewModel(deviceRepository: DeviceRepository, signalHistoryRepository: SignalHistoryRepository) : ViewModel() {
 
     companion object{
         private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
         private const val MIN_RSSI = -85
     }
 
-    private val signalHistoryRepository: SignalHistoryRepository by lazy { SignalHistoryRepository() }
-    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
+    private val finishHandler = MutableLiveData<Boolean>()
+
+    private val TAG = javaClass.simpleName
+
+    private val application = ApplicationImpl.getInstance()
 
     private var isScanning = false
 
@@ -66,7 +66,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private fun isBluetoothAvailable() {
-        if (BluetoothUtil.isBluetoothAvailable(getApplication())) {
+        if (BluetoothUtil.isBluetoothAvailable(application)) {
             Log.d(TAG, "This device does not support Bluetooth.")
             finishHandler.value = true
         } else {
@@ -95,15 +95,15 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun startService() {
-        getApplication<Application>().startService(Intent(getApplication(), ScanService::class.java))
+        application.startService(Intent(application, ScanService::class.java))
     }
 
     fun stopService() {
         // To service Stop.
-        if (ServiceUtil.isServiceRunning(getApplication(), ScanService::class.java)) {
-            val intent = Intent(getApplication(), ScanService::class.java)
+        if (ServiceUtil.isServiceRunning(application, ScanService::class.java)) {
+            val intent = Intent(application, ScanService::class.java)
             intent.putExtra(ScanService.FLAG_STOP_SERVICE, true)
-            getApplication<Application>().startService(intent)
+            application.startService(intent)
 
             Log.d(TAG, "Request to terminate Service ")
         } else {
@@ -134,12 +134,7 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
                     return
                 }
 
-                val bleDevice =
-                    BleCreater.create(
-                        it.device,
-                        it.rssi,
-                        it.scanRecord!!.bytes
-                    )
+                val bleDevice = BleCreater.create(it.device, it.rssi, it.scanRecord!!.bytes)
 
                 Log.d(TAG, "uuid : ${bleDevice.uuid}, major : ${bleDevice.major}, minor : ${bleDevice.minor}, ${bleDevice.rssi}")
 
@@ -148,29 +143,31 @@ class ScanViewModel(application: Application) : BaseViewModel(application) {
 
                     stopScan()
 
-                    if (deviceRepository.getAll(bleDevice.address) != null) {
-                        Toast.makeText(getApplication(), "이미 등록된 버튼입니다.", Toast.LENGTH_SHORT).show()
-                        Log.d(TAG, "This device is already registered. return.")
-                        finishHandler.value = true
-                        return
-                    }
+                    deviceRepository.getDevice(bleDevice.address, object : DeviceDataSource.GetDeviceCallback {
+                        override fun onDeviceLoaded(device: Device) {
+                            Toast.makeText(application, "이미 등록된 버튼입니다.", Toast.LENGTH_SHORT).show()
+                            Log.d(TAG, "This device is already registered. return.")
+                            finishHandler.value = true
+                            return
+                        }
 
-                    val calendar = GregorianCalendar()
+                        override fun onDataNotAvailable() {
+                            val calendar = GregorianCalendar()
 
-                    viewModelScope.launch(Dispatchers.IO) {
-                        deviceRepository.insert(
-                            DeviceEntity("발판", bleDevice.address, null,
-                                calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis, true)
-                        )
-                        signalHistoryRepository
-                            .insert(SignalHistoryEntity(bleDevice.address, 3, calendar.timeInMillis)
-                        )
-                        AlarmUtil.setAlarm(application)
-                    }
+                            val newDevice = Device("발판", bleDevice.address, null,
+                                calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis)
 
-                    isFound.value = true
+                            deviceRepository.saveDevice(newDevice)
 
-                    return
+                            signalHistoryRepository.insert(SignalHistoryEntity(bleDevice.address, 3, calendar.timeInMillis))
+
+                            AlarmUtil.setAlarm(application)
+
+                            isFound.value = true
+
+                            return
+                        }
+                    })
                 }
             }
         }

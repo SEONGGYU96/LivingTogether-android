@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.loader.content.CursorLoader
 import com.seoultech.livingtogether_android.base.BaseViewModel
-import com.seoultech.livingtogether_android.nok.data.NextOfKin
+import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 import com.seoultech.livingtogether_android.util.StringUtil
 import java.lang.StringBuilder
 

@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityNokListBinding
-import com.seoultech.livingtogether_android.nok.adapter.NOKAdapter
-import com.seoultech.livingtogether_android.nok.viewmodel.NextOfKinViewModel
+import com.seoultech.livingtogether_android.nextofkin.adapter.NOKAdapter
+import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import java.lang.StringBuilder
@@ -91,5 +91,5 @@ class NextOfKinListActivity : BaseActivity<ActivityNokListBinding>(R.layout.acti
         return super.onOptionsItemSelected(item)
     }
 
-    fun obtainViewModel(): NextOfKinViewModel = obtainViewModel(NextOfKinViewModel::class.java)
+    private fun obtainViewModel(): NextOfKinViewModel = obtainViewModel(NextOfKinViewModel::class.java)
 }

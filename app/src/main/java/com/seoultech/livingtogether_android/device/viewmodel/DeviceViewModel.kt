@@ -1,26 +1,46 @@
 package com.seoultech.livingtogether_android.device.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.LiveData
-import com.seoultech.livingtogether_android.base.BaseViewModel
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
-import com.seoultech.livingtogether_android.device.repository.DeviceRepository
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
+import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 
-class DeviceViewModel(application: Application) : BaseViewModel(application) {
+class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewModel(){
 
-    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
+    private val _items = MutableLiveData<List<Device>>().apply { value = emptyList() }
+    val items: LiveData<List<Device>>
+        get() = _items
 
-    var devices = getAllObservable()
-
-    fun getAllObservable() : LiveData<List<DeviceEntity>> {
-        return deviceRepository.getAllObservable()
+    val empty: LiveData<Boolean> = Transformations.map(_items) {
+        it.isEmpty()
     }
 
-    fun updateDevice(deviceEntity: DeviceEntity) {
-        deviceRepository.update(deviceEntity)
+    fun start() {
+        loadDevice()
     }
 
-    fun deleteDevice(deviceEntity: DeviceEntity) {
-        deviceRepository.delete(deviceEntity)
+    private fun loadDevice() {
+        deviceRepository.getDevices(object : DeviceDataSource.LoadDevicesCallback {
+            override fun onDevicesLoaded(devices: List<Device>) {
+                _items.value = devices
+            }
+
+            override fun onDataNotAvailable() {
+                _items.value = emptyList()
+            }
+        })
+    }
+
+    fun deleteDevice(deviceAddress: String) {
+        deviceRepository.deleteDevice(deviceAddress)
+        loadDevice()
+    }
+
+    fun updateDevice(device: Device) {
+        deviceRepository.updateDevice(device)
+        loadDevice()
     }
 }

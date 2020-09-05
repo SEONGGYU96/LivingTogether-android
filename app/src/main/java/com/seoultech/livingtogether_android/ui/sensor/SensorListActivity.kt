@@ -5,13 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivitySensorListBinding
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
+import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
@@ -25,25 +24,19 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
 
     private val deviceAdapter: DeviceAdapter by lazy { DeviceAdapter() }
 
-    private lateinit var vm: DeviceViewModel
+    private lateinit var deviceViewModel: DeviceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setToolbar(binding.toolbar,"센서")
 
-        vm = viewModelProvider.get(DeviceViewModel::class.java)
-
-        vm.devices.observe(this, Observer {
-            if (it.isEmpty()) {
-                finish()
-            }
-        })
+        deviceViewModel = obtainViewModel()
 
         initDeviceAdapterListener()
 
         binding.run {
-            viewModel = vm
+            viewModel = deviceViewModel
 
             recyclerDeviceList.layoutManager = GridLayoutManager(baseContext, NUM_OF_COLUMN)
             recyclerDeviceList.adapter = deviceAdapter
@@ -58,7 +51,7 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
                 .setView(view)
                 .create()
 
-            override fun onClick(data: DeviceEntity) {
+            override fun onClick(data: Device) {
                 view.run {
                     textview_dialogdevice_macpresent.text = data.deviceAddress
                     textview_dialogdevice_activepresent.text = data.getLastDetectedActiveTimeToString()
@@ -73,7 +66,7 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
                 view.button_dialogdevice_confirm.setOnClickListener {
                     if (view.edittext_dialogdevice_locationpresent.text.toString() != data.location) {
                         data.location = view.edittext_dialogdevice_locationpresent.text.toString()
-                        vm.updateDevice(data)
+                        deviceViewModel.updateDevice(data)
                     }
                     dialog.dismiss()
                 }
@@ -86,12 +79,12 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
         })
     }
 
-    private fun showRecheckDialog(dialog: AlertDialog, data: DeviceEntity) {
+    private fun showRecheckDialog(dialog: AlertDialog, data: Device) {
         AlertDialog.Builder(this)
             .setTitle("등록된 센서 삭제")
             .setMessage("정말 해당 센서를 삭제하시겠습니까?\n더 이상 센서의 신호를 감지하지 않습니다.")
             .setPositiveButton("삭제") { thisDialog, _ ->
-                vm.deleteDevice(data)
+                deviceViewModel.deleteDevice(data.deviceAddress)
                 thisDialog.dismiss()
                 dialog.dismiss()
             }
@@ -116,4 +109,6 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
 
         return super.onOptionsItemSelected(item)
     }
+
+    private fun obtainViewModel(): DeviceViewModel = obtainViewModel(DeviceViewModel::class.java)
 }

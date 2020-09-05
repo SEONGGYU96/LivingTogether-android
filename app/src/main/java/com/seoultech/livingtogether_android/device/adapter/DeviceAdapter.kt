@@ -2,10 +2,10 @@ package com.seoultech.livingtogether_android.device.adapter
 
 import android.view.ViewGroup
 import com.seoultech.livingtogether_android.base.BaseAdapter
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
+import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.device.viewholder.DeviceViewHolder
 
-class DeviceAdapter : BaseAdapter<DeviceEntity>() {
+class DeviceAdapter : BaseAdapter<Device>() {
     var listener: OnDeviceClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeviceViewHolder {
@@ -17,6 +17,6 @@ class DeviceAdapter : BaseAdapter<DeviceEntity>() {
     }
 
     interface OnDeviceClickListener {
-        fun onClick(data: DeviceEntity)
+        fun onClick(data: Device)
     }
 }

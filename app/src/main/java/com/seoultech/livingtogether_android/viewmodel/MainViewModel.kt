@@ -9,10 +9,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.seoultech.livingtogether_android.base.BaseViewModel
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
-import com.seoultech.livingtogether_android.nok.data.NextOfKin
-import com.seoultech.livingtogether_android.device.repository.DeviceRepository
-import com.seoultech.livingtogether_android.nok.data.source.NextOfKinRepository
+import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
+import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
+import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepository
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 import com.seoultech.livingtogether_android.util.ServiceUtil
 import com.seoultech.livingtogether_android.util.SharedPreferenceManager
@@ -34,7 +34,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     var isInitialized = SharedPreferenceManager.getInitializing()
 
-    private val sensorObserver = Observer<List<DeviceEntity>> {
+    private val sensorObserver = Observer<List<Device>> {
         if (it.isNotEmpty()) {
             startService()
         } else {
@@ -50,7 +50,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         return nextOfKinRepository.getAllObservable()
     }
 
-    fun getSensorAll(): LiveData<List<DeviceEntity>> {
+    fun getSensorAll(): LiveData<List<Device>> {
         return deviceRepository.getAllObservable()
     }
 

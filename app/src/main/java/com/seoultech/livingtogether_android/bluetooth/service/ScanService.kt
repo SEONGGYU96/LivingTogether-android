@@ -18,7 +18,7 @@ import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateReceiver
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
-import com.seoultech.livingtogether_android.device.repository.DeviceRepository
+import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
 import java.util.*
 

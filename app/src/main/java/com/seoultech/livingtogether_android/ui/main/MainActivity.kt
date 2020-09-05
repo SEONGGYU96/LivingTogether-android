@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
-import com.seoultech.livingtogether_android.nok.adapter.NOKAdapter
+import com.seoultech.livingtogether_android.nextofkin.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.bluetooth.model.BluetoothLiveData
 import com.seoultech.livingtogether_android.bluetooth.service.ServiceLiveData
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.ScanServiceTest
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
+import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.nok.NextOfKinListActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
@@ -43,7 +43,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private lateinit var debugVm: DebugViewModel
 
     private lateinit var serviceObserver: Observer<Boolean>
-    private lateinit var stateObserver: Observer<List<DeviceEntity>>
+    private lateinit var stateObserver: Observer<List<Device>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

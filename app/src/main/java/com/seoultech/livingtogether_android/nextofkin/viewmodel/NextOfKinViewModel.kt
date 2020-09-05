@@ -1,12 +1,12 @@
-package com.seoultech.livingtogether_android.nok.viewmodel
+package com.seoultech.livingtogether_android.nextofkin.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.seoultech.livingtogether_android.nok.data.NextOfKin
-import com.seoultech.livingtogether_android.nok.data.source.NextOfKinDataSource
-import com.seoultech.livingtogether_android.nok.data.source.NextOfKinRepository
+import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
+import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinDataSource
+import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepository
 
 class NextOfKinViewModel(private val nextOfKinRepository: NextOfKinRepository) : ViewModel() {
 

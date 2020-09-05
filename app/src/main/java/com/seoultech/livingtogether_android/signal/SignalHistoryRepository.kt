@@ -3,7 +3,6 @@ package com.seoultech.livingtogether_android.signal
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.seoultech.livingtogether_android.ApplicationImpl
-import com.seoultech.livingtogether_android.base.BaseRepository
 
 class SignalHistoryRepository : BaseRepository<SignalHistoryEntity>() {
 

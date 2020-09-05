@@ -1,4 +1,4 @@
-package com.seoultech.livingtogether_android.nok.data
+package com.seoultech.livingtogether_android.nextofkin.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

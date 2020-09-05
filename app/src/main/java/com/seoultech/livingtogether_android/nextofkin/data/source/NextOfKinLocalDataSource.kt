@@ -1,6 +1,6 @@
-package com.seoultech.livingtogether_android.nok.data.source
+package com.seoultech.livingtogether_android.nextofkin.data.source
 
-import com.seoultech.livingtogether_android.nok.data.NextOfKin
+import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 import com.seoultech.livingtogether_android.util.AppExecutors
 
 class NextOfKinLocalDataSource private constructor(

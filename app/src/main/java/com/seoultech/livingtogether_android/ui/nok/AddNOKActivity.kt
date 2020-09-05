@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityAddNokBinding
-import com.seoultech.livingtogether_android.nok.viewmodel.NextOfKinViewModel
+import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 
 class AddNOKActivity : BaseActivity<ActivityAddNokBinding>(R.layout.activity_add_nok) {
     private lateinit var vm: NextOfKinViewModel

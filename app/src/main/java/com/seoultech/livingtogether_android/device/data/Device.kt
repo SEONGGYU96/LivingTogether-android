@@ -1,4 +1,4 @@
-package com.seoultech.livingtogether_android.device.model
+package com.seoultech.livingtogether_android.device.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -10,39 +10,40 @@ import java.util.*
 
 
 @Entity(
-    tableName = "device_entity",
+    tableName = "device",
     inheritSuperIndices = false
 )
-data class DeviceEntity(
+data class Device(
+    @ColumnInfo(name = "device_type")
+    var deviceType: String,
 
-    @ColumnInfo(name = "device_type") var deviceType: String = "",
+    @PrimaryKey
+    @ColumnInfo(name = "device_address")
+    var deviceAddress: String,
 
-    @ColumnInfo(name = "device_address") var deviceAddress: String,
+    @ColumnInfo(name = "location")
+    var location: String?,
 
-    @ColumnInfo(name = "location") var location: String?,
+    @ColumnInfo(name = "init_date")
+    var initDate: Long,
 
-    @ColumnInfo(name = "init_date") var initDate: Long,
+    @ColumnInfo(name = "last_detection_type_one")
+    var lastDetectionOfActionSignal: Long,
 
-    @ColumnInfo(name = "last_detection_type_one") var lastDetectionOfActionSignal: Long,
-
-    @ColumnInfo(name = "last_detection_type_two") var lastDetectionOfPreserveSignal: Long,
-
-    @ColumnInfo(name = "is_available") var isAvailable: Boolean = false
+    @ColumnInfo(name = "last_detection_type_two")
+    var lastDetectionOfPreserveSignal: Long
 ) {
-    @PrimaryKey(autoGenerate = true) var deviceId: Int = 0
+    @ColumnInfo(name = "is_available")
+    private var _isAvailable: Int = 0
 
-    @ColumnInfo(name = "user_id")
-    @ForeignKey(
-        entity = UserEntity::class,
-        parentColumns = ["Id"],
-        childColumns = ["user_id"],
-        onDelete = ForeignKey.CASCADE
-
-    ) var userId: Int = 0
-
-    companion object {
-        //preserve 갭 6시간
-        private const val PRESERVE_GAP = 21600000
+    var isAvailable: Boolean
+    get() = _isAvailable != 0
+    set(value) {
+        _isAvailable = if (value) {
+            1
+        } else {
+            0
+        }
     }
 
     fun getLastDetectedTimeToMinuet() : String {
@@ -127,5 +128,10 @@ data class DeviceEntity(
             }
         }
         return isAvailable
+    }
+
+    companion object {
+        //preserve 갭 6시간
+        private const val PRESERVE_GAP = 21600000
     }
 }

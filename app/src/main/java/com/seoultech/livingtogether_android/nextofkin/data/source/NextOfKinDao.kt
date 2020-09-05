@@ -1,8 +1,8 @@
-package com.seoultech.livingtogether_android.nok.data.source
+package com.seoultech.livingtogether_android.nextofkin.data.source
 
 import androidx.room.*
 import com.seoultech.livingtogether_android.base.BaseDao
-import com.seoultech.livingtogether_android.nok.data.NextOfKin
+import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 
 @Dao
 abstract class NextOfKinDao : BaseDao<NextOfKin> {

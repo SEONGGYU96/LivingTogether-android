@@ -13,7 +13,7 @@ import com.seoultech.livingtogether_android.bluetooth.viewmodel.ScanViewModel
 import com.seoultech.livingtogether_android.databinding.ActivityScanBinding
 
 class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
-    private lateinit var vm: ScanViewModel
+    private lateinit var scanViewModel: ScanViewModel
 
     private companion object {
         const val POPPOP_UUID = "53454f55-4c54-4543-4850-6f70506f7030"
@@ -26,7 +26,7 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm = viewModelProvider.get(ScanViewModel::class.java)
+        scanViewModel = obtainViewModel()
 
         setSupportActionBar(binding.toolbarScan)
 
@@ -36,22 +36,22 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             it.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_32dp)
         }
 
-        vm.isFound.observe(this, Observer {
+        scanViewModel.isFound.observe(this, Observer {
             if (it) {
                 startActivity(Intent(this, InsertLocationActivity::class.java))
                 finish()
             }
         })
 
-        vm.finishHandler.observe(this, finishObserver)
+        scanViewModel.finishHandler.observe(this, finishObserver)
 
-        vm.timeoutHandler.observe(this, Observer {
+        scanViewModel.timeoutHandler.observe(this, Observer {
             if (it) {
                 AlertDialog.Builder(this)
                     .setTitle("스캔 실패")
                     .setMessage("센서를 찾지 못하였습니다.")
                     .setPositiveButton("재시도") { dialog, _ ->
-                        vm.startScan(SCAN_PERIOD)
+                        scanViewModel.startScan(SCAN_PERIOD)
                         dialog.dismiss()
                     }
                     .setNegativeButton("종료") { dialog, _ ->
@@ -67,22 +67,22 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
         super.onResume()
         
         //블루투스가 활성화 되어있는지 확인. 비활성화 되어 있으면 블루투스를 켜는 화면으로 이동
-        if (vm.isBluetoothOn()) {
+        if (scanViewModel.isBluetoothOn()) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
 
         } else {
-            vm.stopService()
+            scanViewModel.stopService()
 
             //블루투스가 켜져있다면 스캔 시작
-            vm.startScan(SCAN_PERIOD)
+            scanViewModel.startScan(SCAN_PERIOD)
         }
     }
 
     //TODO: 뒤로 가기 버튼 클릭 시 스캔을 종료하겠냐는 다이얼로그 띄우기
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            vm.stopScan()
+            scanViewModel.stopScan()
             finish()
             return true
         }
@@ -94,7 +94,7 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             .setTitle("스캔 종료")
             .setMessage("아직 센서를 찾지 못했습니다.\n스캔을 종료하시겠습니까?")
             .setPositiveButton("종료") { _: DialogInterface, _: Int ->
-                vm.stopScan()
+                scanViewModel.stopScan()
                 finish()
             }
             .setNegativeButton("취소") { dialog: DialogInterface, _: Int ->
@@ -102,4 +102,6 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             }
             .show()
     }
+
+    private fun obtainViewModel(): ScanViewModel = obtainViewModel(ScanViewModel::class.java)
 }

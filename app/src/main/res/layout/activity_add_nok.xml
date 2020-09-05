@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.nok.viewmodel.NextOfKinViewModel" />
+            type="com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel" />
 
     </data>
 
