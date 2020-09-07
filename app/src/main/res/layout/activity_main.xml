@@ -44,7 +44,7 @@
                 android:layout_marginHorizontal="@dimen/margin_entire_padding_horizontal"
                 android:layout_marginTop="@dimen/margin_statusbox_top"
                 android:background="@color/colorWhite"
-                app:cardCornerRadius="@dimen/radius_statusbox"
+                app:cardCornerRadius="@dimen/radius_entire"
                 app:cardElevation="@dimen/elevation_entire"
                 app:layout_constraintBottom_toTopOf="@+id/constraintlayout_main_registerdsensors"
                 app:layout_constraintEnd_toEndOf="parent"

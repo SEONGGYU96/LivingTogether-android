@@ -72,9 +72,25 @@
     <style name="NextOfKinItemPhoneText" parent="MajorText">
         <item name="android:textFontWeight">100</item>
     </style>
+    
+    <style name="ProfileCategoryText" parent="MajorText">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="ProfileValueText" parent="MajorText">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:background">@drawable/round_background</item>
+        <item name="android:backgroundTint">@color/colorProfileValueBackground</item>
+        <item name="android:layout_marginTop">@dimen/margin_profile_value_top</item>
+        <item name="android:paddingStart">@dimen/padding_profile_value_horizontal</item>
+        <item name="android:paddingEnd">@dimen/padding_profile_value_horizontal</item>
+        <item name="android:paddingTop">@dimen/padding_profile_value_vertical</item>
+        <item name="android:paddingBottom">@dimen/padding_profile_value_vertical</item>
+    </style>
 
     <style name="BottomButton" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">18sp</item>
+        <item name="android:foreground">?android:selectableItemBackground</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:letterSpacing">-0.03</item>
         <item name="android:lineSpacingExtra">9sp</item>

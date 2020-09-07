@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/width_item_sensor"
         android:layout_height="@dimen/width_item_sensor"
-        app:cardCornerRadius="@dimen/radius_statusbox"
+        app:cardCornerRadius="@dimen/radius_entire"
         app:cardElevation="@dimen/elevation_entire">
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -11,4 +11,5 @@
     <color name="colorGradientEnd">#5bcbdf</color>
     <color name="colorMainGreen">#61d7cb</color>
     <color name="colorBackgroundNextOfKinItem">#f2f2f2</color>
+    <color name="colorProfileValueBackground">#f4f4f4</color>
 </resources>

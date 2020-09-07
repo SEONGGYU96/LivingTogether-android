@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/colorBackgroundNextOfKinItem"
-        app:cardCornerRadius="@dimen/radius_statusbox"
+        app:cardCornerRadius="@dimen/radius_entire"
         app:cardElevation="@dimen/elevation_entire">
 
         <androidx.constraintlayout.widget.ConstraintLayout

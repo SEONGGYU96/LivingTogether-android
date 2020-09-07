@@ -7,10 +7,17 @@
     <string name="do_finish">종료하기</string>
     <string name="notice_permission_must_be_granted">해당 권한을 허용하지 않으면 앱을 사용할 수 없습니다.</string>
     <string name="see_more">더 보기</string>
+
+    <!-- BottomButton-->
     <string name="bottom_button_insert">추가하기</string>
+    <string name="bottom_button_edit">수정하기</string>
 
     <string name="notification_service_ok">정상적으로 기기를 감지하고 있습니다.</string>
     <string name="notification_bluetooth_off">블루투스가 꺼져있어 기기를 감지할 수 없습니다.</string>
+
+    <!-- Profile-->
+    <string name="profile_setting">사용자 설정</string>
+    <string name="profile_name">이름</string>
 
     <!-- NextOfKin-->
     <string name="next_of_kin">보호자</string>
@@ -34,4 +41,6 @@
     <string name="toast_back_key_exit">뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.</string>
     <string name="ratio_roolbar_logo">1 : 0.482</string>
     <string name="sensor_last_detacted_time">n분 전</string>
+    <string name="profile_phone">전화번호</string>
+    <string name="profile_address">주소</string>
 </resources>
