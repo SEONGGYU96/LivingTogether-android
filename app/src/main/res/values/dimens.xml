@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- entire-->
+    <dimen name="margin_entire_padding_horizontal">16dp</dimen>
+    <dimen name="elevation_entire">5dp</dimen>
+
+    <!-- status_box-->
+    <dimen name="margin_statusbox_padding_start">20dp</dimen>
+    <dimen name="margin_statusbox_padding_top">13dp</dimen>
+    <dimen name="margin_statusbox_padding_bottom">15dp</dimen>
+    <dimen name="margin_statusbox_numberofsensor">4dp</dimen>
+    <dimen name="margin_statusbox_bottom">25dp</dimen>
+    <dimen name="radius_statusbox">5dp</dimen>
+    <dimen name="margin_statusbox_top">25dp</dimen>
+
+    <!-- registerd_sensors-->
+    <dimen name="margin_registerd_sensors_padding_top">13dp</dimen>
+    <dimen name="font_size_see_more">14sp</dimen>
+    <dimen name="margin_sensor_reyclerview_top">16dp</dimen>
+    <dimen name="margin_sensor_recyclerview_bottom">18dp</dimen>
+    <dimen name="margin_registered_sensers_bottom">15dp</dimen>
+    <dimen name="minheight_registered_sensor">206dp</dimen>
+
+    <!-- item_sensor-->
+    <dimen name="width_item_sensor">130dp</dimen>
+    <dimen name="padding_item_device">12dp</dimen>
+
+    <!-- item_next_of_kin-->
+    <dimen name="padding_item_next_of_kin">16dp</dimen>
+
+    <!-- toolbar-->
+    <dimen name="height_toolbar">56dp</dimen>
+    <dimen name="margin_item_device_image">13dp</dimen>
+    <dimen name="width_item_device_state">5dp</dimen>
+    <dimen name="margin_item_device_state">4dp</dimen>
+
+</resources>

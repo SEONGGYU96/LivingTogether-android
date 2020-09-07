@@ -7,8 +7,16 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:statusBarColor">@color/colorWhite</item>
         <item name="android:windowLightStatusBar">true</item>
+
+        <!--custom font-family 적용-->
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
     </style>
 
     <!-- For Splash Screen -->
@@ -16,32 +24,53 @@
         <item name="android:windowBackground">@drawable/splash_image</item>
     </style>
 
-    <style name="TitleText" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">32sp</item>
-        <item name="android:textStyle">bold</item>
+    <style name="TitleText" parent="MajorText">
+        <item name="android:textColor">@color/colorPlainText</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:lineSpacingExtra">9sp</item>
     </style>
 
-    <style name="MinorText" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/gray</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="ToolbarTitle" parent="Widget.AppCompat.TextView">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">32sp</item>
-    </style>
-
-    <style name="NormalStateText" parent="Widget.AppCompat.TextView">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/black</item>
+    <style name="MajorText" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorPlainText</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+        <item name="android:textFontWeight">700</item>
     </style>
 
-    <style name="GrayStateText" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/gray</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">22sp</item>
+    <style name="PlainText" parent="MajorText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="MinorText" parent="MajorText">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="SmallTimeText" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/colorStateGreen</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:lineSpacingExtra">5sp</item>
+    </style>
+
+    <style name="SeeMoreButton" parent="TextAppearance.AppCompat.Button">
+        <item name="background">@null</item>
+        <item name="android:text">@string/see_more</item>
+        <item name="android:textColor">@color/colorPlainText</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/font_size_see_more</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+    <style name="NextOfKinItemNameText" parent="MajorText">
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="NextOfKinItemPhoneText" parent="MajorText">
+        <item name="android:textFontWeight">100</item>
     </style>
 
 </resources>
