@@ -2,7 +2,6 @@
     <string name="app_name">LivingTogether-android</string>
     <string name="app_title">Living Together</string>
     <string name="resgist_sensor">센서 등록</string>
-    <string name="next_of_kin">보호자</string>
     <string name="notice_no_nok">등록된 보호자가 없습니다.\n보호자를 추가하여 비상 상황 발생 시\n지자체에서 연락을 시도할 수 있습니다.</string>
     <string name="allow">허용하기</string>
     <string name="do_finish">종료하기</string>
@@ -14,6 +13,7 @@
     <string name="notification_bluetooth_off">블루투스가 꺼져있어 기기를 감지할 수 없습니다.</string>
 
     <!-- NextOfKin-->
+    <string name="next_of_kin">보호자</string>
     <string name="next_of_kin_name">보호자 이름</string>
     <string name="next_of_kin_phone">010–0000–0000</string>
 

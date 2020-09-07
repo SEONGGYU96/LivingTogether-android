@@ -5,59 +5,52 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel" />
-
+            type="com.seoultech.livingtogether_android.nok.viewmodel.NOKViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
-        tools:context=".ui.sensor.SensorListActivity">
+        tools:context=".ui.nok.NOKListActivity">
 
         <com.seoultech.livingtogether_android.library.LTToolbar
-            android:id="@+id/lttoolbar_sensorlist"
+            android:id="@+id/lttoolbar_nextofkinlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/textview_sensorlist_registerdsensor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textview_sensorlist_registerdsensor"
+            android:id="@+id/textview_nextofkinlist_registernextofkin"
             style="@style/TitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_list_title_vertical"
             android:layout_marginStart="@dimen/margin_entire_list_padding_horizontal"
-            android:text="@string/registered_sensor"
-            app:layout_constraintBottom_toTopOf="@id/recyclerview_sensorlist"
+            android:text="@string/next_of_kin"
+            app:layout_constraintBottom_toTopOf="@id/recyclerview_nextofkinlist"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lttoolbar_sensorlist" />
+            app:layout_constraintTop_toBottomOf="@id/lttoolbar_nextofkinlist" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_sensorlist"
-            android:layout_width="wrap_content"
+            android:id="@+id/recyclerview_nextofkinlist"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/margin_entire_list_padding_horizontal"
             android:clipToPadding="false"
             android:paddingBottom="100dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_sensorlist_registerdsensor"
-            app:spanCount="2"
-            tools:listitem="@layout/item_sensor" />
+            app:layout_constraintTop_toBottomOf="@id/textview_nextofkinlist_registernextofkin"
+            tools:listitem="@layout/item_next_of_kin" />
 
         <Button
-            android:id="@+id/button_sensorlist_insert"
+            android:id="@+id/button_nextofkin_insert"
             style="@style/BottomButton"
             android:text="@string/bottom_button_insert"
             app:layout_constraintBottom_toBottomOf="parent"
