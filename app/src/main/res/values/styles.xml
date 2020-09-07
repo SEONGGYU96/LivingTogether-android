@@ -50,7 +50,7 @@
 
     <style name="SmallTimeText" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/colorStateGreen</item>
+        <item name="android:textColor">@color/colorMainGreen</item>
         <item name="android:letterSpacing">-0.03</item>
         <item name="android:lineSpacingExtra">5sp</item>
     </style>
@@ -71,6 +71,22 @@
 
     <style name="NextOfKinItemPhoneText" parent="MajorText">
         <item name="android:textFontWeight">100</item>
+    </style>
+
+    <style name="BottomButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:lineSpacingExtra">9sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/height_bottom_button</item>
+        <item name="android:background">@drawable/round_background</item>
+        <item name="android:backgroundTint">@color/colorMainGreen</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:layout_marginStart">@dimen/margin_entire_padding_horizontal</item>
+        <item name="android:layout_marginEnd">@dimen/margin_entire_padding_horizontal</item>
+        <item name="android:elevation">@dimen/elevation_entire</item>
+        <item name="android:layout_marginBottom">@dimen/margin_bottom_button_bottom</item>
     </style>
 
 </resources>

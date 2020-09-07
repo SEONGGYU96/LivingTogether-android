@@ -42,7 +42,7 @@
                 android:layout_width="@dimen/width_item_device_state"
                 android:layout_height="@dimen/width_item_device_state"
                 android:layout_marginStart="@dimen/margin_item_device_state"
-                android:src="@color/colorStateGreen"
+                android:src="@color/colorMainGreen"
                 app:layout_constraintBottom_toBottomOf="@id/textview_itemdevice_name"
                 app:layout_constraintStart_toEndOf="@id/textview_itemdevice_name"
                 app:layout_constraintTop_toTopOf="@id/textview_itemdevice_name" />

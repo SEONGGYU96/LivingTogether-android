@@ -90,6 +90,15 @@
                         android:text="@string/status_box_number_of_sensor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/textview_main_numberofsensor" />
+
+                    <ImageView
+                        android:id="@+id/imageview_main_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/sensor_png"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
@@ -146,7 +155,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_main_registeredsensors"
                     app:layout_constraintVertical_bias="1.0"
-                    tools:listitem="@layout/device_item_main" />
+                    tools:listitem="@layout/item_sensor" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -194,7 +203,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_main_nextofkin"
-                    tools:listitem="@layout/nok_item_main" />
+                    tools:listitem="@layout/item_next_of_kin" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
