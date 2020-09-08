@@ -73,11 +73,11 @@
         <item name="android:textFontWeight">100</item>
     </style>
     
-    <style name="ProfileCategoryText" parent="MajorText">
+    <style name="InputBoxCategoryText" parent="MajorText">
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="ProfileValueText" parent="MajorText">
+    <style name="InputBoxValueText" parent="MajorText">
         <item name="android:textFontWeight">400</item>
         <item name="android:background">@drawable/round_background</item>
         <item name="android:backgroundTint">@color/colorProfileValueBackground</item>

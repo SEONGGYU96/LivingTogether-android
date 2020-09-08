@@ -33,7 +33,7 @@
                 android:id="@+id/text_phone_nok_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/next_of_kin_phone"
+                android:text="@string/next_of_kin_phone_ex"
                 style="@style/NextOfKinItemPhoneText"
                 app:layout_constraintBottom_toBottomOf="@+id/text_name_nok_item"
                 app:layout_constraintEnd_toEndOf="parent"
