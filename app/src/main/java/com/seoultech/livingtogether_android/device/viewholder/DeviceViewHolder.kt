@@ -7,12 +7,12 @@ import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseViewHolder
 import com.seoultech.livingtogether_android.databinding.DeviceItemMainBinding
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
+import com.seoultech.livingtogether_android.device.data.Device
 
 class DeviceViewHolder(parent: ViewGroup, val listener: DeviceAdapter.OnDeviceClickListener?) :
-    BaseViewHolder<DeviceEntity, DeviceItemMainBinding>(R.layout.device_item_main, parent) {
+    BaseViewHolder<Device, DeviceItemMainBinding>(R.layout.device_item_main, parent) {
 
-    override fun bind(data: DeviceEntity) {
+    override fun bind(data: Device) {
 
         binding.run {
             textNameSensorItem.text = data.deviceType

@@ -4,8 +4,8 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import com.seoultech.livingtogether_android.base.BaseViewModel
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
-import com.seoultech.livingtogether_android.device.repository.DeviceRepository
+import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 
 class LocationViewModel(application: Application) : BaseViewModel(application) {
 
@@ -15,7 +15,7 @@ class LocationViewModel(application: Application) : BaseViewModel(application) {
 
     private val device = getMostRecentDevice()
 
-    private fun getMostRecentDevice() : DeviceEntity? {
+    private fun getMostRecentDevice() : Device? {
         val mostResentDevice = deviceRepository.getMostRecentDevice()
 
         if (mostResentDevice == null) {

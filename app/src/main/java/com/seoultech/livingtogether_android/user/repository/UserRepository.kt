@@ -1,11 +1,8 @@
 package com.seoultech.livingtogether_android.user.repository
 
-import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.seoultech.livingtogether_android.ApplicationImpl
-import com.seoultech.livingtogether_android.base.BaseRepository
 import com.seoultech.livingtogether_android.network.RetrofitClient
 import com.seoultech.livingtogether_android.user.dao.UserDao
 import com.seoultech.livingtogether_android.user.network.RequestUser

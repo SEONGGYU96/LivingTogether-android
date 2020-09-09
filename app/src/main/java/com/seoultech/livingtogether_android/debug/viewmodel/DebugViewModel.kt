@@ -4,7 +4,7 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import com.seoultech.livingtogether_android.ApplicationImpl
-import com.seoultech.livingtogether_android.device.model.DeviceEntity
+import com.seoultech.livingtogether_android.device.data.Device
 import java.util.*
 
 class DebugViewModel(application: Application) : AndroidViewModel(application) {
@@ -19,7 +19,7 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
     fun addDevice() {
         val calendar = GregorianCalendar()
         db.deviceDao().insert(
-            DeviceEntity(
+            Device(
                 "발판", DEBUG_ADDRESS, DEBUG_LOCATION,
                 calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis, true
             )

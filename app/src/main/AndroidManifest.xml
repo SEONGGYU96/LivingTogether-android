@@ -41,7 +41,7 @@
         <activity android:name=".debug.ScanServiceTest" />
         <activity android:name=".ui.profile.EditProfileActivity" />
         <activity android:name=".ui.nok.AddNOKActivity" />
-        <activity android:name=".ui.nok.NOKListActivity" />
+        <activity android:name=".ui.nok.NextOfKinListActivity" />
         <activity android:name=".ui.scan.ScanActivity" />
         <activity android:name=".ui.main.MainActivity" />
         <activity

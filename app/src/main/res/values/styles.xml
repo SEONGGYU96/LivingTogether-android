@@ -79,7 +79,7 @@
 
     <style name="InputBoxValueText" parent="MajorText">
         <item name="android:textFontWeight">400</item>
-        <item name="android:background">@drawable/round_background</item>
+        <item name="android:background">@drawable/background_round_rectangle_5dp</item>
         <item name="android:backgroundTint">@color/colorProfileValueBackground</item>
         <item name="android:layout_marginTop">@dimen/margin_profile_value_top</item>
         <item name="android:paddingStart">@dimen/padding_profile_value_horizontal</item>
@@ -96,7 +96,7 @@
         <item name="android:lineSpacingExtra">9sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/height_bottom_button</item>
-        <item name="android:background">@drawable/round_background</item>
+        <item name="android:background">@drawable/background_round_rectangle_5dp</item>
         <item name="android:backgroundTint">@color/colorMainGreen</item>
         <item name="android:textFontWeight">700</item>
         <item name="android:layout_marginStart">@dimen/margin_entire_padding_horizontal</item>
