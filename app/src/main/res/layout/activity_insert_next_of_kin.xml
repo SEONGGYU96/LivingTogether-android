@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.seoultech.livingtogether_android.nok.viewmodel.NOKViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        tools:context=".ui.nok.AddNOKActivity">
+
+        <com.seoultech.livingtogether_android.library.LTToolbar
+            android:id="@+id/lttoolbar_insertnextofkin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_entire_padding_horizontal"
+            android:layout_marginTop="@dimen/margin_inputbox_top"
+            app:cardCornerRadius="@dimen/radius_entire"
+            app:cardElevation="@dimen/elevation_entire"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lttoolbar_insertnextofkin">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_inputbox_horizontal">
+
+                <TextView
+                    android:id="@+id/textview_insertnextofkin_insert"
+                    style="@style/TitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_inputbox_top"
+                    android:text="@string/next_of_kin_insert"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_insertnextofkin_name"
+                    style="@style/InputBoxCategoryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_inputbox_title_bottom"
+                    android:text="@string/profile_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_insertnextofkin_insert" />
+
+                <EditText
+                    android:id="@+id/edittext_insertnextofkin_name"
+                    style="@style/InputBoxValueText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_insertnextofkin_name" />
+
+                <TextView
+                    android:id="@+id/textview_insertnextofkin_phone"
+                    style="@style/InputBoxCategoryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_inputbox_category_top"
+                    android:text="@string/next_of_kin_phone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/edittext_insertnextofkin_name" />
+
+                <EditText
+                    android:id="@+id/edittext_insertnextofkin_phone"
+                    style="@style/InputBoxValueText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_inputbox_bottom"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_insertnextofkin_phone" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/button_insertnextofkin_insert"
+            style="@style/BottomButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bottom_button_insert"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
