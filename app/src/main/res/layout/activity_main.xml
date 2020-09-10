@@ -5,14 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
-            name="viewModel"
+            name="mainViewModel"
             type="com.seoultech.livingtogether_android.viewmodel.MainViewModel" />
 
         <variable
-            name="constant"
-            type="com.seoultech.livingtogether_android.util.Constant" />
+            name="deviceViewModel"
+            type="com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel" />
+
+        <variable
+            name="nextOfKinViewModel"
+            type="com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel" />
     </data>
 
     <ScrollView
@@ -73,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_statusbox_padding_start"
                         android:includeFontPadding="false"
-                        android:text="3"
+                        android:text="@{deviceViewModel.items.size()}"
                         android:textColor="#61d7cb"
                         android:textSize="65sp"
                         app:layout_constraintBaseline_toBaselineOf="@id/textview_main_numberofsensortext"
@@ -96,8 +99,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/sensor_png"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -140,6 +143,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_main_sensors"
+                    replaceAll="@{deviceViewModel.items}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_sensor_reyclerview_top"
@@ -193,6 +197,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_main_nextofkin"
+                    replaceAll="@{nextOfKinViewModel.items}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_entire_padding_horizontal"

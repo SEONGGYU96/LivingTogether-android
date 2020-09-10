@@ -2,6 +2,9 @@ package com.seoultech.livingtogether_android
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.seoultech.livingtogether_android.bluetooth.viewmodel.ScanViewModel
@@ -10,11 +13,14 @@ import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepository
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
+import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
 class ViewModelFactory private constructor(
     private val nextOfKinRepository: NextOfKinRepository,
     private val deviceRepository: DeviceRepository,
-    private val signalHistoryRepository: SignalHistoryRepository
+    private val signalHistoryRepository: SignalHistoryRepository,
+    private val bluetoothAdapter: BluetoothAdapter,
+    private val application: Application
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
@@ -26,6 +32,8 @@ class ViewModelFactory private constructor(
                     DeviceViewModel(deviceRepository)
                 isAssignableFrom(ScanViewModel::class.java) ->
                     ScanViewModel(deviceRepository, signalHistoryRepository)
+                isAssignableFrom(MainViewModel::class.java) ->
+                    MainViewModel(bluetoothAdapter, application)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }
@@ -41,7 +49,9 @@ class ViewModelFactory private constructor(
                 INSTANCE ?: ViewModelFactory(
                     Injection.provideNextOfKinRepository(application.applicationContext),
                     Injection.provideDeviceRepository(application.applicationContext),
-                    Injection.provideSignalHistoryRepository(application.applicationContext))
+                    Injection.provideSignalHistoryRepository(application.applicationContext),
+                    (application.applicationContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter,
+                    application)
                     .also { INSTANCE = it }
             }
     }

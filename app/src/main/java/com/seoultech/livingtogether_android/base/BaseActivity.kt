@@ -11,7 +11,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.ViewModelFactory
 import kotlinx.android.synthetic.main.layout_toolbar.view.*
