@@ -22,6 +22,10 @@ class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewMode
         loadDevice()
     }
 
+    val itemSizeString: LiveData<String> = Transformations.map(_items) {
+        it.size.toString()
+    }
+
     private fun loadDevice() {
         deviceRepository.getDevices(object : DeviceDataSource.LoadDevicesCallback {
             override fun onDevicesLoaded(devices: List<Device>) {

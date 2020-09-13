@@ -10,7 +10,6 @@ import com.seoultech.livingtogether_android.nextofkin.adapter.NOKAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
-import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.util.MarginDecoration
@@ -52,6 +51,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 adapter = nextOfKinAdapter
                 addItemDecoration(MarginDecoration(baseContext, 16, RecyclerView.VERTICAL))
             }
+
+            this@MainActivity.deviceViewModel.items.observe(this@MainActivity, Observer {
+                textviewMainStatusboxtitle.text = if (it.isEmpty()) {
+                    getText(R.string.sensor_no_registered)
+                } else {
+                    getText(R.string.status_box_on_going)
+                }
+            })
         }
     }
 

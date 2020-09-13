@@ -3,23 +3,21 @@ package com.seoultech.livingtogether_android.ui.nok
 import android.os.Bundle
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
-import com.seoultech.livingtogether_android.databinding.ActivityAddNokBinding
+import com.seoultech.livingtogether_android.databinding.ActivityInsertNextOfKinBinding
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 
-class AddNOKActivity : BaseActivity<ActivityAddNokBinding>(R.layout.activity_add_nok) {
-    private lateinit var vm: NextOfKinViewModel
+class AddNOKActivity : BaseActivity<ActivityInsertNextOfKinBinding>(R.layout.activity_insert_next_of_kin) {
+    private lateinit var nextOfKinViewModel: NextOfKinViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setToolbar(binding.toolbar,"보호자 등록하기")
-
-        vm = viewModelProvider.get(NextOfKinViewModel::class.java)
+        nextOfKinViewModel = obtainViewModel()
 
         binding.run {
-            viewModel = vm
+            viewModel = nextOfKinViewModel
         }
-
-        vm.finishHandler.observe(this, finishObserver)
     }
+
+    private fun obtainViewModel() = obtainViewModel(NextOfKinViewModel::class.java)
 }

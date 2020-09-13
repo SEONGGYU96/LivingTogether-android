@@ -61,8 +61,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <!-- Todo: 여기 문구 데이터바인딩으로 변경시키려고 했음-->
-
                     <TextView
                         android:id="@+id/textview_main_statusboxtitle"
                         style="@style/MajorText"
@@ -81,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_statusbox_padding_start"
                         android:includeFontPadding="false"
-                        android:text="@{deviceViewModel.items.size()}"
+                        android:text="@{deviceViewModel.itemSizeString}"
                         android:textColor="#61d7cb"
                         android:textSize="65sp"
                         app:layout_constraintBaseline_toBaselineOf="@id/textview_main_numberofsensortext"
@@ -214,7 +212,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintlayout_main_registerednextofkin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/margin_registered_sensers_bottom"
                 android:background="@color/colorWhite"
                 android:clipChildren="false"

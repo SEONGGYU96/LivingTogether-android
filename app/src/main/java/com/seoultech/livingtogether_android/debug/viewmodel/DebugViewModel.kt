@@ -19,11 +19,7 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
     fun addDevice() {
         val calendar = GregorianCalendar()
         db.deviceDao().insert(
-            Device(
-                "발판", DEBUG_ADDRESS, DEBUG_LOCATION,
-                calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis, true
-            )
-        )
+            Device("발판", DEBUG_ADDRESS, DEBUG_LOCATION, calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis))
         Toast.makeText(getApplication(), "디버깅 디바이스가 추가되었습니다.", Toast.LENGTH_SHORT).show()
     }
 

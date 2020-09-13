@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="nextOfKin"
+            type="com.seoultech.livingtogether_android.nextofkin.data.NextOfKin" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -23,7 +25,7 @@
                 android:id="@+id/text_name_nok_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/next_of_kin_name"
+                android:text="@{nextOfKin.name}"
                 style="@style/NextOfKinItemNameText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +35,7 @@
                 android:id="@+id/text_phone_nok_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/next_of_kin_phone_ex"
+                android:text="@{nextOfKin.phoneNumber}"
                 style="@style/NextOfKinItemPhoneText"
                 app:layout_constraintBottom_toBottomOf="@+id/text_name_nok_item"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -14,10 +14,10 @@ abstract class DeviceDao : BaseDao<Device> {
     abstract fun getDevice(deviceAddress: String): Device?
 
     @Query("SELECT DISTINCT device_address FROM device")
-    abstract fun getAllDeviceAddresses(): List<String>
+    abstract fun getAddressesOfDevices(): List<String>
 
     @Query(" SELECT * FROM device ORDER BY last_detection_type_one DESC LIMIT 1")
-    abstract fun getMostRecentDevice(): Device?
+    abstract fun getLatestDevice(): Device?
 
     @Query("DELETE FROM device")
     abstract fun deleteAll()

@@ -4,7 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.seoultech.livingtogether_android.ApplicationImpl
 
-class SignalHistoryRepository : BaseRepository<SignalHistoryEntity>() {
+class SignalHistoryRepository {
+
+    companion object {
+        private const val TAG = "SignalHistoryRepository"
+    }
 
     private val dao: SignalHistoryDao by lazy { ApplicationImpl.db.signalHistoryDao() }
 
@@ -32,18 +36,15 @@ class SignalHistoryRepository : BaseRepository<SignalHistoryEntity>() {
         return result
     }
 
-    public override fun insert(entity: SignalHistoryEntity) {
-        super.insert(entity)
+    fun insert(entity: SignalHistoryEntity) {
         dao.insert(entity)
     }
 
-    public override fun delete(entity: SignalHistoryEntity) {
-        super.delete(entity)
+    fun delete(entity: SignalHistoryEntity) {
         dao.delete(entity)
     }
 
-    public override fun update(entity: SignalHistoryEntity) {
-        super.update(entity)
+    fun update(entity: SignalHistoryEntity) {
         dao.update(entity)
     }
 }

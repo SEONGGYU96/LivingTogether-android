@@ -47,6 +47,14 @@ class DeviceRepository(private val deviceLocalDataSource: DeviceDataSource) : De
         })
     }
 
+    override fun getDeviceAddresses(callback: DeviceDataSource.LoadDeviceAddressesCallback) {
+        deviceLocalDataSource.getDeviceAddresses(callback);
+    }
+
+    override fun getLatestDevice(callback: DeviceDataSource.GetDeviceCallback) {
+        deviceLocalDataSource.getLatestDevice(callback)
+    }
+
     override fun saveDevice(device: Device) {
         cacheAndPerform(device) {
             deviceLocalDataSource.saveDevice(it)

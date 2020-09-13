@@ -7,17 +7,21 @@ import com.seoultech.livingtogether_android.databinding.ActivityInsertLocationBi
 import com.seoultech.livingtogether_android.device.viewmodel.LocationViewModel
 
 class InsertLocationActivity : BaseActivity<ActivityInsertLocationBinding>(R.layout.activity_insert_location) {
-    private lateinit var vm: LocationViewModel
+    private lateinit var locationViewModel: LocationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm = viewModelProvider.get(LocationViewModel::class.java)
+        locationViewModel = obtainViewModel()
 
-        vm.finishHandler.observe(this, finishObserver)
+        locationViewModel.getMostRecentDevice()
+
+        locationViewModel.finishHandler.observe(this, finishObserver)
 
         binding.run {
-            viewModel = vm
+            viewModel = locationViewModel
         }
     }
+
+    private fun obtainViewModel() = obtainViewModel(LocationViewModel::class.java)
 }

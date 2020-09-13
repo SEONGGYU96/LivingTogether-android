@@ -18,9 +18,20 @@ interface DeviceDataSource {
         fun onDataNotAvailable()
     }
 
+    interface LoadDeviceAddressesCallback {
+
+        fun onDeviceAddressesLoaded(addresses: List<String>)
+
+        fun onDataNotAvailable()
+    }
+
     fun getDevices(callback: LoadDevicesCallback)
 
     fun getDevice(deviceAddress: String, callback: GetDeviceCallback)
+
+    fun getDeviceAddresses(callback: LoadDeviceAddressesCallback)
+
+    fun getLatestDevice(callback: GetDeviceCallback)
 
     fun saveDevice(device: Device)
 

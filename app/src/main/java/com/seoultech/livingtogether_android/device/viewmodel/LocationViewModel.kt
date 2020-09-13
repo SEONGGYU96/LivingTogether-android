@@ -3,35 +3,41 @@ package com.seoultech.livingtogether_android.device.viewmodel
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
+import com.seoultech.livingtogether_android.Injection
 import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 
 class LocationViewModel(application: Application) : BaseViewModel(application) {
 
     var location: String? = null
 
-    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
+    private val deviceRepository: DeviceRepository by lazy { Injection.provideDeviceRepository(application) }
 
-    private val device = getMostRecentDevice()
+    private var device : Device? = null
 
-    private fun getMostRecentDevice() : Device? {
-        val mostResentDevice = deviceRepository.getMostRecentDevice()
+    fun getMostRecentDevice() {
+        deviceRepository.getLatestDevice(object : DeviceDataSource.GetDeviceCallback {
+            override fun onDeviceLoaded(device: Device) {
+                this@LocationViewModel.device = device
+            }
 
-        if (mostResentDevice == null) {
-            Log.d(TAG, "empty device")
-            Toast.makeText(getApplication(), "저장된 디바이스가 없습니다.", Toast.LENGTH_SHORT).show()
+            override fun onDataNotAvailable() {
+                Log.d(TAG, "empty device")
+                Toast.makeText(getApplication(), "저장된 디바이스가 없습니다.", Toast.LENGTH_SHORT).show()
 
-            finishHandler.value = true
-            return null
-        }
-        return mostResentDevice
+                finishHandler.value = true
+            }
+        })
     }
 
     fun updateLocation() {
-        device!!.location = location
+        device?.let {
+            it.location = this.location
 
-        deviceRepository.update(device)
-        finishHandler.value = true
+            deviceRepository.updateDevice(it)
+            finishHandler.value = true
+        }
     }
 }
