@@ -36,26 +36,6 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes var layoutResId : In
         binding.lifecycleOwner = this
     }
 
-    protected fun setToolbar(toolbar: View, title: String) {
-        setSupportActionBar(toolbar as Toolbar)
-        toolbar.textview_toolbar_title.text = title
-
-        supportActionBar?.let {
-            it.setDisplayShowTitleEnabled(false)
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_32dp)
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     protected fun <T : ViewModel> obtainViewModel(viewModelClass: Class<T>) =
         ViewModelProvider(this, ViewModelFactory.getInstance(application)).get(viewModelClass)
 }

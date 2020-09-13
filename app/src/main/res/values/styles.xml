@@ -129,4 +129,15 @@
         <item name="android:textColor">@color/colorPlainText</item>
     </style>
 
+    <style name="BackButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:foreground">@drawable/custom_ripple_oval</item>
+        <item name="android:paddingStart">@dimen/margin_entire_padding_horizontal</item>
+        <item name="android:paddingEnd">@dimen/margin_entire_padding_horizontal</item>
+        <item name="android:src">@drawable/ic_sensor_ic_back</item>
+        <item name="android:tint">@color/colorPlainText</item>
+    </style>
+
 </resources>

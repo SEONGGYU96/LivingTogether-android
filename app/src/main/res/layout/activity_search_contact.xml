@@ -3,107 +3,104 @@
 <layout>
 
     <data>
+
         <variable
             name="viewModel"
             type="com.seoultech.livingtogether_android.contacts.ContactViewModel" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".ui.contacts.SearchContactActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout_searchcontact_searchbar"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/background_round_rectangle"
-        android:backgroundTint="@color/background_gray">
+        android:layout_height="match_parent"
+        android:background="@color/colorContactBackground"
+        tools:context=".ui.contacts.SearchContactActivity">
 
-        <ImageButton
-            android:id="@+id/imagebutton_searchcontact_back"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout_searchcontact_searchbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_round_rectangle_20dp"
+            android:backgroundTint="@color/colorContactSearchBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/imagebutton_searchcontact_back"
+                style="@style/BackButton"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/edittext_searchcontact_search"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/edittext_searchcontact_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_contact_title_verticlal"
+                android:background="@null"
+                android:hint="@string/contact_search_hint"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imagebutton_searchcontact_clear"
+                app:layout_constraintStart_toEndOf="@id/imagebutton_searchcontact_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/imagebutton_searchcontact_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@null"
+                android:foreground="@drawable/custom_ripple_oval"
+                android:paddingHorizontal="@dimen/margin_entire_padding_horizontal"
+                android:src="@drawable/ic_baseline_clear_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textview_searchcontact_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_keyboard_arrow_left_black_32dp"
-            android:background="@null"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/margin_contact_result_text_start"
+            android:layout_marginTop="@dimen/margin_contact_result_text_top"
+            android:text="@{viewModel.contactCount}"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/edittext_searchcontact_search"/>
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout_searchcontact_searchbar" />
 
-        <EditText
-            android:id="@+id/edittext_searchcontact_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="검색"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@id/imagebutton_searchcontact_back"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/imagebutton_searchcontact_clear"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <ImageButton
-            android:id="@+id/imagebutton_searchcontact_clear"
-            android:layout_width="0dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_searchcontact"
+            replaceAll="@{viewModel.contact}"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/ic_baseline_clear_24"
-            android:background="@null"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/margin_contact_result_recyclerview_top"
+            android:background="@drawable/background_round_rectangle_20dp"
+            android:backgroundTint="@color/colorContactResultBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_searchcontact_result"
+            tools:listitem="@layout/item_contact_list" />
 
+        <TextView
+            android:id="@+id/textview_searchcontact_nodata"
+            style="@style/TitleText"
+            visibilityAsData="@{viewModel.contact}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_no_search_result"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/textview_searchcontact_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{viewModel.contactCount}"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constraintLayout_searchcontact_searchbar"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_contact"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/background_round_rectangle"
-        android:backgroundTint="@color/white"
-        tools:listitem="@layout/item_contact_list"
-        replaceAll="@{viewModel.contact}"
-        app:layout_constraintTop_toBottomOf="@id/textview_searchcontact_result"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <TextView
-        android:id="@+id/textview_searchcontact_nodata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="검색 결과가 없습니다."
-        android:textSize="20sp"
-        android:textStyle="bold"
-        visibilityAsData="@{viewModel.contact}"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
 

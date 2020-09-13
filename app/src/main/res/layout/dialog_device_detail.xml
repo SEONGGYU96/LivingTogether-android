@@ -9,7 +9,7 @@
         android:id="@+id/textview_dialogdevice_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mainBlue"
+        android:background="@color/colorMainGreen"
         android:gravity="center"
         android:paddingVertical="20dp"
         android:text="센서 정보"
