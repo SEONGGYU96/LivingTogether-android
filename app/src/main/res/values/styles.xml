@@ -48,6 +48,10 @@
         <item name="android:textFontWeight">400</item>
     </style>
 
+    <style name="NoticeText" parent="MajorText">
+        <item name="android:textFontWeight">400</item>
+    </style>
+
     <style name="SmallTimeText" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/colorMainGreen</item>
@@ -103,6 +107,26 @@
         <item name="android:layout_marginEnd">@dimen/margin_entire_padding_horizontal</item>
         <item name="android:elevation">@dimen/elevation_entire</item>
         <item name="android:layout_marginBottom">@dimen/margin_bottom_button_bottom</item>
+    </style>
+
+    <style name="RegisterButtonWhite" parent="TextAppearance.AppCompat.Button">
+        <item name="android:foreground">?android:selectableItemBackground</item>
+        <item name="android:paddingTop">@dimen/padding_register_button_vertical</item>
+        <item name="android:paddingBottom">@dimen/padding_register_button_vertical</item>
+        <item name="android:paddingStart">@dimen/padding_register_button_horizontal</item>
+        <item name="android:paddingEnd">@dimen/padding_register_button_horizontal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorMainGreen</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+        <item name="android:text">@string/register_button</item>
+        <item name="background">@drawable/background_round_rectangle_5dp</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+    
+    <style name="RegisterButtonGray" parent="RegisterButtonWhite">
+        <item name="backgroundTint">@color/colorRegisterButtonGray</item>
+        <item name="android:textColor">@color/colorPlainText</item>
     </style>
 
 </resources>

@@ -8,6 +8,9 @@
     <string name="notice_permission_must_be_granted">해당 권한을 허용하지 않으면 앱을 사용할 수 없습니다.</string>
     <string name="see_more">더 보기</string>
 
+    <!-- RegisterButton-->
+    <string name="register_button">등록하기</string>
+
     <!-- BottomButton-->
     <string name="bottom_button_insert">추가하기</string>
     <string name="bottom_button_edit">수정하기</string>
@@ -27,11 +30,13 @@
     <string name="next_of_kin_phone_ex">010–0000–0000</string>
     <string name="next_of_kin_phone">전화번호</string>
     <string name="next_of_kin_insert">보호자 추가</string>
+    <string name="next_of_kin_no_registered">등록된 보호자가 없습니다.</string>
 
     <!-- Sensor-->
     <string name="sensor_registerd">등록된 센서</string>
     <string name="sensor_foot">발판 센서</string>
     <string name="sensor_location">위치</string>
+    <string name="sensor_no_registered">등록된 센서가 없습니다.</string>
 
     <!-- StatusBox-->
     <string name="status_box_no_sensor">등록된 센서가 없습니다.</string>
