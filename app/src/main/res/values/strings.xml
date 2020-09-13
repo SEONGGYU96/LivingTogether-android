@@ -57,4 +57,5 @@
     <string name="ratio_roolbar_logo">1 : 0.482</string>
     <string name="sensor_last_detacted_time">n분 전</string>
     <string name="sensor_no_response">응답없음</string>
+    <string name="statusbox_bluetooth_on_button">블루투스 켜기</string>
 </resources>

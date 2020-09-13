@@ -140,4 +140,19 @@
         <item name="android:tint">@color/colorPlainText</item>
     </style>
 
+    <style name="BluetoothOnButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_marginBottom">@dimen/margin_statusbox_bluetooth_button_bottom</item>
+        <item name="android:background">@drawable/background_round_rectangle_5dp</item>
+        <item name="android:backgroundTint">@color/colorMainGreen</item>
+        <item name="android:foreground">?android:selectableItemBackground</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingStart">@dimen/padding_statusbox_bluetooth_button_horizontal</item>
+        <item name="android:paddingEnd">@dimen/padding_statusbox_bluetooth_button_horizontal</item>
+        <item name="android:paddingTop">@dimen/padding_statusbox_bluetooth_button_vertical</item>
+        <item name="android:paddingBottom">@dimen/padding_statusbox_bluetooth_button_vertical</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
 </resources>

@@ -15,11 +15,15 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
         private const val TAG = "MainViewModel"
     }
 
-    private var isBluetoothOn = BluetoothLiveData
+    private var hasDevice = false
+
+    var isBluetoothOn = BluetoothLiveData
 
     fun onResume() {
         startService()
-        bluetoothStateCheck()
+        if (hasDevice) {
+            bluetoothStateCheck()
+        }
     }
 
     private fun startService() {
@@ -56,5 +60,9 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
 
     fun bluetoothStateCheck() {
         isBluetoothOn.value = bluetoothAdapter.isEnabled ?: false
+    }
+
+    fun setHasDevice(hasDevice: Boolean) {
+        this.hasDevice = hasDevice;
     }
 }

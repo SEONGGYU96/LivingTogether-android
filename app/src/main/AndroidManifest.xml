@@ -36,6 +36,8 @@
             android:name=".alarm.AlarmReceiver"
             android:exported="false" />
 
+        <receiver android:name=".bluetooth.receiver.BluetoothStateReceiver" />
+
         <activity android:name=".ui.scan.InsertLocationActivity" />
         <activity android:name=".ui.sensor.SensorListActivity" />
         <activity android:name=".debug.ScanServiceTest" />

@@ -99,18 +99,44 @@
 
                     <ImageView
                         android:id="@+id/imageview_main_status"
+                        setGrayTint="@{deviceViewModel.items.size() == 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/sensor_png"
-                        setGrayTint="@{deviceViewModel.items.size() == 0}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
-                    <androidx.constraintlayout.widget.Group
-                        android:visibility="@{deviceViewModel.items.size() == 0 ? View.INVISIBLE : View.VISIBLE}"
+                    <Button
+                        android:id="@+id/button_main_bluetoothon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="textview_main_numberofsensortext, textview_main_numberofsensor"/>
+                        style="@style/BluetoothOnButton"
+                        android:text="@string/statusbox_bluetooth_on_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/textview_main_statusboxtitle" />
+
+                    <ImageView
+                        android:id="@+id/imageview_main_invallidbluetooth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_invalid_bluetooth"
+                        android:layout_marginEnd="@dimen/margin_statusbox_bluetooth_image_end"
+                        android:layout_marginBottom="@dimen/margin_statusbox_padding_bottom"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_main_bluetoothoff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="imageview_main_invallidbluetooth, button_main_bluetoothon"/>
+
+                    <androidx.constraintlayout.widget.Group
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{deviceViewModel.items.size() == 0 ? View.INVISIBLE : View.VISIBLE}"
+                        app:constraint_referenced_ids="textview_main_numberofsensortext, textview_main_numberofsensor" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -245,11 +271,11 @@
                     android:id="@+id/recyclerview_main_nextofkin"
                     replaceAll="@{nextOfKinViewModel.items}"
                     android:layout_width="match_parent"
-                    android:visibility="@{nextOfKinViewModel.items.size() == 0 ? View.GONE : View.VISIBLE}"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_entire_padding_horizontal"
                     android:layout_marginVertical="@dimen/margin_sensor_reyclerview_top"
                     android:orientation="vertical"
+                    android:visibility="@{nextOfKinViewModel.items.size() == 0 ? View.GONE : View.VISIBLE}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -278,10 +304,10 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
+                        style="@style/RegisterButtonGray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_register_button_top"
-                        style="@style/RegisterButtonGray"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textview_main_noregisterednextofkin" />

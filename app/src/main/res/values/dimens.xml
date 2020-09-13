@@ -66,6 +66,10 @@
     <dimen name="margin_contact_result_text_start">20dp</dimen>
     <dimen name="margin_contact_result_text_top">20dp</dimen>
     <dimen name="margin_contact_result_recyclerview_top">10dp</dimen>
+    <dimen name="margin_statusbox_bluetooth_button_bottom">16dp</dimen>
+    <dimen name="padding_statusbox_bluetooth_button_horizontal">14dp</dimen>
+    <dimen name="padding_statusbox_bluetooth_button_vertical">7dp</dimen>
+    <dimen name="margin_statusbox_bluetooth_image_end">16dp</dimen>
 
 
 </resources>

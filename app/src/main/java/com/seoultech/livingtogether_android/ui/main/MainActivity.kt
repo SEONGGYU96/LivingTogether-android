@@ -1,6 +1,7 @@
 package com.seoultech.livingtogether_android.ui.main
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private lateinit var nextOfKinViewModel: NextOfKinViewModel
     private lateinit var mainViewModel: MainViewModel
 
+    private lateinit var statusBoxTitle: CharSequence
+
+    private lateinit var bluetoothStateObserver: Observer<Boolean>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,15 +56,47 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 adapter = nextOfKinAdapter
                 addItemDecoration(MarginDecoration(baseContext, 16, RecyclerView.VERTICAL))
             }
-
-            this@MainActivity.deviceViewModel.items.observe(this@MainActivity, Observer {
-                textviewMainStatusboxtitle.text = if (it.isEmpty()) {
-                    getText(R.string.sensor_no_registered)
-                } else {
-                    getText(R.string.status_box_on_going)
-                }
-            })
         }
+
+        bluetoothStateObserver = Observer {
+            binding.textviewMainStatusboxtitle.text = if (it) {
+                statusBoxTitle
+            } else {
+                getText(R.string.status_box_bluetooth_off)
+            }
+
+            binding.groupMainBluetoothoff.visibility = if (it) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+
+            binding.imageviewMainStatus.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+
+        deviceViewModel.empty.observe(this, Observer {
+            statusBoxTitle = if (it) {
+                getText(R.string.sensor_no_registered)
+            } else {
+                getText(R.string.status_box_on_going)
+            }
+            binding.textviewMainStatusboxtitle.text = statusBoxTitle
+
+            if (it) {
+                mainViewModel.run {
+                    isBluetoothOn.observe(this@MainActivity, bluetoothStateObserver)
+                }
+            } else {
+                mainViewModel.run {
+                    isBluetoothOn.removeObserver(bluetoothStateObserver)
+                }
+            }
+            mainViewModel.setHasDevice(!it)
+        })
     }
 
     override fun onResume() {
