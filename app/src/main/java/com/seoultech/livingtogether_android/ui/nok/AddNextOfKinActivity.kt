@@ -6,7 +6,7 @@ import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityInsertNextOfKinBinding
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 
-class AddNOKActivity : BaseActivity<ActivityInsertNextOfKinBinding>(R.layout.activity_insert_next_of_kin) {
+class AddNextOfKinActivity : BaseActivity<ActivityInsertNextOfKinBinding>(R.layout.activity_insert_next_of_kin) {
     private lateinit var nextOfKinViewModel: NextOfKinViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

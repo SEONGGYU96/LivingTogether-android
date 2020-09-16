@@ -4,6 +4,8 @@ import android.app.Application
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.seoultech.livingtogether_android.bluetooth.model.BluetoothLiveData
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
@@ -19,11 +21,19 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
 
     var isBluetoothOn = BluetoothLiveData
 
+    private val _newNextOfKinEvent = MutableLiveData<Boolean>()
+    val newNextOfKinEvent: LiveData<Boolean>
+        get() = _newNextOfKinEvent
+
     fun onResume() {
         startService()
         if (hasDevice) {
             bluetoothStateCheck()
         }
+    }
+
+    fun addNewNextOfKin() {
+        _newNextOfKinEvent.value = true
     }
 
     private fun startService() {
@@ -50,7 +60,7 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
 //        }
 //    }
 
-    fun isServiceRunning() : Boolean {
+    fun isServiceRunning(): Boolean {
         return ServiceUtil.isServiceRunning(application, ScanService::class.java)
     }
 

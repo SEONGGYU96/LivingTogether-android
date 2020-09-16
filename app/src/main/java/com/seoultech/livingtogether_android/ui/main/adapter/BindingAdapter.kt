@@ -4,7 +4,7 @@ import android.content.Intent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
-import com.seoultech.livingtogether_android.ui.nok.AddNOKActivity
+import com.seoultech.livingtogether_android.ui.nok.AddNextOfKinActivity
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.util.Constant
 
@@ -39,7 +39,7 @@ object BindingAdapters {
                 )
 
                 Constant.ADD_NOK_ACTIVITY -> view.context.startActivity(
-                    Intent(view.context, AddNOKActivity::class.java
+                    Intent(view.context, AddNextOfKinActivity::class.java
                     )
                 )
             }

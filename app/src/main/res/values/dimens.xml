@@ -71,5 +71,8 @@
     <dimen name="padding_statusbox_bluetooth_button_vertical">7dp</dimen>
     <dimen name="margin_statusbox_bluetooth_image_end">16dp</dimen>
 
+    <!-- LivingTogetherDialog-->
+    <dimen name="padding_dialog_title_vertical">11dp</dimen>
+    <dimen name="padding_dialog_button_vertical">21dp</dimen>
 
 </resources>

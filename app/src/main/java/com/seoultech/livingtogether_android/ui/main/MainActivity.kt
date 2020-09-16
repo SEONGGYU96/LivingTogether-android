@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,7 +13,11 @@ import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
+import com.seoultech.livingtogether_android.library.LTDialog
+import com.seoultech.livingtogether_android.library.LTDialogBuilder
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
+import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
+import com.seoultech.livingtogether_android.ui.nok.AddNextOfKinActivity
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
@@ -40,7 +45,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         deviceViewModel = obtainDeviceViewModel()
         nextOfKinViewModel = obtainNextOfKinViewModel()
-        mainViewModel = obtainMainViewModel()
+
+        mainViewModel = obtainMainViewModel().apply {
+            newNextOfKinEvent.observe(this@MainActivity, Observer {
+                this@MainActivity.addNewNextOfKin()
+            })
+        }
 
         binding.run {
             this.mainViewModel = this@MainActivity.mainViewModel
@@ -112,6 +122,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         } else {
             finish()
         }
+    }
+
+    private fun addNewNextOfKin() {
+        LTDialogBuilder()
+            .addVerticalButton("직접 추가하기") { dialog, _ ->
+                startActivity(Intent(this, AddNextOfKinActivity::class.java))
+                dialog.dismiss()
+            }
+            .addVerticalButton("연락처에서 추가하기") {dialog, _ ->
+                startActivity(Intent(this, ContactListActivity::class.java))
+                dialog.dismiss()
+            }
+            .build()
+            .show(supportFragmentManager, "add_new_next_of_kin")
     }
 
     private fun obtainDeviceViewModel(): DeviceViewModel = obtainViewModel(DeviceViewModel::class.java)

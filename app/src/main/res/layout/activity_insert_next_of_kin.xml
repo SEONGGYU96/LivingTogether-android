@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
-        tools:context=".ui.nok.AddNOKActivity">
+        tools:context=".ui.nok.AddNextOfKinActivity">
 
         <com.seoultech.livingtogether_android.library.LTToolbar
             android:id="@+id/lttoolbar_insertnextofkin"

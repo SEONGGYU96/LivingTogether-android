@@ -16,4 +16,5 @@
     <color name="colorContactBackground">#F1F2F3</color>
     <color name="colorContactResultBackground">#FBFCFD</color>
     <color name="colorContactSearchBar">#E5E6E7</color>
+    <color name="colorDivederGray">#bcbcbc</color>
 </resources>

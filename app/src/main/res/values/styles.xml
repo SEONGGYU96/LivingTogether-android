@@ -155,4 +155,13 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <style name="DialogTitleText" parent="MajorText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="DialogButtonText" parent="MajorText">
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>
