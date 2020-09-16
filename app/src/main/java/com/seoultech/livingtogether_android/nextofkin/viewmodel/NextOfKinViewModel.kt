@@ -18,8 +18,17 @@ class NextOfKinViewModel(private val nextOfKinRepository: NextOfKinRepository) :
         it.isEmpty()
     }
 
+    private val _newNextOfKinEvent = MutableLiveData<Boolean>()
+    val newNextOfKinEvent: LiveData<Boolean>
+        get() = _newNextOfKinEvent
+
     fun start() {
         loadNextOfKin()
+    }
+
+
+    fun addNewNextOfKin() {
+        _newNextOfKinEvent.value = true
     }
 
     private fun loadNextOfKin() {

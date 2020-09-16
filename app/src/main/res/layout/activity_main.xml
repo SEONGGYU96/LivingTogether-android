@@ -109,9 +109,9 @@
 
                     <Button
                         android:id="@+id/button_main_bluetoothon"
+                        style="@style/BluetoothOnButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/BluetoothOnButton"
                         android:text="@string/statusbox_bluetooth_on_button"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/textview_main_statusboxtitle" />
@@ -120,18 +120,18 @@
                         android:id="@+id/imageview_main_invallidbluetooth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_invalid_bluetooth"
                         android:layout_marginEnd="@dimen/margin_statusbox_bluetooth_image_end"
                         android:layout_marginBottom="@dimen/margin_statusbox_padding_bottom"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        android:src="@drawable/ic_invalid_bluetooth"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <androidx.constraintlayout.widget.Group
                         android:id="@+id/group_main_bluetoothoff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
-                        app:constraint_referenced_ids="imageview_main_invallidbluetooth, button_main_bluetoothon"/>
+                        app:constraint_referenced_ids="imageview_main_invallidbluetooth, button_main_bluetoothon" />
 
                     <androidx.constraintlayout.widget.Group
                         android:layout_width="wrap_content"
@@ -263,6 +263,7 @@
                     style="@style/SeeMoreButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{()->mainViewModel.seeMoreNextOfKin()}"
                     android:padding="@dimen/margin_entire_padding_horizontal"
                     app:layout_constraintBaseline_toBaselineOf="@id/textview_main_nextofkin"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -308,15 +309,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_register_button_top"
-                        android:onClick="@{()->mainViewModel.addNewNextOfKin()}"
+                        android:onClick="@{()->nextOfKinViewModel.addNewNextOfKin()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textview_main_noregisterednextofkin" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
 </layout>

@@ -8,16 +8,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
-import com.seoultech.livingtogether_android.nextofkin.adapter.NOKAdapter
+import com.seoultech.livingtogether_android.nextofkin.adapter.NextOfKinMainAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
-import com.seoultech.livingtogether_android.library.LTDialog
 import com.seoultech.livingtogether_android.library.LTDialogBuilder
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
 import com.seoultech.livingtogether_android.ui.nok.AddNextOfKinActivity
+import com.seoultech.livingtogether_android.ui.nok.NextOfKinListActivity
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
@@ -29,7 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private var backKeyPressedTime = 0L
     private val deviceAdapter: DeviceAdapter by lazy { DeviceAdapter() }
-    private val nextOfKinAdapter: NOKAdapter by lazy { NOKAdapter() }
+    private val nextOfKinAdapter: NextOfKinMainAdapter by lazy { NextOfKinMainAdapter() }
     private lateinit var debugVm: DebugViewModel
 
     private lateinit var deviceViewModel: DeviceViewModel
@@ -44,11 +44,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         deviceViewModel = obtainDeviceViewModel()
-        nextOfKinViewModel = obtainNextOfKinViewModel()
 
-        mainViewModel = obtainMainViewModel().apply {
+        nextOfKinViewModel = obtainNextOfKinViewModel().apply {
             newNextOfKinEvent.observe(this@MainActivity, Observer {
                 this@MainActivity.addNewNextOfKin()
+            })
+        }
+
+        mainViewModel = obtainMainViewModel().apply {
+            seeMoreNextOfKin.observe(this@MainActivity, Observer {
+                this@MainActivity.seeMoreNextOfKin()
             })
         }
 
@@ -112,6 +117,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onResume() {
         super.onResume()
         mainViewModel.onResume()
+        nextOfKinViewModel.start()
     }
 
     override fun onBackPressed() {
@@ -136,6 +142,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
             .build()
             .show(supportFragmentManager, "add_new_next_of_kin")
+    }
+
+    private fun seeMoreNextOfKin() {
+        startActivity(Intent(this, NextOfKinListActivity::class.java))
     }
 
     private fun obtainDeviceViewModel(): DeviceViewModel = obtainViewModel(DeviceViewModel::class.java)

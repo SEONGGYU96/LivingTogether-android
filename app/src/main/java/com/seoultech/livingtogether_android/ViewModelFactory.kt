@@ -11,6 +11,7 @@ import com.seoultech.livingtogether_android.bluetooth.viewmodel.ScanViewModel
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepository
+import com.seoultech.livingtogether_android.nextofkin.viewmodel.AddNextOfKinViewModel
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
@@ -34,6 +35,8 @@ class ViewModelFactory private constructor(
                     ScanViewModel(deviceRepository, signalHistoryRepository)
                 isAssignableFrom(MainViewModel::class.java) ->
                     MainViewModel(bluetoothAdapter, application)
+                isAssignableFrom(AddNextOfKinViewModel::class.java) ->
+                    AddNextOfKinViewModel(nextOfKinRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel" />
+            type="com.seoultech.livingtogether_android.nextofkin.viewmodel.AddNextOfKinViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,6 +66,7 @@
                     style="@style/InputBoxValueText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={viewModel.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_insertnextofkin_name" />
@@ -85,6 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/padding_inputbox_bottom"
+                    android:text="@={viewModel.phoneNumber}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +102,9 @@
             style="@style/BottomButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorRegisterButtonGray"
+            android:enabled="false"
+            android:onClick="@{()->viewModel.addNewNextOfKin()}"
             android:text="@string/bottom_button_insert"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
