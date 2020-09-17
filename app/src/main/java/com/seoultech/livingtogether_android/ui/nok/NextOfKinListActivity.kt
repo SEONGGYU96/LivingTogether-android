@@ -2,19 +2,19 @@ package com.seoultech.livingtogether_android.ui.nok
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.MarginPageTransformer
+import com.google.android.material.tabs.TabLayoutMediator
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityNextOfKinListBinding
-import com.seoultech.livingtogether_android.nextofkin.adapter.NextOfKinListAdapter
+import com.seoultech.livingtogether_android.nextofkin.adapter.NextOfKinViewPagerAdapter
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
-import com.seoultech.livingtogether_android.util.MarginDecoration
+import com.seoultech.livingtogether_android.util.toPixel
 
 
 class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layout.activity_next_of_kin_list) {
-    private val nextOfKinMainAdapter: NextOfKinListAdapter by lazy { NextOfKinListAdapter() }
-
     private lateinit var nextOfKinViewModel: NextOfKinViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,15 +29,35 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
         binding.run {
             viewModel = nextOfKinViewModel
 
-            recyclerviewNextofkinlist.run {
-                adapter = nextOfKinMainAdapter
-                addItemDecoration(MarginDecoration(baseContext, 25, RecyclerView.VERTICAL))
-            }
+            viewpager2Nextofkinlist.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    viewpager2Nextofkinlist.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    initViewPager(viewpager2Nextofkinlist.height)
+                }
+            })
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun initViewPager(height: Int) {
+        var maxItem = height / 80.toPixel()
+        if (height % 80.toPixel() >= 55.toPixel()) {
+            maxItem++
+        }
+
+        binding.viewpager2Nextofkinlist.run {
+            adapter = NextOfKinViewPagerAdapter(maxItem)
+            offscreenPageLimit = 3
+            setPageTransformer(MarginPageTransformer(16.toPixel()))
+
+            binding.tablayoutNextofkinlist.run {
+                TabLayoutMediator(this, binding.viewpager2Nextofkinlist) { _, _ ->  }.attach()
+            }
+
+            nextOfKinViewModel.items.observe(this@NextOfKinListActivity, Observer {
+                (adapter as NextOfKinViewPagerAdapter).setList(it)
+            })
+        }
+
         nextOfKinViewModel.start()
     }
 

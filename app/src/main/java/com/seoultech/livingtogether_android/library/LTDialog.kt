@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.seoultech.livingtogether_android.R
-import com.seoultech.livingtogether_android.util.MetricsUtil.convertDpToPixel
 import com.seoultech.livingtogether_android.util.toPixel
 import kotlinx.android.synthetic.main.item_dialog_button.view.*
 import kotlinx.android.synthetic.main.view_livingtogether_dialog.view.*
@@ -128,7 +127,7 @@ class LTDialog(
         }
 
         //색 지정
-        divider.setBackgroundResource(R.color.colorDivederGray)
+        divider.setBackgroundResource(R.color.colorDividerGray)
 
         //삽입
         container.addView(divider)
