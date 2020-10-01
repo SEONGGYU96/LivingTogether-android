@@ -47,7 +47,7 @@ class ForegroundNotification(private val application: Application) {
             .setContentIntent(pendingIntent)
 
         if (state) {
-            builder.color = ContextCompat.getColor(application, R.color.mainBlue)
+            builder.color = ContextCompat.getColor(application, R.color.colorMainGreen)
         } else {
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(text)) //긴 문자열 스타일, 문구 지정
         }

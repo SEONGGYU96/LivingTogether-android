@@ -36,11 +36,13 @@
             android:name=".alarm.AlarmReceiver"
             android:exported="false" />
 
+        <receiver android:name=".bluetooth.receiver.BluetoothStateReceiver" />
+
         <activity android:name=".ui.scan.InsertLocationActivity" />
         <activity android:name=".ui.sensor.SensorListActivity" />
         <activity android:name=".debug.ScanServiceTest" />
         <activity android:name=".ui.profile.EditProfileActivity" />
-        <activity android:name=".ui.nok.AddNOKActivity" />
+        <activity android:name=".ui.nok.AddNextOfKinActivity" />
         <activity android:name=".ui.nok.NextOfKinListActivity" />
         <activity android:name=".ui.scan.ScanActivity" />
         <activity android:name=".ui.main.MainActivity" />

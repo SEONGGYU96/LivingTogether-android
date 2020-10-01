@@ -4,6 +4,6 @@ fun Int.toDP(): Int {
     return MetricsUtil.convertPixelsToDp(this.toFloat(), null).toInt()
 }
 
-fun Int.toPixel() : Float {
-    return MetricsUtil.convertDpToPixel(this.toFloat(), null)
+fun Int.toPixel() : Int {
+    return MetricsUtil.convertDpToPixel(this.toFloat(), null).toInt()
 }

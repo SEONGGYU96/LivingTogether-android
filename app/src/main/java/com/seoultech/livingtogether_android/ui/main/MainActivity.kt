@@ -1,34 +1,25 @@
 package com.seoultech.livingtogether_android.ui.main
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
-import com.seoultech.livingtogether_android.nextofkin.adapter.NOKAdapter
+import com.seoultech.livingtogether_android.nextofkin.adapter.NextOfKinMainAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
-import com.seoultech.livingtogether_android.bluetooth.model.BluetoothLiveData
-import com.seoultech.livingtogether_android.bluetooth.service.ServiceLiveData
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
-import com.seoultech.livingtogether_android.debug.ScanServiceTest
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
-import com.seoultech.livingtogether_android.device.data.Device
-import com.seoultech.livingtogether_android.util.MarginDecoration
+import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
+import com.seoultech.livingtogether_android.library.LTDialogBuilder
+import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
+import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
+import com.seoultech.livingtogether_android.ui.nok.AddNextOfKinActivity
 import com.seoultech.livingtogether_android.ui.nok.NextOfKinListActivity
-import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
-import com.seoultech.livingtogether_android.ui.scan.InsertLocationActivity
-import com.seoultech.livingtogether_android.ui.scan.ScanActivity
-import com.seoultech.livingtogether_android.ui.sensor.SensorListActivity
+import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -38,128 +29,95 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private var backKeyPressedTime = 0L
     private val deviceAdapter: DeviceAdapter by lazy { DeviceAdapter() }
-    private val nokAdapter: NOKAdapter by lazy { NOKAdapter() }
-    private lateinit var vm: MainViewModel
+    private val nextOfKinAdapter: NextOfKinMainAdapter by lazy { NextOfKinMainAdapter() }
     private lateinit var debugVm: DebugViewModel
 
-    private lateinit var serviceObserver: Observer<Boolean>
-    private lateinit var stateObserver: Observer<List<Device>>
+    private lateinit var deviceViewModel: DeviceViewModel
+    private lateinit var nextOfKinViewModel: NextOfKinViewModel
+    private lateinit var mainViewModel: MainViewModel
+
+    private lateinit var statusBoxTitle: CharSequence
+
+    private lateinit var bluetoothStateObserver: Observer<Boolean>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm = viewModelProvider.get(MainViewModel::class.java)
-        debugVm = viewModelProvider.get(DebugViewModel::class.java)
+        deviceViewModel = obtainDeviceViewModel()
+
+        nextOfKinViewModel = obtainNextOfKinViewModel().apply {
+            newNextOfKinEvent.observe(this@MainActivity, Observer {
+                this@MainActivity.addNewNextOfKin()
+            })
+        }
+
+        mainViewModel = obtainMainViewModel().apply {
+            seeMoreNextOfKin.observe(this@MainActivity, Observer {
+                this@MainActivity.seeMoreNextOfKin()
+            })
+        }
 
         binding.run {
-            viewModel = vm
+            this.mainViewModel = this@MainActivity.mainViewModel
+            this.deviceViewModel = this@MainActivity.deviceViewModel
+            this.nextOfKinViewModel = this@MainActivity.nextOfKinViewModel
 
-            if (!vm.isInitialized) {
-                AlertDialog.Builder(this@MainActivity)
-                    .setTitle("환영합니다!")
-                    .setMessage("사용하기 전에 사용자 정보를 먼저 등록해주세요")
-                    .setPositiveButton("확인") { dialog, _ ->
-                        startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
-                        dialog.dismiss()
-                    }
-                    .show()
+            recyclerviewMainSensors.run {
+                adapter = deviceAdapter
+                addItemDecoration(MarginDecoration(baseContext, 16, RecyclerView.HORIZONTAL))
             }
 
-            recyclerDeviceListMain.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
-            recyclerDeviceListMain.adapter = deviceAdapter
-            recyclerDeviceListMain.addItemDecoration(
-                MarginDecoration(
-                    baseContext,
-                    15,
-                    RecyclerView.HORIZONTAL
-                )
-            )
-
-            recyclerNokListMain.layoutManager = LinearLayoutManager(baseContext)
-            recyclerNokListMain.adapter = nokAdapter
-            recyclerNokListMain.addItemDecoration(
-                MarginDecoration(
-                    baseContext,
-                    15,
-                    RecyclerView.VERTICAL
-                )
-            )
-
-            buttonShowMoreNokMain.setOnClickListener {
-                startActivity(Intent(this@MainActivity, NextOfKinListActivity::class.java))
-            }
-
-            buttonEditProfile.setOnClickListener{
-                startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
-            }
-
-            buttonSensorMoreMain.setOnClickListener {
-                startActivity(Intent(this@MainActivity, SensorListActivity::class.java))
-            }
-
-            layoutDebug.buttonScanTestActivity.setOnClickListener {
-                startActivity(Intent(this@MainActivity, ScanServiceTest::class.java))
-            }
-
-            layoutDebug.buttonScanTest.setOnClickListener {
-                startActivity(Intent(this@MainActivity, ScanActivity::class.java))
-            }
-
-            layoutDebug.buttonAddDeviceTest.setOnClickListener {
-                debugVm.addDevice()
-            }
-
-            layoutDebug.buttonDeleteAllDeviceTest.setOnClickListener {
-                debugVm.deleteAll()
-            }
-
-            layoutDebug.buttonInsertLocationTest.setOnClickListener {
-                startActivity(Intent(this@MainActivity, InsertLocationActivity::class.java))
+            recyclerviewMainNextofkin.run {
+                adapter = nextOfKinAdapter
+                addItemDecoration(MarginDecoration(baseContext, 16, RecyclerView.VERTICAL))
             }
         }
 
-        serviceObserver = Observer {
-            if (!it) {
-                changeStatusBox(text_scan_state_main, false, getString(R.string.status_box_fail))
+        bluetoothStateObserver = Observer {
+            binding.textviewMainStatusboxtitle.text = if (it) {
+                statusBoxTitle
             } else {
-                changeStatusBox(text_scan_state_main, true, getString(R.string.status_box_on_going))
+                getText(R.string.status_box_bluetooth_off)
+            }
+
+            binding.groupMainBluetoothoff.visibility = if (it) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+
+            binding.imageviewMainStatus.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
             }
         }
 
-        stateObserver = Observer {
-            text_scan_state_main.run {
-                if (it.isEmpty()) {
-                    ServiceLiveData.removeObserver(serviceObserver)
-                    changeStatusBox(this, false, context.getString(R.string.status_box_no_sensor))
-                } else {
-                    ServiceLiveData.observe(this@MainActivity, serviceObserver)
-                    changeStatusBox(this, true, context.getString(R.string.status_box_on_going))
+        deviceViewModel.empty.observe(this, Observer {
+            statusBoxTitle = if (it) {
+                getText(R.string.sensor_no_registered)
+            } else {
+                getText(R.string.status_box_on_going)
+            }
+            binding.textviewMainStatusboxtitle.text = statusBoxTitle
+
+            if (it) {
+                mainViewModel.run {
+                    isBluetoothOn.observe(this@MainActivity, bluetoothStateObserver)
+                }
+            } else {
+                mainViewModel.run {
+                    isBluetoothOn.removeObserver(bluetoothStateObserver)
                 }
             }
-        }
-
-        BluetoothLiveData.observe(this, Observer {
-            if (!it) {
-                changeStatusBox(text_scan_state_main, false,  this.getString(R.string.status_box_bluetooth_off))
-                vm.sensors.removeObserver(stateObserver)
-                ServiceLiveData.removeObserver(serviceObserver)
-            } else {
-                vm.sensors.observe(this@MainActivity, stateObserver)
-            }
+            mainViewModel.setHasDevice(!it)
         })
-
-        Log.d(TAG, ApplicationImpl.db.signalHistoryDao().getAll().toString())
     }
 
-    private fun changeStatusBox(view: TextView, on: Boolean, text: String) {
-        view.text = text
-        if (!on) {
-            view.setTextAppearance(R.style.GrayStateText)
-            group_num_of_sensor_main.visibility = View.INVISIBLE
-        } else {
-            view.setTextAppearance(R.style.NormalStateText)
-            group_num_of_sensor_main.visibility = View.VISIBLE
-        }
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.onResume()
+        nextOfKinViewModel.start()
     }
 
     override fun onBackPressed() {
@@ -171,4 +129,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             finish()
         }
     }
+
+    private fun addNewNextOfKin() {
+        LTDialogBuilder()
+            .addVerticalButton("직접 추가하기") { dialog, _ ->
+                startActivity(Intent(this, AddNextOfKinActivity::class.java))
+                dialog.dismiss()
+            }
+            .addVerticalButton("연락처에서 추가하기") {dialog, _ ->
+                startActivity(Intent(this, ContactListActivity::class.java))
+                dialog.dismiss()
+            }
+            .build()
+            .show(supportFragmentManager, "add_new_next_of_kin")
+    }
+
+    private fun seeMoreNextOfKin() {
+        startActivity(Intent(this, NextOfKinListActivity::class.java))
+    }
+
+    private fun obtainDeviceViewModel(): DeviceViewModel = obtainViewModel(DeviceViewModel::class.java)
+    private fun obtainNextOfKinViewModel(): NextOfKinViewModel = obtainViewModel(NextOfKinViewModel::class.java)
+    private fun obtainMainViewModel(): MainViewModel = obtainViewModel(MainViewModel::class.java)
 }

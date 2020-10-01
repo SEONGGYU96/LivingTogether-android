@@ -14,10 +14,13 @@ import android.os.Build
 import android.os.IBinder
 import android.text.TextUtils
 import android.util.Log
+import com.seoultech.livingtogether_android.Injection
 import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateReceiver
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
+import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
 import java.util.*
@@ -52,7 +55,7 @@ class ScanService : Service() {
 
     private val btStateReceiver: BluetoothStateReceiver by lazy { BluetoothStateReceiver() }
 
-    private val deviceRepository: DeviceRepository by lazy { DeviceRepository() }
+    private val deviceRepository: DeviceRepository by lazy { Injection.provideDeviceRepository(applicationContext) }
     private val signalHistoryRepository: SignalHistoryRepository by lazy { SignalHistoryRepository() }
 
     //service 가 처음 생성되었을 때 최초 1회 호출되는 부분
@@ -108,17 +111,7 @@ class ScanService : Service() {
             return super.onStartCommand(intent, flags, startId)
         }
 
-        val deviceList = deviceRepository.getAll()
-
-        if (deviceList.isEmpty()) {
-            Log.d(TAG, "No device in DB")
-            stopService()
-            return START_NOT_STICKY
-        }
-
-        startScanService()
-
-        return super.onStartCommand(intent, flags, startId)
+        return START_NOT_STICKY
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -149,22 +142,29 @@ class ScanService : Service() {
         }
 
         val filters = mutableListOf<ScanFilter>()
-        val deviceAddresses = deviceRepository.getAllDeviceAddress()
 
-        for (address in deviceAddresses) {
-            filters.add(ScanFilter.Builder().setDeviceAddress(address).build())
-        }
+        deviceRepository.getDeviceAddresses(object : DeviceDataSource.LoadDeviceAddressesCallback {
+            override fun onDeviceAddressesLoaded(addresses: List<String>) {
+                for (address in addresses) {
+                    filters.add(ScanFilter.Builder().setDeviceAddress(address).build())
+                }
 
-        val settingsBuilder = ScanSettings.Builder()
+                val settingsBuilder = ScanSettings.Builder()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //정확한것은 아니지만 MATCH_MODE_AGGRESSIVE(적당히 매칭되면 OK)를 적용하니, 잘되는것 같다.
-            settingsBuilder.setScanMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
-        } else {
-            settingsBuilder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-        }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    //정확한것은 아니지만 MATCH_MODE_AGGRESSIVE(적당히 매칭되면 OK)를 적용하니, 잘되는것 같다.
+                    settingsBuilder.setScanMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
+                } else {
+                    settingsBuilder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                }
 
-        bluetoothLeScanner.startScan(filters, settingsBuilder.build(), scanCallback)
+                bluetoothLeScanner.startScan(filters, settingsBuilder.build(), scanCallback)
+            }
+
+            override fun onDataNotAvailable() {
+                Log.e(TAG, "No device in DB")
+            }
+        })
     }
 
     private fun stopService() {
@@ -233,53 +233,48 @@ class ScanService : Service() {
     private fun updateDB(result: ScanResult) {
         val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
 
-        val targetDevice = deviceRepository.getAll(result.device.address)
+        deviceRepository.getDevice(result.device.address, object : DeviceDataSource.GetDeviceCallback {
+            override fun onDeviceLoaded(device: Device) {
+                val currentTime = GregorianCalendar().timeInMillis
 
-        if (targetDevice == null) {
-            Log.d(TAG, "Unresolved address : ${result.device.address}")
-            return
-        }
+                //감지된 신호의 타입을 분석
+                when (bleDevice.major.toString()) {
+                    ACTION_SIGNAL -> {
+                        device.run {
+                            lastDetectionOfActionSignal = currentTime
+                            isAvailable = true
+                            deviceRepository.updateDevice(this)
+                        }
 
-        val currentTime = GregorianCalendar().timeInMillis
+                        signalHistoryRepository.insert(SignalHistoryEntity(device.deviceAddress, 1, currentTime))
 
-        //감지된 신호의 타입을 분석
-        when (bleDevice.major.toString()) {
-            ACTION_SIGNAL -> {
-                targetDevice.lastDetectionOfActionSignal = currentTime
-                targetDevice.isAvailable = true
+                        AlarmUtil.setAlarm(application)
+                        Log.d(TAG, "Alarm is set")
+                    }
 
-                deviceRepository.update(targetDevice)
-                signalHistoryRepository.insert(
-                    SignalHistoryEntity(
-                        targetDevice.deviceAddress,
-                        1,
-                        currentTime
-                    )
-                )
-                AlarmUtil.setAlarm(application)
-                Log.d(TAG, "Alarm is set")
+                    PRESERVE_SIGNAL -> {
+                        device.run {
+                            lastDetectionOfPreserveSignal = currentTime
+                            isAvailable = true
+                            deviceRepository.updateDevice(this)
+                        }
+
+                        signalHistoryRepository.insert(SignalHistoryEntity(device.deviceAddress, 2, currentTime))
+                    }
+
+                    //그 외에는 이상한 major
+                    else -> {
+                        Log.d(TAG, "Unresolved major : ${bleDevice.major}")
+                        return
+                    }
+                }
             }
 
-            PRESERVE_SIGNAL -> {
-                targetDevice.lastDetectionOfPreserveSignal = currentTime
-                targetDevice.isAvailable = true
-
-                deviceRepository.update(targetDevice)
-                signalHistoryRepository.insert(
-                    SignalHistoryEntity(
-                        targetDevice.deviceAddress,
-                        2,
-                        currentTime
-                    )
-                )
-            }
-
-            //그 외에는 이상한 major
-            else -> {
-                Log.d(TAG, "Unresolved major : ${bleDevice.major}")
+            override fun onDataNotAvailable() {
+                Log.d(TAG, "Unresolved address : ${result.device.address}")
                 return
             }
-        }
+        })
     }
 
     // 새로운 신호인지 확인

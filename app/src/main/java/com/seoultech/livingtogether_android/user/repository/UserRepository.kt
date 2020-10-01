@@ -13,38 +13,38 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository : BaseRepository<UserEntity>() {
+class UserRepository {
+
+    companion object {
+        private const val TAG = "UserRepository"
+    }
 
     private val dao: UserDao by lazy { ApplicationImpl.db.userDao() }
 
     private val observableUser: LiveData<UserEntity> by lazy { dao.getAllObservable() }
 
-    fun getAllObservable() : LiveData<UserEntity> {
+    fun getAllObservable(): LiveData<UserEntity> {
         Log.d(TAG, "getAllObservable() : ${observableUser.value}")
         return observableUser
     }
 
-    fun getAll() : UserEntity {
+    fun getAll(): UserEntity {
         val value = dao.getAll()
         Log.d(TAG, "getAll() : $value")
         return value
     }
 
-    public override fun insert(entity: UserEntity) {
-        super.insert(entity)
+    fun insert(entity: UserEntity) {
         return dao.insert(entity)
     }
 
-    public override fun delete(entity: UserEntity) {
-        super.delete(entity)
+    fun delete(entity: UserEntity) {
         return dao.delete(entity)
     }
 
-    public override fun update(entity: UserEntity) {
-        super.update(entity)
+    fun update(entity: UserEntity) {
         return dao.update(entity)
     }
-
 
     fun updateServer(userLiveData: LiveData<UserEntity>, callback: UserUpdateCallback) {
         val requestUser =

@@ -2,37 +2,25 @@ package com.seoultech.livingtogether_android.ui.profile
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.MenuItem
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseActivity
-import com.seoultech.livingtogether_android.databinding.ActivityEditProfileBinding
+import com.seoultech.livingtogether_android.databinding.ActivityProfileBinding
 import com.seoultech.livingtogether_android.user.viewmodel.ProfileViewModel
 
-class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.activity_edit_profile) {
+class EditProfileActivity : BaseActivity<ActivityProfileBinding>(R.layout.activity_profile) {
 
-    private lateinit var vm: ProfileViewModel
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setToolbar(binding.toolbar, "사용자 정보 등록")
-
-        vm = viewModelProvider.get(ProfileViewModel::class.java)
+        profileViewModel = obtainViewModel()
 
         binding.run {
-            viewModel = vm
+            viewModel = profileViewModel
         }
 
-        vm.finishHandler.observe(this, finishObserver)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            showDialog()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
+        profileViewModel.finishHandler.observe(this, finishObserver)
     }
 
     override fun onBackPressed() {
@@ -40,7 +28,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.ac
     }
 
     private fun showDialog() {
-        if (!vm.isInitialized) {
+        if (!profileViewModel.isInitialized) {
             showInitialDialog()
         } else {
             showWarningDialog()
@@ -70,4 +58,6 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(R.layout.ac
             }
             .show()
     }
+
+    private fun obtainViewModel() = obtainViewModel(ProfileViewModel::class.java)
 }

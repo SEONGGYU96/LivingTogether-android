@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 class MarginDecoration
 private constructor(private var context: Context) : RecyclerView.ItemDecoration() {
 
-    private val Int.px: Int
-        get() = MetricsUtil.convertDpToPixel(this.toFloat(), context).toInt()
 
     private var margin: Int? = null
     private var orientation: Int? = null
@@ -26,7 +24,7 @@ private constructor(private var context: Context) : RecyclerView.ItemDecoration(
      */
     constructor(context: Context, margin: Int, orientation: Int) : this(context) {
         this.orientation = orientation
-        this.margin = margin.px
+        this.margin = margin.toPixel()
     }
 
     /**
@@ -37,8 +35,8 @@ private constructor(private var context: Context) : RecyclerView.ItemDecoration(
      */
     constructor(context: Context, numOfColumns: Int, marginHorizontal: Int, marginVertical: Int) : this(context) {
         this.numOfColumns = numOfColumns
-        this.marginHorizontal = marginHorizontal.px
-        this.marginVertical = marginVertical.px
+        this.marginHorizontal = marginHorizontal.toPixel()
+        this.marginVertical = marginVertical.toPixel()
     }
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {

@@ -29,8 +29,6 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setToolbar(binding.toolbar,"센서")
-
         deviceViewModel = obtainViewModel()
 
         initDeviceAdapterListener()
@@ -38,9 +36,10 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
         binding.run {
             viewModel = deviceViewModel
 
-            recyclerDeviceList.layoutManager = GridLayoutManager(baseContext, NUM_OF_COLUMN)
-            recyclerDeviceList.adapter = deviceAdapter
-            recyclerDeviceList.addItemDecoration(MarginDecoration(baseContext, NUM_OF_COLUMN, 12, 12))
+            recyclerviewSensorlist.run {
+                adapter = deviceAdapter
+                addItemDecoration(MarginDecoration(baseContext, NUM_OF_COLUMN, 20, 25))
+            }
         }
     }
 
@@ -92,22 +91,6 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
                 thisDialog.dismiss()
             }
             .show()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.add_menu, menu)       // main_menu 메뉴를 toolbar 메뉴 버튼으로 설정
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_noklist_addnok -> {
-                startActivity(Intent(this, ScanActivity::class.java))
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     private fun obtainViewModel(): DeviceViewModel = obtainViewModel(DeviceViewModel::class.java)

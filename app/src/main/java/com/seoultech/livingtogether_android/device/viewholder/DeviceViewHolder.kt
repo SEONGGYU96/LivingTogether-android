@@ -1,38 +1,31 @@
 package com.seoultech.livingtogether_android.device.viewholder
 
-import android.content.res.ColorStateList
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseViewHolder
-import com.seoultech.livingtogether_android.databinding.DeviceItemMainBinding
+import com.seoultech.livingtogether_android.databinding.ItemSensorBinding
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.device.data.Device
 
 class DeviceViewHolder(parent: ViewGroup, val listener: DeviceAdapter.OnDeviceClickListener?) :
-    BaseViewHolder<Device, DeviceItemMainBinding>(R.layout.device_item_main, parent) {
+    BaseViewHolder<Device, ItemSensorBinding>(R.layout.item_sensor, parent) {
 
     override fun bind(data: Device) {
+        val application = ApplicationImpl.getInstance()
 
         binding.run {
-            textNameSensorItem.text = data.deviceType
-            textLocationSensorItem.text = data.location
+            device = data
 
-            textLastDetectionSensorItem.text = data.getLastDetectedTimeToMinuet()
-
-            imageSenorItem.setImageResource(
-                when (data.deviceType) {
-                    "발판" -> R.drawable.ic_foothole_switch
-                    else -> R.drawable.ic_foothole_switch
+            if (data.updateIsAvailable()) {
+                textviewItemdeviceLastdetactedtime.run {
+                    text = application.getString(R.string.sensor_no_response)
+                    setTextColor(application.getColor(R.color.colorPlainText))
                 }
-            )
-            
-            viewStateCircleItem.backgroundTintList = when (data.updateIsAvailable()) {
-                true -> ColorStateList.valueOf(ContextCompat.getColor(this.root.context, R.color.stateGrean))
-                else -> ColorStateList.valueOf(ContextCompat.getColor(this.root.context, R.color.gray))
+                constraintlayoutItemdeviceRoot.setBackgroundColor(application.getColor(R.color.colorRegisterButtonGray))
             }
 
-            cardviewItemdeviceRoot.setOnClickListener {
+            constraintlayoutItemdeviceRoot.setOnClickListener {
                 listener?.onClick(data)
             }
         }

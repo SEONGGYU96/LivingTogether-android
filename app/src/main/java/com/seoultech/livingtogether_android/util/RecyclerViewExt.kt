@@ -1,9 +1,13 @@
 package com.seoultech.livingtogether_android.util
 
+import android.content.res.ColorStateList
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.base.BaseAdapter
 
 @BindingAdapter("replaceAll")
@@ -29,5 +33,14 @@ fun TextView.visibilityAsData(list: List<Nothing>?) {
         }
     } else {
         View.VISIBLE
+    }
+}
+
+@BindingAdapter("setGrayTint")
+fun ImageView.setGrayTint(isGray: Boolean) {
+    if (isGray) {
+        this.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context.applicationContext, R.color.colorRegisterButtonGray))
+    } else {
+        this.imageTintList = null
     }
 }

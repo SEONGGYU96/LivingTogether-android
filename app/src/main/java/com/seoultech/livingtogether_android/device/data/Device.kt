@@ -34,7 +34,7 @@ data class Device(
     var lastDetectionOfPreserveSignal: Long
 ) {
     @ColumnInfo(name = "is_available")
-    private var _isAvailable: Int = 0
+    var _isAvailable: Int = 0
 
     var isAvailable: Boolean
     get() = _isAvailable != 0
@@ -45,6 +45,8 @@ data class Device(
             0
         }
     }
+
+
 
     fun getLastDetectedTimeToMinuet() : String {
         val timeGap = GregorianCalendar().timeInMillis - lastDetectionOfActionSignal

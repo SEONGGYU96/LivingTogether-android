@@ -18,7 +18,7 @@ class ApplicationImpl : Application() {
         super.onCreate()
         instance = this
 
-        db = LivingTogetherDatabase.buildDatabase(applicationContext)
+        db = LivingTogetherDatabase.getInstance(applicationContext)
 
         ServiceLiveData.value = false
 

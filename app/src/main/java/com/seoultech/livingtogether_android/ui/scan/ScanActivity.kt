@@ -28,14 +28,6 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
 
         scanViewModel = obtainViewModel()
 
-        setSupportActionBar(binding.toolbarScan)
-
-        supportActionBar?.let {
-            it.setDisplayShowTitleEnabled(false)
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_32dp)
-        }
-
         scanViewModel.isFound.observe(this, Observer {
             if (it) {
                 startActivity(Intent(this, InsertLocationActivity::class.java))
@@ -43,7 +35,7 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
             }
         })
 
-        scanViewModel.finishHandler.observe(this, finishObserver)
+        //scanViewModel.finishHandler.observe(this, finishObserver)
 
         scanViewModel.timeoutHandler.observe(this, Observer {
             if (it) {

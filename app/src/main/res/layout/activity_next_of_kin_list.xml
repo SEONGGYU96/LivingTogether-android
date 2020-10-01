@@ -5,16 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.seoultech.livingtogether_android.nok.viewmodel.NOKViewModel" />
+            type="com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
-        tools:context=".ui.nok.NOKListActivity">
+        tools:context=".ui.nok.NextOfKinListActivity">
 
         <com.seoultech.livingtogether_android.library.LTToolbar
             android:id="@+id/lttoolbar_nextofkinlist"
@@ -32,26 +33,40 @@
             android:layout_marginVertical="@dimen/margin_list_title_vertical"
             android:layout_marginStart="@dimen/margin_entire_list_padding_horizontal"
             android:text="@string/next_of_kin"
-            app:layout_constraintBottom_toTopOf="@id/recyclerview_nextofkinlist"
+            app:layout_constraintBottom_toTopOf="@id/viewpager2_nextofkinlist"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lttoolbar_nextofkinlist" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_nextofkinlist"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager2_nextofkinlist"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="@dimen/margin_entire_list_padding_horizontal"
+            android:layout_marginBottom="75dp"
+            android:clipChildren="false"
             android:clipToPadding="false"
-            android:paddingBottom="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/button_nextofkin_insert"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_nextofkinlist_registernextofkin"
-            tools:listitem="@layout/item_next_of_kin" />
+            app:layout_constraintTop_toBottomOf="@id/textview_nextofkinlist_registernextofkin" />
+
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/circleindicator_nextofkinlist"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:ci_drawable="@drawable/ic_indicator_selected"
+            app:ci_drawable_unselected="@drawable/ic_indicator_default"
+            app:ci_width="@dimen/width_indicator"
+            app:ci_height="@dimen/width_indicator"
+            app:layout_constraintBottom_toTopOf="@id/button_nextofkin_insert"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewpager2_nextofkinlist"
+            app:layout_constraintVertical_bias="0.64"/>
 
         <Button
             android:id="@+id/button_nextofkin_insert"
             style="@style/BottomButton"
+            android:onClick="@{()->viewModel.addNewNextOfKin()}"
             android:text="@string/bottom_button_insert"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

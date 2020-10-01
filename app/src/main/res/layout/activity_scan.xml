@@ -28,8 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/ToolbarTitle"
-                android:textColor="@color/white"
                 android:text="@string/resgist_sensor"/>
             
         </androidx.appcompat.widget.Toolbar>

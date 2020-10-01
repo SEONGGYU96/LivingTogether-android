@@ -32,6 +32,32 @@ class DeviceLocalDataSource private constructor(
         }
     }
 
+    override fun getDeviceAddresses(callback: DeviceDataSource.LoadDeviceAddressesCallback) {
+        appExecutors.diskIO.execute {
+            val addresses = deviceDao.getAddressesOfDevices()
+            appExecutors.mainThread.execute {
+                if (addresses.isEmpty()) {
+                    callback.onDataNotAvailable()
+                } else {
+                    callback.onDeviceAddressesLoaded(addresses)
+                }
+            }
+        }
+    }
+
+    override fun getLatestDevice(callback: DeviceDataSource.GetDeviceCallback) {
+        appExecutors.diskIO.execute {
+            val device = deviceDao.getLatestDevice()
+            appExecutors.mainThread.execute {
+                if (device == null) {
+                    callback.onDataNotAvailable()
+                } else {
+                    callback.onDeviceLoaded(device)
+                }
+            }
+        }
+    }
+
     override fun saveDevice(device: Device) {
         appExecutors.diskIO.execute {
             deviceDao.insert(device)
