@@ -49,19 +49,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_nextofkinlist_registernextofkin" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tablayout_nextofkinlist"
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/circleindicator_nextofkinlist"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:ci_drawable="@drawable/ic_indicator_selected"
+            app:ci_drawable_unselected="@drawable/ic_indicator_default"
+            app:ci_width="@dimen/width_indicator"
+            app:ci_height="@dimen/width_indicator"
             app:layout_constraintBottom_toTopOf="@id/button_nextofkin_insert"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewpager2_nextofkinlist"
-            app:layout_constraintVertical_bias="0.64"
-            app:tabBackground="@drawable/tab_pager_selector"
-            app:tabGravity="center"
-            app:tabIndicator="@null"
-            app:tabRippleColor="@null" />
+            app:layout_constraintVertical_bias="0.64"/>
 
         <Button
             android:id="@+id/button_nextofkin_insert"

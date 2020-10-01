@@ -75,4 +75,7 @@
     <dimen name="padding_dialog_title_vertical">11dp</dimen>
     <dimen name="padding_dialog_button_vertical">21dp</dimen>
 
+    <!-- Indicator-->
+    <dimen name="width_indicator">20dp</dimen>
+
 </resources>

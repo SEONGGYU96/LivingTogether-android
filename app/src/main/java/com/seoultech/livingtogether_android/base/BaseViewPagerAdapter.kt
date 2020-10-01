@@ -2,11 +2,16 @@ package com.seoultech.livingtogether_android.base
 
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseViewPagerAdapter<T>(private val maxItems: Int) : RecyclerView.Adapter<BaseViewPagerHolder<T, *>>() {
+abstract class BaseViewPagerAdapter<T>() : RecyclerView.Adapter<BaseViewPagerHolder<T, *>>() {
 
     private var items: MutableList<T> = mutableListOf()
 
+    private var maxItems = items.size
+
     override fun getItemCount(): Int {
+        if (maxItems == 0) {
+            return 0
+        }
         var count = items.size / maxItems
         if (items.size % maxItems != 0) {
             count++
@@ -27,6 +32,10 @@ abstract class BaseViewPagerAdapter<T>(private val maxItems: Int) : RecyclerView
         } else {
             items.subList(start, end)
         }
+    }
+
+    fun setMaxItems(maxItems: Int) {
+        this.maxItems = maxItems
     }
 
     fun setList(data: List<T>) {
