@@ -8,6 +8,9 @@
     <string name="notice_permission_must_be_granted">해당 권한을 허용하지 않으면 앱을 사용할 수 없습니다.</string>
     <string name="see_more">더 보기</string>
 
+    <!-- Toolbar-->
+    <string name="toolbar_button_edit">편집</string>
+
     <!-- Contact-->
     <string name="contact">연락처</string>
     <string name="contact_name_ex">이름</string>

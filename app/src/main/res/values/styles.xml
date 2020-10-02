@@ -164,4 +164,16 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="ToolbarRightTextButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:background">@null</item>
+        <item name="android:foreground">?android:selectableItemBackground</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:textColor">@color/colorMainGreen</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
 </resources>
