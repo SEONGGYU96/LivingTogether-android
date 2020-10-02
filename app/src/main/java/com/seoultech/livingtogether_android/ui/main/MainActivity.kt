@@ -62,6 +62,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             this.deviceViewModel = this@MainActivity.deviceViewModel
             this.nextOfKinViewModel = this@MainActivity.nextOfKinViewModel
 
+            toolbarMain.setMyPageButton()
+
             recyclerviewMainSensors.run {
                 adapter = deviceAdapter
                 addItemDecoration(MarginDecoration(baseContext, 16, RecyclerView.HORIZONTAL))

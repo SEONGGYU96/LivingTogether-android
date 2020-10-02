@@ -20,7 +20,7 @@ class EditProfileActivity : BaseActivity<ActivityProfileBinding>(R.layout.activi
             viewModel = profileViewModel
         }
 
-        profileViewModel.finishHandler.observe(this, finishObserver)
+        //profileViewModel.finishHandler.observe(this, finishObserver)
     }
 
     override fun onBackPressed() {

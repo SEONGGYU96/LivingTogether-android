@@ -1,52 +1,50 @@
-package com.seoultech.livingtogether_android.user.repository
+package com.seoultech.livingtogether_android.user.data.source
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.network.RetrofitClient
-import com.seoultech.livingtogether_android.user.dao.UserDao
 import com.seoultech.livingtogether_android.user.network.RequestUser
-import com.seoultech.livingtogether_android.user.model.RequestUserData
-import com.seoultech.livingtogether_android.user.model.ResponseUserData
-import com.seoultech.livingtogether_android.user.model.UserEntity
+import com.seoultech.livingtogether_android.user.data.Profile
+import com.seoultech.livingtogether_android.user.data.source.local.ProfileDao
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository {
+class ProfileRepository {
 
     companion object {
         private const val TAG = "UserRepository"
     }
 
-    private val dao: UserDao by lazy { ApplicationImpl.db.userDao() }
+    private val dao: ProfileDao by lazy { ApplicationImpl.db.userDao() }
 
-    private val observableUser: LiveData<UserEntity> by lazy { dao.getAllObservable() }
+    private val observableUser: LiveData<Profile> by lazy { dao.getAllObservable() }
 
-    fun getAllObservable(): LiveData<UserEntity> {
+    fun getAllObservable(): LiveData<Profile> {
         Log.d(TAG, "getAllObservable() : ${observableUser.value}")
         return observableUser
     }
 
-    fun getAll(): UserEntity {
-        val value = dao.getAll()
+    fun getAll(): Profile {
+        val value = dao.getProfile()
         Log.d(TAG, "getAll() : $value")
         return value
     }
 
-    fun insert(entity: UserEntity) {
+    fun insert(entity: Profile) {
         return dao.insert(entity)
     }
 
-    fun delete(entity: UserEntity) {
+    fun delete(entity: Profile) {
         return dao.delete(entity)
     }
 
-    fun update(entity: UserEntity) {
+    fun update(entity: Profile) {
         return dao.update(entity)
     }
 
-    fun updateServer(userLiveData: LiveData<UserEntity>, callback: UserUpdateCallback) {
+    fun updateServer(userLiveData: LiveData<Profile>, callback: UserUpdateCallback) {
         val requestUser =
             RequestUserData(
                 userLiveData.value!!.name,

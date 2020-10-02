@@ -15,6 +15,7 @@ import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepos
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.AddNextOfKinViewModel
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
+import com.seoultech.livingtogether_android.user.viewmodel.ProfileViewModel
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
 class ViewModelFactory private constructor(
@@ -40,6 +41,8 @@ class ViewModelFactory private constructor(
                     AddNextOfKinViewModel(nextOfKinRepository)
                 isAssignableFrom(ContactViewModel::class.java) ->
                     ContactViewModel(application)
+                isAssignableFrom(ProfileViewModel::class.java) ->
+                    ProfileViewModel()
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

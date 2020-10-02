@@ -2,6 +2,7 @@ package com.seoultech.livingtogether_android.ui
 
 import android.Manifest.permission
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -10,12 +11,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.ui.main.MainActivity
+import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
+import com.seoultech.livingtogether_android.util.SharedPreferenceManager
 
 //Todo: 로직들을 ViewModel로 옮길 순 없을까?
 class SplashActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_PERMISSION: Int = 1000
     }
+
+    private val isInitialOperation = SharedPreferenceManager.getInitializing()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
             requestPermission()
 
         } else { //권한이 있다면
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(isInitialOperation)
         }
     }
 
@@ -41,7 +46,7 @@ class SplashActivity : AppCompatActivity() {
         // 요청이 취소되면 빈 Results 배열이 전달됨.
         if (checkPermissionResponse(grantResults)) {
 
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(isInitialOperation)
         } else {
             //거부가 되었을 때 다이얼로그 띄우기
             showDialog()
@@ -84,4 +89,13 @@ class SplashActivity : AppCompatActivity() {
 
         return true
     }
+
+    private fun startActivity(isMain: Boolean) {
+        if (isMain) {
+            startActivity(Intent(this, MainActivity::class.java))
+        } else {
+            startActivity(Intent(this, EditProfileActivity::class.java))
+        }
+    }
+
 }

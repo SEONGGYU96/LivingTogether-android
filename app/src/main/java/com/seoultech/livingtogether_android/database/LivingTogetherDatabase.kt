@@ -6,20 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.seoultech.livingtogether_android.database.util.Converters
-import com.seoultech.livingtogether_android.user.model.UserEntity
+import com.seoultech.livingtogether_android.user.data.Profile
 import com.seoultech.livingtogether_android.device.data.source.DeviceDao
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinDao
 import com.seoultech.livingtogether_android.signal.SignalHistoryDao
-import com.seoultech.livingtogether_android.user.dao.UserDao
+import com.seoultech.livingtogether_android.user.data.source.local.ProfileDao
 import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 
-@Database(entities = [UserEntity::class, Device::class, NextOfKin::class, SignalHistoryEntity::class], version = 1)
+@Database(entities = [Profile::class, Device::class, NextOfKin::class, SignalHistoryEntity::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class LivingTogetherDatabase : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao
-    abstract fun userDao(): UserDao
+    abstract fun userDao(): ProfileDao
     abstract fun nokDao(): NextOfKinDao
     abstract fun signalHistoryDao(): SignalHistoryDao
 

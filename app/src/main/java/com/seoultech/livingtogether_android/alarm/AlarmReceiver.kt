@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.seoultech.livingtogether_android.user.repository.UserRepository
+import com.seoultech.livingtogether_android.user.data.source.ProfileRepository
 import com.seoultech.livingtogether_android.util.SMSSender
 
 class AlarmReceiver: BroadcastReceiver() {
@@ -18,7 +18,7 @@ class AlarmReceiver: BroadcastReceiver() {
     }
 
     private fun sendSMS() {
-        var name = UserRepository().getAll().name
+        var name = ProfileRepository().getAll().name
 
         if (name.isEmpty()) {
             name = "아무개"
