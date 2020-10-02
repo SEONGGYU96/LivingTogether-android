@@ -16,9 +16,8 @@ abstract class BaseContactActivity<B: ViewDataBinding>(@LayoutRes layoutResId: I
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        contactViewModel = obtainViewModel()
 
-        binding.lifecycleOwner = this
+        contactViewModel = obtainViewModel()
 
         contactListAdapter.setOnContactClickListener(object: ContactListAdapter.OnContactClickListener {
             override fun onClick() {

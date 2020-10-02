@@ -82,6 +82,8 @@
             android:layout_marginTop="@dimen/margin_contact_result_recyclerview_top"
             android:background="@drawable/background_round_rectangle_20dp"
             android:backgroundTint="@color/colorContactResultBackground"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

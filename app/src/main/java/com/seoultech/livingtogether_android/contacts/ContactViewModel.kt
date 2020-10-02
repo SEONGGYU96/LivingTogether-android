@@ -1,19 +1,28 @@
 package com.seoultech.livingtogether_android.contacts
 
+import android.Manifest
 import android.app.Application
+import android.content.pm.PackageManager
 import android.provider.ContactsContract
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.loader.content.CursorLoader
-import com.seoultech.livingtogether_android.base.BaseViewModel
 import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 import com.seoultech.livingtogether_android.util.StringUtil
 import java.lang.StringBuilder
 
-class ContactViewModel(application: Application) : BaseViewModel(application) {
+class ContactViewModel(val application: Application) : ViewModel() {
 
-    var contact = getContactsAllObservable()
+    private val _contact = MutableLiveData<List<NextOfKin>>()
+    val contact: LiveData<List<NextOfKin>>
+        get() = _contact
+
+    private val _isPermissionGranted = MutableLiveData<Boolean>()
+    val isPermissionGranted: LiveData<Boolean>
+        get() = _isPermissionGranted
 
     val contactCount: LiveData<String> = Transformations.map(contact) {
         val count = StringBuilder()
@@ -25,15 +34,40 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
         count.append("개 검색 완료").toString()
     }
 
+    fun start() {
+        _isPermissionGranted.value = checkPermission()
+    }
+
+    fun initContact() {
+        _contact.value = getContactsAll()
+    }
+
     fun initContactResult(name: String) {
         if (name.isEmpty()) {
-            contact.value = null
+            _contact.value = null
         } else {
-            contact.value = getContactsAll(name)
+            _contact.value = getContactsAll(name)
         }
     }
 
-    private fun getContactsAll(name: String) : List<NextOfKin> {
+    private fun checkPermission() : Boolean {
+        return ContextCompat.checkSelfPermission(application, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun checkPermissionResponse(grantResults: IntArray) : Boolean {
+        if (grantResults.isEmpty()) {
+            return false
+        }
+
+        for (result in grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun getContactsAll(name: String): List<NextOfKin> {
         val selectedContacts = mutableListOf<NextOfKin>()
         val contacts = getContactsAll()
 
@@ -46,14 +80,7 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
         return selectedContacts
     }
 
-    private fun getContactsAllObservable() : MutableLiveData<List<NextOfKin>> {
-        val contactLiveData = MutableLiveData<List<NextOfKin>>()
-        contactLiveData.value = getContactsAll()
-
-        return contactLiveData
-    }
-
-    private fun getContactsAll() : List<NextOfKin> {
+    private fun getContactsAll(): List<NextOfKin> {
         val contacts = mutableListOf<NextOfKin>()
 
 
@@ -63,8 +90,8 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
             ContactsContract.CommonDataKinds.Phone.NUMBER
         )
         val cursorLoader = CursorLoader(
-            getApplication(), ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
-            null, null, "UPPER(" + ContactsContract.Contacts.DISPLAY_NAME + ")ASC"
+            application, ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection, null,
+            null, "UPPER(" + ContactsContract.Contacts.DISPLAY_NAME + ")ASC"
         )
 
         val c = cursorLoader.loadInBackground()
@@ -74,12 +101,7 @@ class ContactViewModel(application: Application) : BaseViewModel(application) {
                 val number = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
                 val name = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
                 do {
-                    contacts.add(
-                        NextOfKin(
-                            it.getString(name),
-                            StringUtil.removeDash(it.getString(number))
-                        )
-                    )
+                    contacts.add(NextOfKin(it.getString(name), StringUtil.removeDash(it.getString(number))))
                 } while (it.moveToNext())
                 it.close()
             }

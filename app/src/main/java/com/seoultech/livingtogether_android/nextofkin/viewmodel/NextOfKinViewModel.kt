@@ -22,10 +22,18 @@ class NextOfKinViewModel(private val nextOfKinRepository: NextOfKinRepository) :
     val newNextOfKinEvent: LiveData<Boolean>
         get() = _newNextOfKinEvent
 
+    private var isInitNextOfKin = false
+
     fun start() {
         loadNextOfKin()
+        isInitNextOfKin = true
     }
 
+    fun onResume() {
+        if (isInitNextOfKin) {
+            start()
+        }
+    }
 
     fun addNewNextOfKin() {
         _newNextOfKinEvent.value = true
