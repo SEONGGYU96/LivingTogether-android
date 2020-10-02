@@ -35,6 +35,8 @@ class SearchContactActivity : BaseContactActivity<ActivitySearchContactBinding>(
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             })
         }
+
+        contactViewModel.initContact()
     }
 
     override fun onInitRecyclerView(): RecyclerView {

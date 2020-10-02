@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.seoultech.livingtogether_android.nextofkin.data.NextOfKin" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +22,7 @@
             style="@style/MajorText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_name_ex"
+            android:text="@{viewModel.name}"
             app:layout_constraintBottom_toTopOf="@id/textview_contactitem_phone"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +33,7 @@
             style="@style/PlainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next_of_kin_phone_ex"
+            android:text="@{viewModel.phoneNumber}"
             app:layout_constraintBottom_toBottomOf="@+id/textview_contactitem_name"
             app:layout_constraintStart_toStartOf="@+id/textview_contactitem_name"
             app:layout_constraintTop_toBottomOf="@+id/textview_contactitem_name" />

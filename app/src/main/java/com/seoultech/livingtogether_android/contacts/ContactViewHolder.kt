@@ -8,13 +8,15 @@ import com.seoultech.livingtogether_android.databinding.ItemContactListBinding
 import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepository
 
-class ContactViewHolder(parent: ViewGroup, val listener: ContactListAdapter.OnContactClickListener?) : BaseViewHolder<NextOfKin, ItemContactListBinding>(R.layout.item_contact_list, parent) {
-    private val nextOfKinRepository : NextOfKinRepository by lazy { Injection.provideNextOfKinRepository(parent.context.applicationContext) }
+class ContactViewHolder(parent: ViewGroup, val listener: ContactListAdapter.OnContactClickListener?)
+    : BaseViewHolder<NextOfKin, ItemContactListBinding>(R.layout.item_contact_list, parent) {
+
+    private val nextOfKinRepository : NextOfKinRepository
+            by lazy { Injection.provideNextOfKinRepository(parent.context.applicationContext) }
 
     override fun bind(data: NextOfKin) {
         binding.run {
-            textviewContactitemName.text = data.name
-            textviewContactitemPhone.text = data.phoneNumber
+            viewModel = data
 
             constraintLayoutContactitemRoot.setOnClickListener {
                 nextOfKinRepository.saveNextOfKin(data)
