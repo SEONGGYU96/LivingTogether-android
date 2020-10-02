@@ -24,16 +24,16 @@ class EditProfileActivity : BaseActivity<ActivityProfileBinding>(R.layout.activi
     }
 
     override fun onBackPressed() {
-        showDialog()
+        //showDialog()
     }
 
-    private fun showDialog() {
-        if (!profileViewModel.isInitialized) {
-            showInitialDialog()
-        } else {
-            showWarningDialog()
-        }
-    }
+//    private fun showDialog() {
+//        if (!profileViewModel.isInitialized) {
+//            showInitialDialog()
+//        } else {
+//            showWarningDialog()
+//        }
+//    }
 
     private fun showWarningDialog() {
         AlertDialog.Builder(this)

@@ -51,7 +51,7 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
 
     //firebase init
-    implementation 'com.google.firebase:firebase-core:17.3.0'
+    implementation 'com.google.firebase:firebase-core:17.5.0'
 
     //room
     implementation "androidx.room:room-runtime:2.2.5"
