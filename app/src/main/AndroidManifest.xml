@@ -27,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".ui.contacts.SearchContactActivity"></activity>
+        <activity android:name=".ui.profile.ProfileActivity"/>
+        <activity android:name=".ui.contacts.SearchContactActivity" />
         <activity android:name=".ui.contacts.ContactListActivity" />
 
         <service
@@ -37,7 +38,6 @@
         <receiver
             android:name=".alarm.AlarmReceiver"
             android:exported="false" />
-
         <receiver android:name=".bluetooth.receiver.BluetoothStateReceiver" />
 
         <activity android:name=".ui.scan.InsertLocationActivity" />
@@ -54,7 +54,6 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

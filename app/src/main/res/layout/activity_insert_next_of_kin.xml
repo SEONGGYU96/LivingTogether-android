@@ -63,7 +63,7 @@
 
                 <EditText
                     android:id="@+id/edittext_insertnextofkin_name"
-                    style="@style/InputBoxValueText"
+                    style="@style/InputBoxValueEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={viewModel.name}"
@@ -83,7 +83,7 @@
 
                 <EditText
                     android:id="@+id/edittext_insertnextofkin_phone"
-                    style="@style/InputBoxValueText"
+                    style="@style/InputBoxValueEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/padding_inputbox_bottom"

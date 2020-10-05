@@ -264,7 +264,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()->mainViewModel.seeMoreNextOfKin()}"
-                    android:padding="@dimen/margin_entire_padding_horizontal"
                     app:layout_constraintBaseline_toBaselineOf="@id/textview_main_nextofkin"
                     app:layout_constraintEnd_toEndOf="parent" />
 

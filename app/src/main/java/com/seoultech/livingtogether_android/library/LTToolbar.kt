@@ -9,6 +9,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
+import com.seoultech.livingtogether_android.ui.profile.ProfileActivity
 import kotlinx.android.synthetic.main.view_livingtogether_toolbar.view.*
 
 class LTToolbar : ConstraintLayout {
@@ -55,7 +56,7 @@ class LTToolbar : ConstraintLayout {
         this.imagebutton_toolbar_mypage.run {
             visibility = View.VISIBLE
             setOnClickListener {
-                context.startActivity(Intent(context as Activity, EditProfileActivity::class.java))
+                context.startActivity(Intent(context as Activity, ProfileActivity::class.java))
             }
         }
     }

@@ -19,7 +19,7 @@ import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 @TypeConverters(Converters::class)
 abstract class LivingTogetherDatabase : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao
-    abstract fun userDao(): ProfileDao
+    abstract fun profileDao(): ProfileDao
     abstract fun nokDao(): NextOfKinDao
     abstract fun signalHistoryDao(): SignalHistoryDao
 

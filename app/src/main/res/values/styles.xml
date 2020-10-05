@@ -38,6 +38,15 @@
         <item name="android:textFontWeight">700</item>
     </style>
 
+    <style name="MajorInputText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/colorPlainText</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="fontFamily">@font/notosans_font_family</item>
+    </style>
+
     <style name="PlainText" parent="MajorText">
         <item name="android:textSize">14sp</item>
         <item name="android:textFontWeight">400</item>
@@ -60,13 +69,25 @@
     </style>
 
     <style name="SeeMoreButton" parent="TextAppearance.AppCompat.Button">
-        <item name="background">@null</item>
         <item name="android:text">@string/see_more</item>
+        <item name="android:padding">@dimen/margin_entire_padding_horizontal</item>
+    </style>
+
+    <style name="TextButton" parent="TextAppearance.AppCompat.Button">
+        <item name="background">@null</item>
         <item name="android:textColor">@color/colorPlainText</item>
+        <item name="android:foreground">?android:selectableItemBackground</item>
         <item name="android:textFontWeight">400</item>
-        <item name="android:textSize">@dimen/font_size_see_more</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
+    </style>
+
+    <style name="SearchAddressButton" parent="TextButton">
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingTop">@dimen/margin_profile_value_top</item>
+        <item name="android:paddingBottom">@dimen/margin_profile_value_top</item>
+        <item name="android:paddingEnd">0dp</item>
     </style>
 
     <style name="NextOfKinItemNameText" parent="MajorText">
@@ -81,7 +102,28 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="InputBoxExtraAddressCategoryText" parent="MajorText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="InputBoxExtraAddressCategoryEditText" parent="MajorInputText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
     <style name="InputBoxValueText" parent="MajorText">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:background">@drawable/background_round_rectangle_5dp</item>
+        <item name="android:backgroundTint">@color/colorProfileValueBackground</item>
+        <item name="android:layout_marginTop">@dimen/margin_profile_value_top</item>
+        <item name="android:paddingStart">@dimen/padding_profile_value_horizontal</item>
+        <item name="android:paddingEnd">@dimen/padding_profile_value_horizontal</item>
+        <item name="android:paddingTop">@dimen/padding_profile_value_vertical</item>
+        <item name="android:paddingBottom">@dimen/padding_profile_value_vertical</item>
+    </style>
+
+    <style name="InputBoxValueEditText" parent="MajorInputText">
         <item name="android:textFontWeight">400</item>
         <item name="android:background">@drawable/background_round_rectangle_5dp</item>
         <item name="android:backgroundTint">@color/colorProfileValueBackground</item>

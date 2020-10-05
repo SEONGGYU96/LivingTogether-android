@@ -14,4 +14,8 @@ interface ProfileDataSource {
     fun getProfile(callback: GetProfileCallback)
 
     fun saveProfile(profile: Profile)
+
+    fun updateProfile(profile: Profile)
+
+    fun deleteProfile()
 }

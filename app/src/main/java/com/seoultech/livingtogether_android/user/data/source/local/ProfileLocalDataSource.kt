@@ -27,6 +27,18 @@ class ProfileLocalDataSource private constructor(
         }
     }
 
+    override fun updateProfile(profile: Profile) {
+        appExecutors.diskIO.execute {
+            profileDao.update(profile)
+        }
+    }
+
+    override fun deleteProfile() {
+        appExecutors.diskIO.execute {
+            profileDao.deleteAll()
+        }
+    }
+
     companion object {
         private var INSTANCE: ProfileLocalDataSource? = null
 

@@ -3,7 +3,8 @@ package com.seoultech.livingtogether_android.nextofkin.data.source
 import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 
 
-class NextOfKinRepository(private val nextOfKinLocalDataSource: NextOfKinDataSource) : NextOfKinDataSource {
+class NextOfKinRepository(private val nextOfKinLocalDataSource: NextOfKinDataSource) :
+    NextOfKinDataSource {
 
     private val cachedNextOfKin = LinkedHashMap<String, NextOfKin>()
 
@@ -15,7 +16,8 @@ class NextOfKinRepository(private val nextOfKinLocalDataSource: NextOfKinDataSou
             return
         }
 
-        nextOfKinLocalDataSource.getNextOfKin(object : NextOfKinDataSource.LoadNextOfKinCallback {
+        nextOfKinLocalDataSource.getNextOfKin(object :
+            NextOfKinDataSource.LoadNextOfKinCallback {
             override fun onNextOfKinLoaded(nextOfKin: List<NextOfKin>) {
                 refreshCache(nextOfKin)
                 callback.onNextOfKinLoaded(nextOfKin)
@@ -35,7 +37,8 @@ class NextOfKinRepository(private val nextOfKinLocalDataSource: NextOfKinDataSou
             return
         }
 
-        nextOfKinLocalDataSource.getNextOfKin(phoneNumber, object : NextOfKinDataSource.GetNextOfKinCallback {
+        nextOfKinLocalDataSource.getNextOfKin(phoneNumber, object :
+            NextOfKinDataSource.GetNextOfKinCallback {
             override fun onNextOfKinLoaded(nextOfKin: NextOfKin) {
                 cacheAndPerform(nextOfKin) {
                     callback.onNextOfKinLoaded(it)
@@ -70,7 +73,10 @@ class NextOfKinRepository(private val nextOfKinLocalDataSource: NextOfKinDataSou
     }
 
     private inline fun cacheAndPerform(nextOfKin: NextOfKin, perform: (NextOfKin) -> Unit) {
-        val cacheNextOfKin = NextOfKin(nextOfKin.name, nextOfKin.phoneNumber)
+        val cacheNextOfKin = NextOfKin(
+            nextOfKin.name,
+            nextOfKin.phoneNumber
+        )
         cachedNextOfKin[cacheNextOfKin.phoneNumber] = cacheNextOfKin
         perform(cacheNextOfKin)
     }
@@ -80,8 +86,12 @@ class NextOfKinRepository(private val nextOfKinLocalDataSource: NextOfKinDataSou
         private var INSTANCE: NextOfKinRepository? = null
 
         @JvmStatic fun getInstance(nextOfKinLocalDataSource: NextOfKinDataSource) =
-            INSTANCE ?: synchronized(NextOfKinRepository::class.java) {
-                INSTANCE ?: NextOfKinRepository(nextOfKinLocalDataSource)
+            INSTANCE
+                ?: synchronized(NextOfKinRepository::class.java) {
+                INSTANCE
+                    ?: NextOfKinRepository(
+                        nextOfKinLocalDataSource
+                    )
                     .also { INSTANCE = it }
             }
     }

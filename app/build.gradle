@@ -53,6 +53,9 @@ dependencies {
     //firebase init
     implementation 'com.google.firebase:firebase-core:17.5.0'
 
+    //firebase realtime database
+    implementation 'com.google.firebase:firebase-database-ktx:19.4.0'
+
     //room
     implementation "androidx.room:room-runtime:2.2.5"
     annotationProcessor "androidx.room:room-compiler:2.2.5"
