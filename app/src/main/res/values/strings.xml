@@ -29,6 +29,8 @@
     <string name="profile_name">이름</string>
     <string name="profile_phone">전화번호</string>
     <string name="profile_address">주소</string>
+    <string name="profile_search_address">주소 검색</string>
+    <string name="profile_new_notice">최초 1회 사용자 등록이 필요합니다.</string>
 
     <!-- NextOfKin-->
     <string name="next_of_kin">보호자</string>
@@ -37,6 +39,7 @@
     <string name="next_of_kin_phone">전화번호</string>
     <string name="next_of_kin_insert">보호자 추가</string>
     <string name="next_of_kin_no_registered">등록된 보호자가 없습니다.</string>
+    <string name="next_of_kin_empty_message">이름과 전화번호를 모두 입력해주세요</string>
 
     <!-- Sensor-->
     <string name="sensor_registerd">등록된 센서</string>
@@ -58,5 +61,4 @@
     <string name="sensor_last_detacted_time">n분 전</string>
     <string name="sensor_no_response">응답없음</string>
     <string name="statusbox_bluetooth_on_button">블루투스 켜기</string>
-    <string name="empty_next_of_kin_message">이름과 전화번호를 모두 입력해주세요</string>
 </resources>

@@ -19,7 +19,6 @@
 
     <!-- registerd_sensors-->
     <dimen name="margin_registerd_sensors_padding_top">13dp</dimen>
-    <dimen name="font_size_see_more">14sp</dimen>
     <dimen name="margin_sensor_reyclerview_top">16dp</dimen>
     <dimen name="margin_sensor_recyclerview_bottom">18dp</dimen>
     <dimen name="margin_registered_sensers_bottom">15dp</dimen>

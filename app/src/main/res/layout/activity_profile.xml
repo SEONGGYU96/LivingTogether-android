@@ -39,7 +39,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/padding_inputbox_horizontal">
+                android:paddingHorizontal="@dimen/padding_inputbox_horizontal"
+                android:paddingBottom="@dimen/padding_inputbox_bottom">
 
                 <TextView
                     android:id="@+id/textview_profile_setting"
@@ -52,6 +53,17 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/textview_profile_new"
+                    style="@style/PlainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="24dp"
+                    android:text="@string/profile_new_notice"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/textview_profile_setting"
+                    app:layout_constraintTop_toBottomOf="@id/textview_profile_setting" />
+
+                <TextView
                     android:id="@+id/textview_profile_name"
                     style="@style/InputBoxCategoryText"
                     android:layout_width="wrap_content"
@@ -59,14 +71,24 @@
                     android:layout_marginTop="@dimen/margin_inputbox_title_bottom"
                     android:text="@string/profile_name"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textview_profile_setting" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_profile_new" />
 
                 <TextView
                     android:id="@+id/textview_profile_namevalue"
                     style="@style/InputBoxValueText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_name"
+                    android:text="@{viewModel.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_profile_name" />
+
+                <EditText
+                    android:id="@+id/edittext_profile_namevalue"
+                    style="@style/InputBoxValueEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_profile_name" />
@@ -86,7 +108,17 @@
                     style="@style/InputBoxValueText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_phone"
+                    android:text="@{viewModel.phoneNumber}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_profile_phone" />
+
+                <EditText
+                    android:id="@+id/edittext_profile_phonevalue"
+                    style="@style/InputBoxValueEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.phoneNumber}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_profile_phone" />
@@ -101,29 +133,76 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_profile_phonevalue" />
 
+                <Button
+                    android:id="@+id/button_profile_searchaddress"
+                    style="@style/SearchAddressButton"
+                    android:onClick="@{()->viewModel.searchAddress()}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_search_address"
+                    app:layout_constraintBaseline_toBaselineOf="@id/textview_profile_address"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
                 <TextView
+                    android:id="@+id/textview_profile_addressvalue"
                     style="@style/InputBoxValueText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/padding_inputbox_bottom"
-                    android:text="@string/profile_address"
+                    android:text="@{viewModel.showingAddress}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textview_profile_address" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_profile_address"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/textview_profile_extraaddress"
+                    style="@style/InputBoxExtraAddressCategoryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_inputbox_category_top"
+                    android:text="나머지 주소"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_profile_addressvalue" />
+
+                <EditText
+                    android:id="@+id/edittext_profile_extraaddressvalue"
+                    style="@style/InputBoxValueEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_inputbox_bottom"
+                    android:text="@={viewModel.extraAddress}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_profile_extraaddress" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_profile_editmode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="edittext_profile_namevalue, edittext_profile_phonevalue, textview_profile_extraaddress, edittext_profile_extraaddressvalue, button_profile_searchaddress" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_profile_normalmode"
+                    android:layout_width="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="textview_profile_namevalue, textview_profile_phonevalue" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
         <Button
+            android:id="@+id/button_profile_edit"
+            style="@style/BottomButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/BottomButton"
             android:text="@string/bottom_button_edit"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

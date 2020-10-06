@@ -4,6 +4,7 @@
 
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">livingtogether.duckdns.org</domain>
+        <domain includeSubdomains="true">dmaps.daum.net</domain>
     </domain-config>
 
 </network-security-config>

@@ -2,9 +2,7 @@ package com.seoultech.livingtogether_android.device.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.seoultech.livingtogether_android.user.model.UserEntity
 import java.lang.StringBuilder
 import java.util.*
 

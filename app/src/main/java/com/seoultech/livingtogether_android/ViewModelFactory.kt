@@ -15,12 +15,15 @@ import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepos
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.AddNextOfKinViewModel
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
+import com.seoultech.livingtogether_android.user.data.source.ProfileRepository
+import com.seoultech.livingtogether_android.user.viewmodel.ProfileViewModel
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
 class ViewModelFactory private constructor(
     private val nextOfKinRepository: NextOfKinRepository,
     private val deviceRepository: DeviceRepository,
     private val signalHistoryRepository: SignalHistoryRepository,
+    private val profileRepository: ProfileRepository,
     private val bluetoothAdapter: BluetoothAdapter,
     private val application: Application
 ) : ViewModelProvider.NewInstanceFactory() {
@@ -40,6 +43,8 @@ class ViewModelFactory private constructor(
                     AddNextOfKinViewModel(nextOfKinRepository)
                 isAssignableFrom(ContactViewModel::class.java) ->
                     ContactViewModel(application)
+                isAssignableFrom(ProfileViewModel::class.java) ->
+                    ProfileViewModel(profileRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }
@@ -56,6 +61,7 @@ class ViewModelFactory private constructor(
                     Injection.provideNextOfKinRepository(application.applicationContext),
                     Injection.provideDeviceRepository(application.applicationContext),
                     Injection.provideSignalHistoryRepository(application.applicationContext),
+                    Injection.provideProfileRepository(application.applicationContext),
                     (application.applicationContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter,
                     application)
                     .also { INSTANCE = it }

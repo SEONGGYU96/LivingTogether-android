@@ -1,55 +1,108 @@
 package com.seoultech.livingtogether_android.user.viewmodel
 
-import android.app.Application
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
-import com.seoultech.livingtogether_android.base.BaseViewModel
-import com.seoultech.livingtogether_android.user.model.UserEntity
-import com.seoultech.livingtogether_android.user.repository.UserRepository
-import com.seoultech.livingtogether_android.util.SharedPreferenceManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.seoultech.livingtogether_android.user.data.Profile
+import com.seoultech.livingtogether_android.user.data.source.ProfileDataSource
+import com.seoultech.livingtogether_android.user.data.source.ProfileRepository
+import java.lang.StringBuilder
 
-class ProfileViewModel(application: Application) : BaseViewModel(application) {
+class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewModel() {
 
-    private val userRepository: UserRepository by lazy { UserRepository() }
-    
-    var userLiveData = getObservable()
+    var profileId: String? = null
 
-    val isInitialized = SharedPreferenceManager.getInitializing()
+    var name = MutableLiveData<String>()
 
-    private fun getObservable(): LiveData<UserEntity> {
-        return userRepository.getAllObservable()
+    var showingAddress = MutableLiveData<String>()
+
+    var cityOfAddress = MutableLiveData<String>()
+
+    var fullAddress = MutableLiveData<String>()
+
+    var extraAddress = MutableLiveData<String>()
+
+    var phoneNumber = MutableLiveData<String>()
+
+    private var isNew = true
+
+    private val _saveProfileEvent = MutableLiveData<Boolean>()
+    val saveProfileEvent: LiveData<Boolean>
+        get() = _saveProfileEvent
+
+    private val _isWrongData = MutableLiveData<Boolean>()
+    val isWrongData: LiveData<Boolean>
+        get() = _isWrongData
+
+    private val _searchAddressEvent = MutableLiveData<Boolean>()
+    val searchAddressEvent: LiveData<Boolean>
+        get() = _searchAddressEvent
+
+    fun getProfile(isEdit: Boolean) {
+        profileRepository.getProfile(object : ProfileDataSource.GetProfileCallback {
+            override fun onProfileLoaded(profile: Profile) {
+                name.value = profile.name
+                cityOfAddress.value = profile.city
+                fullAddress.value = profile.fullAddress
+                extraAddress.value = profile.extraAddress
+                showingAddress.value = generateShowingAddress(profile, isEdit)
+                phoneNumber.value = profile.phoneNumber
+                profileId = profile.id
+                isNew = false
+            }
+
+            override fun onDataNotAvailable() {
+                isNew = false
+            }
+        })
     }
 
-    fun update() {
-        if (userLiveData.value == null) {
-            Log.d(TAG, "userData is null yet.")
+    private fun generateShowingAddress(profile: Profile, isEdit: Boolean): String {
+        val result = StringBuilder(profile.fullAddress)
+        if (!isEdit) {
+            result.append(" ").append(profile.extraAddress)
+        }
+        return result.toString()
+    }
+
+    fun searchAddress() {
+        _searchAddressEvent.value = true
+    }
+
+    fun setAddress(city: String, fullAddress: String) {
+        this.cityOfAddress.value = city
+        this.fullAddress.value = fullAddress
+        this.showingAddress.value = fullAddress
+    }
+
+    fun saveProfile() {
+        val currentName = name.value
+        val currentCity = cityOfAddress.value
+        val currentMiddleAddress = fullAddress.value
+        val currentExtraAddress = extraAddress.value
+        val currentPhoneNumber = phoneNumber.value
+
+        if (currentName == null ||currentCity == null || currentMiddleAddress == null
+            || currentExtraAddress == null || currentPhoneNumber == null) {
+            _isWrongData.value = true
             return
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            userRepository.update(userLiveData.value!!)
+        if (isNew || profileId == null) {
+            createProfile(Profile(currentName, currentCity,
+                currentMiddleAddress, currentExtraAddress, currentPhoneNumber))
+        } else {
+            updateProfile(Profile(currentName, currentCity,
+                currentMiddleAddress, currentExtraAddress, currentPhoneNumber, profileId!!))
         }
+        _saveProfileEvent.value = true
+    }
 
-        userRepository.updateServer(userLiveData, object: UserRepository.UserUpdateCallback {
-            override fun onResponse(isSuccessful: Boolean) {
-                if (isSuccessful) {
-                    Toast.makeText(getApplication(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(getApplication(), "알 수 없는 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
+    private fun updateProfile(profile: Profile) {
+        profileRepository.updateProfile(profile)
+    }
 
-            override fun onFailure(t: Throwable) {
-                Toast.makeText(getApplication(), "네트워크 연결에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        SharedPreferenceManager.setInitializing(true)
-
-        finishHandler.value = true
+    private fun createProfile(profile: Profile) {
+        profileRepository.saveProfile(profile)
     }
 }

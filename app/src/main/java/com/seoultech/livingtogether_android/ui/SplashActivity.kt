@@ -8,8 +8,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.seoultech.livingtogether_android.Injection
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.ui.main.MainActivity
+import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
+import com.seoultech.livingtogether_android.user.data.Profile
+import com.seoultech.livingtogether_android.user.data.source.ProfileDataSource
 
 //Todo: 로직들을 ViewModel로 옮길 순 없을까?
 class SplashActivity : AppCompatActivity() {
@@ -17,16 +21,33 @@ class SplashActivity : AppCompatActivity() {
         private const val REQUEST_PERMISSION: Int = 1000
     }
 
+    private var isInitialOperation = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        Injection.provideProfileRepository(applicationContext).getProfile(object : ProfileDataSource.GetProfileCallback {
+            override fun onProfileLoaded(profile: Profile) {
+                isInitialOperation = false
+                start()
+            }
+
+            override fun onDataNotAvailable() {
+                isInitialOperation = true
+                start()
+            }
+        })
+    }
+
+    private fun start() {
         //권한이 없다면
         if (!checkPermission()) {
             //권한 요청
             requestPermission()
 
         } else { //권한이 있다면
-            startActivity(Intent(this, MainActivity::class.java))
+            startNextActivity()
         }
     }
 
@@ -41,7 +62,7 @@ class SplashActivity : AppCompatActivity() {
         // 요청이 취소되면 빈 Results 배열이 전달됨.
         if (checkPermissionResponse(grantResults)) {
 
-            startActivity(Intent(this, MainActivity::class.java))
+            startNextActivity()
         } else {
             //거부가 되었을 때 다이얼로그 띄우기
             showDialog()
@@ -83,5 +104,15 @@ class SplashActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    private fun startNextActivity() {
+        if (isInitialOperation) {
+            val intent = Intent(this, EditProfileActivity::class.java)
+            intent.getBooleanExtra("isNew", true)
+            startActivity(intent)
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 }
