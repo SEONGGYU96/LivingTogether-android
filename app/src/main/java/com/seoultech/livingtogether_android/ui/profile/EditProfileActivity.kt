@@ -1,16 +1,21 @@
 package com.seoultech.livingtogether_android.ui.profile
 
 import android.app.AlertDialog
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.seoultech.livingtogether_android.R
-import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityProfileBinding
-import com.seoultech.livingtogether_android.user.viewmodel.ProfileViewModel
+import kotlinx.android.synthetic.main.activity_profile.*
+
 
 class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout.activity_profile) {
+
+    companion object {
+        private const val SEARCH_ADDRESS_ACTIVITY = 100
+    }
 
     private var isNew = false
 
@@ -47,6 +52,13 @@ class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout
             }
 
             profileViewModel.getProfile(true)
+
+            buttonProfileSearchaddress.setOnClickListener {
+                startActivityForResult(
+                    Intent(this@EditProfileActivity, WebViewActivity::class.java),
+                    SEARCH_ADDRESS_ACTIVITY
+                )
+            }
         }
     }
 
@@ -64,5 +76,16 @@ class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout
                 dialog.dismiss()
             }
             .show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            SEARCH_ADDRESS_ACTIVITY -> if (resultCode == Activity.RESULT_OK) {
+                val mData = data?.getStringExtra("data")
+                textview_profile_addressvalue.text = mData
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
         <activity android:name=".ui.profile.ProfileActivity"/>
+        <activity android:name=".ui.profile.WebViewActivity"/>
         <activity android:name=".ui.contacts.SearchContactActivity" />
         <activity android:name=".ui.contacts.ContactListActivity" />
 
