@@ -14,6 +14,7 @@ import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
 import com.seoultech.livingtogether_android.library.LTDialogBuilder
+import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
 import com.seoultech.livingtogether_android.ui.nok.AddNextOfKinActivity
@@ -29,7 +30,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private var backKeyPressedTime = 0L
     private val deviceAdapter: DeviceAdapter by lazy { DeviceAdapter() }
-    private val nextOfKinAdapter: NextOfKinMainAdapter by lazy { NextOfKinMainAdapter() }
     private lateinit var debugVm: DebugViewModel
 
     private lateinit var deviceViewModel: DeviceViewModel
@@ -70,7 +70,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
 
             recyclerviewMainNextofkin.run {
-                adapter = nextOfKinAdapter
+                adapter = NextOfKinMainAdapter()
                 addItemDecoration(MarginDecoration(baseContext, 16, RecyclerView.VERTICAL))
             }
         }
@@ -135,11 +135,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun addNewNextOfKin() {
         LTDialogBuilder()
             .addVerticalButton("직접 추가하기") { dialog, _ ->
-                startActivity(Intent(this, AddNextOfKinActivity::class.java))
+                val intent = Intent(this, AddNextOfKinActivity::class.java)
+                intent.putExtra("isFirstAdd", true)
+                startActivity(intent)
                 dialog.dismiss()
             }
             .addVerticalButton("연락처에서 추가하기") {dialog, _ ->
-                startActivity(Intent(this, ContactListActivity::class.java))
+                val intent = Intent(this, ContactListActivity::class.java)
+                intent.putExtra("isFirstAdd", true)
+                startActivity(intent)
                 dialog.dismiss()
             }
             .build()

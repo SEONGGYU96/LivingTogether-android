@@ -13,6 +13,7 @@ import com.seoultech.livingtogether_android.databinding.ActivityContactListBindi
 import com.seoultech.livingtogether_android.ui.SplashActivity
 import com.seoultech.livingtogether_android.ui.contacts.base.BaseContactActivity
 import com.seoultech.livingtogether_android.ui.main.MainActivity
+import com.seoultech.livingtogether_android.ui.nok.NextOfKinListActivity
 import kotlinx.android.synthetic.main.activity_contact_list.*
 
 class ContactListActivity : BaseContactActivity<ActivityContactListBinding>(R.layout.activity_contact_list) {
@@ -22,8 +23,12 @@ class ContactListActivity : BaseContactActivity<ActivityContactListBinding>(R.la
         private const val REQUEST_PERMISSION = 2000
     }
 
+    private var isFirstAdd = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        isFirstAdd = intent.getBooleanExtra("isFirstAdd", false)
 
         contactViewModel.isPermissionGranted.observe(this@ContactListActivity, Observer {
             if (it) {
@@ -52,6 +57,9 @@ class ContactListActivity : BaseContactActivity<ActivityContactListBinding>(R.la
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
+            if (isFirstAdd) {
+                startActivity(Intent(this, NextOfKinListActivity::class.java))
+            }
             finish()
         }
     }
@@ -59,13 +67,23 @@ class ContactListActivity : BaseContactActivity<ActivityContactListBinding>(R.la
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        // 요청이 취소되면 빈 Results 배열이 전달됨.
-        if (!contactViewModel.checkPermissionResponse(grantResults)) {
+        if (contactViewModel.checkPermissionResponse(grantResults)) {
+            contactViewModel.initContact()
+        } else {
             finish()
         }
     }
 
     override fun onInitRecyclerView(): RecyclerView {
         return recyclerview_contactlist
+    }
+
+    override fun onBackPressed() {
+        if (isFirstAdd) {
+            startActivity(Intent(this, NextOfKinListActivity::class.java))
+            finish()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
