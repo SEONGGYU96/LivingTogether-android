@@ -68,13 +68,13 @@
         <item name="android:lineSpacingExtra">5sp</item>
     </style>
 
-    <style name="SeeMoreButton" parent="TextAppearance.AppCompat.Button">
+    <style name="SeeMoreButton" parent="TextButton">
         <item name="android:text">@string/see_more</item>
         <item name="android:padding">@dimen/margin_entire_padding_horizontal</item>
     </style>
 
     <style name="TextButton" parent="TextAppearance.AppCompat.Button">
-        <item name="background">@null</item>
+        <item name="android:background">@null</item>
         <item name="android:textColor">@color/colorPlainText</item>
         <item name="android:foreground">?android:selectableItemBackground</item>
         <item name="android:textFontWeight">400</item>
