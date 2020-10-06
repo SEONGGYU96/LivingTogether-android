@@ -136,6 +136,7 @@
                 <Button
                     android:id="@+id/button_profile_searchaddress"
                     style="@style/SearchAddressButton"
+                    android:onClick="@{()->viewModel.searchAddress()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_search_address"

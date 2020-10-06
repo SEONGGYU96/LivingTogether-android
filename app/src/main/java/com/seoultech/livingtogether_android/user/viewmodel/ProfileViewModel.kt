@@ -16,11 +16,9 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
 
     var showingAddress = MutableLiveData<String>()
 
-    var provinceOfAddress = MutableLiveData<String>()
-
     var cityOfAddress = MutableLiveData<String>()
 
-    var middleAddress = MutableLiveData<String>()
+    var fullAddress = MutableLiveData<String>()
 
     var extraAddress = MutableLiveData<String>()
 
@@ -36,13 +34,16 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
     val isWrongData: LiveData<Boolean>
         get() = _isWrongData
 
+    private val _searchAddressEvent = MutableLiveData<Boolean>()
+    val searchAddressEvent: LiveData<Boolean>
+        get() = _searchAddressEvent
+
     fun getProfile(isEdit: Boolean) {
         profileRepository.getProfile(object : ProfileDataSource.GetProfileCallback {
             override fun onProfileLoaded(profile: Profile) {
                 name.value = profile.name
-                provinceOfAddress.value = profile.province
                 cityOfAddress.value = profile.city
-                middleAddress.value = profile.middleAddress
+                fullAddress.value = profile.fullAddress
                 extraAddress.value = profile.extraAddress
                 showingAddress.value = generateShowingAddress(profile, isEdit)
                 phoneNumber.value = profile.phoneNumber
@@ -56,44 +57,44 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
         })
     }
 
-    private fun generateShowingAddress(profile: Profile, isEditMode: Boolean): String {
-        val result = StringBuilder(profile.province)
-            .append(" ")
-            .append(profile.city)
-            .append(" ")
-            .append(profile.middleAddress)
-            .append(" ")
-
-        if (!isEditMode) {
-            result
-            .append(profile.extraAddress)
+    private fun generateShowingAddress(profile: Profile, isEdit: Boolean): String {
+        val result = StringBuilder(profile.fullAddress)
+        if (!isEdit) {
+            result.append(" ").append(profile.extraAddress)
         }
-
         return result.toString()
+    }
+
+    fun searchAddress() {
+        _searchAddressEvent.value = true
+    }
+
+    fun setAddress(city: String, fullAddress: String) {
+        this.cityOfAddress.value = city
+        this.fullAddress.value = fullAddress
+        this.showingAddress.value = fullAddress
     }
 
     fun saveProfile() {
         val currentName = name.value
-        val currentProvince = provinceOfAddress.value
         val currentCity = cityOfAddress.value
-        val currentMiddleAddress = middleAddress.value
+        val currentMiddleAddress = fullAddress.value
         val currentExtraAddress = extraAddress.value
         val currentPhoneNumber = phoneNumber.value
 
-        if (currentName == null || currentProvince == null ||currentCity == null || currentMiddleAddress == null
+        if (currentName == null ||currentCity == null || currentMiddleAddress == null
             || currentExtraAddress == null || currentPhoneNumber == null) {
             _isWrongData.value = true
             return
         }
 
         if (isNew || profileId == null) {
-            createProfile(Profile(currentName, currentProvince, currentCity,
+            createProfile(Profile(currentName, currentCity,
                 currentMiddleAddress, currentExtraAddress, currentPhoneNumber))
         } else {
-            updateProfile(Profile(currentName, currentProvince, currentCity,
+            updateProfile(Profile(currentName, currentCity,
                 currentMiddleAddress, currentExtraAddress, currentPhoneNumber, profileId!!))
         }
-
         _saveProfileEvent.value = true
     }
 

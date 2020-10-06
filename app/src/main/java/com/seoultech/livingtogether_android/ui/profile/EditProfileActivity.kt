@@ -8,8 +8,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.databinding.ActivityProfileBinding
-import kotlinx.android.synthetic.main.activity_profile.*
-
 
 class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout.activity_profile) {
 
@@ -35,6 +33,13 @@ class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout
                     startActivity(intent)
                     finish()
                 })
+
+                searchAddressEvent.observe(this@EditProfileActivity, Observer {
+                    startActivityForResult(
+                        Intent(this@EditProfileActivity, WebViewActivity::class.java),
+                        SEARCH_ADDRESS_ACTIVITY
+                    )
+                })
             }
 
             if (isNew) {
@@ -52,13 +57,6 @@ class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout
             }
 
             profileViewModel.getProfile(true)
-
-            buttonProfileSearchaddress.setOnClickListener {
-                startActivityForResult(
-                    Intent(this@EditProfileActivity, WebViewActivity::class.java),
-                    SEARCH_ADDRESS_ACTIVITY
-                )
-            }
         }
     }
 
@@ -83,8 +81,12 @@ class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout
 
         when (requestCode) {
             SEARCH_ADDRESS_ACTIVITY -> if (resultCode == Activity.RESULT_OK) {
-                val mData = data?.getStringExtra("data")
-                textview_profile_addressvalue.text = mData
+                val city = data?.getStringExtra("city")
+                val fullAddress = data?.getStringExtra("fullAddress")
+                if (city == null || fullAddress == null) {
+                    return
+                }
+                profileViewModel.setAddress(city, fullAddress)
             }
         }
     }

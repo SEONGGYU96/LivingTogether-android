@@ -17,9 +17,10 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>(R.layout.activity_w
 
     internal inner class MyJavaScriptInterface {
         @JavascriptInterface
-        fun processDATA(data: String) {
+        fun processDATA(city: String, fullAddress: String) {
             val intent = Intent()
-            intent.putExtra("data", data)
+            intent.putExtra("city", city)
+            intent.putExtra("fullAddress", fullAddress)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

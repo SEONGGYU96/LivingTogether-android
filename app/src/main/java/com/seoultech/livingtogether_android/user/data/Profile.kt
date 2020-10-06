@@ -10,14 +10,11 @@ data class Profile constructor(
     @ColumnInfo(name = "name")
     var name: String = "",
 
-    @ColumnInfo(name = "province")
-    var province: String = "",
-
     @ColumnInfo(name = "city")
     var city: String = "",
 
-    @ColumnInfo(name = "middle_address")
-    var middleAddress: String = "",
+    @ColumnInfo(name = "full_address")
+    var fullAddress: String = "",
 
     @ColumnInfo(name = "extra_address")
     var extraAddress: String = "",
