@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="nextOfKin"
             type="com.seoultech.livingtogether_android.nextofkin.data.NextOfKin" />
@@ -18,26 +19,38 @@
         app:cardElevation="@dimen/elevation_entire">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintlayout_nextofkinitem_root"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_item_next_of_kin">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textview_nextofkinitem_name"
+            <ImageButton
+                android:id="@+id/imagebutton_nextofkinitem_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{nextOfKin.name}"
-                style="@style/NextOfKinItemNameText"
+                android:background="@null"
+                android:padding="@dimen/padding_item_next_of_kin_delete"
+                android:src="@drawable/ic_nextofkin_delete"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/textview_nextofkinitem_name"
+                style="@style/NextOfKinItemNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{nextOfKin.name}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imagebutton_nextofkinitem_delete"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/textview_nextofkinitem_phonenumber"
+                style="@style/NextOfKinItemPhoneText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{nextOfKin.phoneNumber}"
-                style="@style/NextOfKinItemPhoneText"
                 app:layout_constraintBottom_toBottomOf="@+id/textview_nextofkinitem_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textview_nextofkinitem_name" />

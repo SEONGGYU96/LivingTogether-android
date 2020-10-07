@@ -9,6 +9,6 @@ import com.seoultech.livingtogether_android.nextofkin.viewholder.NextOfKinViewHo
 class NextOfKinMainAdapter : BaseAdapter<NextOfKin>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<NextOfKin, *> {
-        return NextOfKinViewHolder(parent, false)
+        return NextOfKinViewHolder(parent, isList = false, isEdit = false) {}
     }
 }

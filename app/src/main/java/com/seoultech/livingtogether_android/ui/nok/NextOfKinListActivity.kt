@@ -3,6 +3,7 @@ package com.seoultech.livingtogether_android.ui.nok
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -12,18 +13,16 @@ import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityNextOfKinListBinding
 import com.seoultech.livingtogether_android.library.LTDialogBuilder
 import com.seoultech.livingtogether_android.nextofkin.adapter.NextOfKinViewPagerAdapter
+import com.seoultech.livingtogether_android.nextofkin.fragment.NextOfKinEditFragment
+import com.seoultech.livingtogether_android.nextofkin.fragment.NextOfKinViewPagerFragment
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
 import com.seoultech.livingtogether_android.util.toPixel
+import kotlinx.android.synthetic.main.activity_next_of_kin_list.*
 import kotlinx.android.synthetic.main.activity_next_of_kin_list.view.*
 
 
 class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layout.activity_next_of_kin_list) {
-    companion object {
-        private const val ITEM_HEIGHT_WITH_MARGIN = 80
-        private const val MARGIN_ITEM_VERTICAL = 16
-        private const val ITEM_HEIGHT = 55
-    }
 
     private lateinit var nextOfKinViewModel: NextOfKinViewModel
 
@@ -34,51 +33,30 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
             newNextOfKinEvent.observe(this@NextOfKinListActivity, Observer {
                 this@NextOfKinListActivity.addNewNextOfKin()
             })
-        }
 
-        binding.run {
-            viewModel = nextOfKinViewModel
-
-            lttoolbarNextofkinlist.setBackButton()
-
-            viewpager2Nextofkinlist.run {
-                viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-                        viewpager2Nextofkinlist.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                        initViewPager(viewpager2Nextofkinlist.height)
-                    }
-                })
-                adapter = NextOfKinViewPagerAdapter()
-                offscreenPageLimit = 3
-                setPageTransformer(MarginPageTransformer(MARGIN_ITEM_VERTICAL.toPixel()))
-            }
-
-            circleindicatorNextofkinlist.setViewPager(viewpager2Nextofkinlist)
-            (viewpager2Nextofkinlist.adapter as NextOfKinViewPagerAdapter)
-                .registerAdapterDataObserver(circleindicatorNextofkinlist.adapterDataObserver)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        nextOfKinViewModel.onResume()
-    }
-
-    private fun initViewPager(height: Int) {
-        var maxItem = height / ITEM_HEIGHT_WITH_MARGIN.toPixel()
-        if (height % ITEM_HEIGHT_WITH_MARGIN.toPixel() >= ITEM_HEIGHT.toPixel()) {
-            maxItem++
-        }
-
-        binding.viewpager2Nextofkinlist.run {
-            (adapter as NextOfKinViewPagerAdapter).setMaxItems(maxItem)
-
-            nextOfKinViewModel.items.observe(this@NextOfKinListActivity, Observer {
-                (adapter as NextOfKinViewPagerAdapter).setList(it)
+            emptyListEvent.observe(this@NextOfKinListActivity, Observer {
+                if (it) {
+                    finish()
+                }
             })
         }
 
-        nextOfKinViewModel.start()
+        binding.viewModel = nextOfKinViewModel
+
+        goToFragment(NextOfKinViewPagerFragment::class.java, null)
+    }
+
+    override fun initFragmentId(): Int? {
+        return R.id.framelayout_nextofkin_fragment
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.fragments[0] is NextOfKinViewPagerFragment) {
+            super.onBackPressed()
+        } else {
+            nextOfKinViewModel.deleteCache.clear()
+            goToFragment(NextOfKinViewPagerFragment::class.java, null)
+        }
     }
 
     private fun addNewNextOfKin() {
@@ -94,6 +72,5 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
             .build()
             .show(supportFragmentManager, "add_new_next_of_kin")
     }
-
     private fun obtainViewModel(): NextOfKinViewModel = obtainViewModel(NextOfKinViewModel::class.java)
 }

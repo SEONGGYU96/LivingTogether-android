@@ -33,6 +33,7 @@
     <dimen name="padding_item_device">12dp</dimen>
 
     <!-- item_next_of_kin-->
+    <dimen name="padding_item_next_of_kin_delete">10dp</dimen>
     <dimen name="padding_item_next_of_kin">16dp</dimen>
 
     <!-- toolbar-->

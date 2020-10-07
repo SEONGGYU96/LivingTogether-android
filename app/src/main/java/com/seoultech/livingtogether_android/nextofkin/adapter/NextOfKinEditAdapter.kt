@@ -6,9 +6,12 @@ import com.seoultech.livingtogether_android.base.BaseViewHolder
 import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 import com.seoultech.livingtogether_android.nextofkin.viewholder.NextOfKinViewHolder
 
-class NextOfKinListAdapter : BaseAdapter<NextOfKin>() {
+class NextOfKinEditAdapter(private val deleteListener: (String) -> Unit) : BaseAdapter<NextOfKin>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<NextOfKin, *> {
-        return NextOfKinViewHolder(parent, isList = true, isEdit = false) {}
+        return NextOfKinViewHolder(parent, isList = true, isEdit = true) {
+            deleteListener(getItem(it).phoneNumber)
+            remove(it)
+        }
     }
 }

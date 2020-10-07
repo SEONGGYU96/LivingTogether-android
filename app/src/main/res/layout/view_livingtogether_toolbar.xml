@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_toolbar"
-    android:background="@color/colorWhite"
     android:layout_marginBottom="20dp"
+    android:background="@color/colorWhite"
     android:elevation="10dp">
 
     <ImageView
@@ -33,6 +33,17 @@
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/button_toolbar_righttext"
+        style="@style/ToolbarRightTextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <ImageButton
         android:id="@+id/imagebutton_toolbar_back"
         android:layout_width="wrap_content"
@@ -40,7 +51,7 @@
         android:background="@null"
         android:foreground="@drawable/custom_ripple_oval"
         android:paddingHorizontal="17dp"
-        android:src="@drawable/ic_sensor_ic_back"
+        android:src="@drawable/ic_lttoolbar_back"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
