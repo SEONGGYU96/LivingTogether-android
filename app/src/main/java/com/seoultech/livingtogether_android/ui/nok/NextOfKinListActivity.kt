@@ -3,6 +3,7 @@ package com.seoultech.livingtogether_android.ui.nok
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -39,7 +40,12 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
         binding.run {
             viewModel = nextOfKinViewModel
 
-            lttoolbarNextofkinlist.setBackButton()
+            lttoolbarNextofkinlist.run {
+                setBackButton()
+                setRightTextButton(getString(R.string.toolbar_button_edit), View.OnClickListener {
+                    runEditMode()
+                })
+            }
 
             viewpager2Nextofkinlist.run {
                 viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
@@ -57,6 +63,11 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
             (viewpager2Nextofkinlist.adapter as NextOfKinViewPagerAdapter)
                 .registerAdapterDataObserver(circleindicatorNextofkinlist.adapterDataObserver)
         }
+    }
+
+    private fun runEditMode() {
+        Log.d(TAG, "Edit!!")
+        //Todo : 삭제 모드 기능. 그런데 기존 기획처럼 하기엔 기술적 한계가 느껴짐
     }
 
     override fun onResume() {

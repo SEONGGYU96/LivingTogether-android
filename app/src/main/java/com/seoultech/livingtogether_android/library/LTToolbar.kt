@@ -53,6 +53,7 @@ class LTToolbar : ConstraintLayout {
     }
 
     fun setMyPageButton() {
+        button_toolbar_righttext.visibility = View.GONE
         this.imagebutton_toolbar_mypage.run {
             visibility = View.VISIBLE
             setOnClickListener {
@@ -70,6 +71,18 @@ class LTToolbar : ConstraintLayout {
         this.imagebutton_toolbar_mypage.run {
             visibility = View.GONE
             setOnClickListener(null)
+        }
+    }
+
+    fun setRightTextButton(text: String, listener: OnClickListener) {
+        imagebutton_toolbar_mypage.visibility = View.GONE
+
+        this.button_toolbar_righttext.run {
+            visibility = View.VISIBLE
+            setText(text)
+            setOnClickListener {
+                listener.onClick(this)
+            }
         }
     }
 }
