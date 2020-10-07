@@ -1,19 +1,29 @@
 package com.seoultech.livingtogether_android.ui
 
 import android.Manifest.permission
+import android.animation.Animator
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.seoultech.livingtogether_android.Injection
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.ui.main.MainActivity
 import com.seoultech.livingtogether_android.ui.profile.EditProfileActivity
 import com.seoultech.livingtogether_android.user.data.Profile
 import com.seoultech.livingtogether_android.user.data.source.ProfileDataSource
+import kotlinx.android.synthetic.main.activity_splash.*
 
 //Todo: 로직들을 ViewModel로 옮길 순 없을까?
 class SplashActivity : AppCompatActivity() {
@@ -23,21 +33,28 @@ class SplashActivity : AppCompatActivity() {
 
     private var isInitialOperation = true
 
+    private var isAnimationTerminated = false
+
+    private var isPermissionCheckFinished = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
 
+        startAnimation()
 
-        Injection.provideProfileRepository(applicationContext).getProfile(object : ProfileDataSource.GetProfileCallback {
-            override fun onProfileLoaded(profile: Profile) {
-                isInitialOperation = false
-                start()
-            }
+        Injection.provideProfileRepository(applicationContext)
+            .getProfile(object : ProfileDataSource.GetProfileCallback {
+                override fun onProfileLoaded(profile: Profile) {
+                    isInitialOperation = false
+                    start()
+                }
 
-            override fun onDataNotAvailable() {
-                isInitialOperation = true
-                start()
-            }
-        })
+                override fun onDataNotAvailable() {
+                    isInitialOperation = true
+                    start()
+                }
+            })
     }
 
     private fun start() {
@@ -47,13 +64,20 @@ class SplashActivity : AppCompatActivity() {
             requestPermission()
 
         } else { //권한이 있다면
-            startNextActivity()
+            permissionCheckFinish()
         }
     }
 
+    private fun permissionCheckFinish() {
+        isPermissionCheckFinished = true
+        startNextActivity()
+    }
+
     private fun requestPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_FINE_LOCATION, permission.SEND_SMS),
-            REQUEST_PERMISSION)
+        ActivityCompat.requestPermissions(
+            this, arrayOf(permission.ACCESS_FINE_LOCATION, permission.SEND_SMS),
+            REQUEST_PERMISSION
+        )
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -62,7 +86,7 @@ class SplashActivity : AppCompatActivity() {
         // 요청이 취소되면 빈 Results 배열이 전달됨.
         if (checkPermissionResponse(grantResults)) {
 
-            startNextActivity()
+            permissionCheckFinish()
         } else {
             //거부가 되었을 때 다이얼로그 띄우기
             showDialog()
@@ -87,12 +111,15 @@ class SplashActivity : AppCompatActivity() {
         alertDialog?.show()
     }
 
-    private fun checkPermission() : Boolean {
+    private fun checkPermission(): Boolean {
         return ContextCompat.checkSelfPermission(this, permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(
+            this,
+            permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun checkPermissionResponse(grantResults: IntArray) : Boolean {
+    private fun checkPermissionResponse(grantResults: IntArray): Boolean {
         if (grantResults.isEmpty()) {
             return false
         }
@@ -106,7 +133,59 @@ class SplashActivity : AppCompatActivity() {
         return true
     }
 
+    private fun startAnimation() {
+//        lottie_splash.run {
+//            addAnimatorListener(object : Animator.AnimatorListener {
+//                override fun onAnimationRepeat(animation: Animator?) {}
+//
+//                override fun onAnimationEnd(animation: Animator?) {
+//                    isAnimationTerminated = true
+//                    startNextActivity()
+//                }
+//
+//                override fun onAnimationCancel(animation: Animator?) {}
+//
+//                override fun onAnimationStart(animation: Animator?) {}
+//            })
+//            playAnimation()
+//        }
+
+        Glide.with(this).asGif().load(R.raw.splash).listener(object: RequestListener<GifDrawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<GifDrawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+            override fun onResourceReady(
+                resource: GifDrawable,
+                model: Any?,
+                target: Target<GifDrawable>,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                resource.run {
+                    setLoopCount(1)
+                    registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
+                        override fun onAnimationEnd(drawable: Drawable?) {
+                            isAnimationTerminated = true
+                            startNextActivity()
+                            super.onAnimationEnd(drawable)
+                        }
+                    })
+                }
+                return false
+            }
+        }).into(imageview_splash)
+    }
+
     private fun startNextActivity() {
+        if (!isAnimationTerminated || !isPermissionCheckFinished) {
+            return
+        }
+
         if (isInitialOperation) {
             val intent = Intent(this, EditProfileActivity::class.java)
             intent.putExtra("isNew", true)
