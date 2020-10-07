@@ -33,6 +33,12 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
             newNextOfKinEvent.observe(this@NextOfKinListActivity, Observer {
                 this@NextOfKinListActivity.addNewNextOfKin()
             })
+
+            emptyListEvent.observe(this@NextOfKinListActivity, Observer {
+                if (it) {
+                    finish()
+                }
+            })
         }
 
         binding.viewModel = nextOfKinViewModel
@@ -48,6 +54,7 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
         if (supportFragmentManager.fragments[0] is NextOfKinViewPagerFragment) {
             super.onBackPressed()
         } else {
+            nextOfKinViewModel.deleteCache.clear()
             goToFragment(NextOfKinViewPagerFragment::class.java, null)
         }
     }

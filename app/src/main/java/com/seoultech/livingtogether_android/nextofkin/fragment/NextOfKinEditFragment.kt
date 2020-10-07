@@ -25,18 +25,17 @@ class NextOfKinEditFragment: BaseNextOfKinFragment<FragmentNextOfKinEditBinding>
         toolbar?.run {
             clearButton()
             setBackButton(View.OnClickListener {
+                nextOfKinViewModel.deleteCache.clear()
                 goToFragment(NextOfKinViewPagerFragment::class.java, null)
             })
             setRightTextButton("확인", View.OnClickListener {
+                nextOfKinViewModel.deleteNextOfKinInCache()
                 goToFragment(NextOfKinViewPagerFragment::class.java, null)
             })
         }
 
-        nextOfKinEditAdapter = NextOfKinEditAdapter { phoneNumber, isLastOne ->
-            nextOfKinViewModel.deleteNextOfKin(phoneNumber)
-            if (isLastOne) {
-                mActivity?.finish()
-            }
+        nextOfKinEditAdapter = NextOfKinEditAdapter {
+            nextOfKinViewModel.deleteCache.add(it)
         }
 
         nextOfKinViewModel.loadNextOfKin { nextOfKinEditAdapter.setList(it) }

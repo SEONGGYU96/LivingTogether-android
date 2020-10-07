@@ -14,9 +14,11 @@ class NextOfKinViewModel(private val nextOfKinRepository: NextOfKinRepository) :
     val items: LiveData<List<NextOfKin>>
         get() = _items
 
-    val empty: LiveData<Boolean> = Transformations.map(_items) {
-        it.isEmpty()
-    }
+    private val _emptyListEvent = MutableLiveData<Boolean>()
+    val emptyListEvent: LiveData<Boolean>
+        get() = _emptyListEvent
+
+    val deleteCache = mutableListOf<String>()
 
     private val _newNextOfKinEvent = MutableLiveData<Boolean>()
     val newNextOfKinEvent: LiveData<Boolean>
@@ -53,11 +55,19 @@ class NextOfKinViewModel(private val nextOfKinRepository: NextOfKinRepository) :
                 callback?.let {
                     it(emptyList())
                 }
+                _emptyListEvent.value = true
             }
         })
     }
+
+    fun deleteNextOfKinInCache() {
+        for (phoneNumber in deleteCache) {
+            deleteNextOfKin(phoneNumber)
+        }
+        deleteCache.clear()
+    }
     
-    fun deleteNextOfKin(phoneNumber: String) {
+    private fun deleteNextOfKin(phoneNumber: String) {
         nextOfKinRepository.deleteNextOfKin(phoneNumber)
         loadNextOfKin {}
     }
