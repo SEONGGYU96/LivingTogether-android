@@ -4,11 +4,19 @@ import android.Manifest.permission
 import android.animation.Animator
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.seoultech.livingtogether_android.Injection
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.ui.main.MainActivity
@@ -126,21 +134,51 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startAnimation() {
-        lottie_splash.run {
-            addAnimatorListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(animation: Animator?) {}
+//        lottie_splash.run {
+//            addAnimatorListener(object : Animator.AnimatorListener {
+//                override fun onAnimationRepeat(animation: Animator?) {}
+//
+//                override fun onAnimationEnd(animation: Animator?) {
+//                    isAnimationTerminated = true
+//                    startNextActivity()
+//                }
+//
+//                override fun onAnimationCancel(animation: Animator?) {}
+//
+//                override fun onAnimationStart(animation: Animator?) {}
+//            })
+//            playAnimation()
+//        }
 
-                override fun onAnimationEnd(animation: Animator?) {
-                    isAnimationTerminated = true
-                    startNextActivity()
+        Glide.with(this).asGif().load(R.raw.splash).listener(object: RequestListener<GifDrawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<GifDrawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+            override fun onResourceReady(
+                resource: GifDrawable,
+                model: Any?,
+                target: Target<GifDrawable>,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                resource.run {
+                    setLoopCount(1)
+                    registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
+                        override fun onAnimationEnd(drawable: Drawable?) {
+                            isAnimationTerminated = true
+                            startNextActivity()
+                            super.onAnimationEnd(drawable)
+                        }
+                    })
                 }
-
-                override fun onAnimationCancel(animation: Animator?) {}
-
-                override fun onAnimationStart(animation: Animator?) {}
-            })
-            playAnimation()
-        }
+                return false
+            }
+        }).into(imageview_splash)
     }
 
     private fun startNextActivity() {
