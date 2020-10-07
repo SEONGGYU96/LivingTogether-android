@@ -92,10 +92,15 @@
 
     <style name="NextOfKinItemNameText" parent="MajorText">
         <item name="android:textFontWeight">400</item>
+        <item name="android:layout_marginTop">@dimen/padding_item_next_of_kin</item>
+        <item name="android:layout_marginBottom">@dimen/padding_item_next_of_kin</item>
     </style>
 
     <style name="NextOfKinItemPhoneText" parent="MajorText">
         <item name="android:textFontWeight">100</item>
+        <item name="android:layout_marginTop">@dimen/padding_item_next_of_kin</item>
+        <item name="android:layout_marginBottom">@dimen/padding_item_next_of_kin</item>
+        <item name="android:layout_marginEnd">@dimen/padding_item_next_of_kin</item>
     </style>
     
     <style name="InputBoxCategoryText" parent="MajorText">
@@ -178,7 +183,7 @@
         <item name="android:foreground">@drawable/custom_ripple_oval</item>
         <item name="android:paddingStart">@dimen/margin_entire_padding_horizontal</item>
         <item name="android:paddingEnd">@dimen/margin_entire_padding_horizontal</item>
-        <item name="android:src">@drawable/ic_sensor_ic_back</item>
+        <item name="android:src">@drawable/ic_nextofkin_delete</item>
         <item name="android:tint">@color/colorPlainText</item>
     </style>
 

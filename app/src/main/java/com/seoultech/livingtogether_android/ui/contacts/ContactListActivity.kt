@@ -77,13 +77,4 @@ class ContactListActivity : BaseContactActivity<ActivityContactListBinding>(R.la
     override fun onInitRecyclerView(): RecyclerView {
         return recyclerview_contactlist
     }
-
-    override fun onBackPressed() {
-        if (isFirstAdd) {
-            startActivity(Intent(this, NextOfKinListActivity::class.java))
-            finish()
-        } else {
-            super.onBackPressed()
-        }
-    }
 }

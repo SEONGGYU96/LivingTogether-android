@@ -51,7 +51,7 @@
         android:background="@null"
         android:foreground="@drawable/custom_ripple_oval"
         android:paddingHorizontal="17dp"
-        android:src="@drawable/ic_sensor_ic_back"
+        android:src="@drawable/ic_lttoolbar_back"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

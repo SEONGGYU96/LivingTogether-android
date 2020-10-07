@@ -25,7 +25,7 @@ class NextOfKinViewModel(private val nextOfKinRepository: NextOfKinRepository) :
     private var isInitNextOfKin = false
 
     fun start() {
-        loadNextOfKin()
+        loadNextOfKin {}
         isInitNextOfKin = true
     }
 
@@ -39,20 +39,26 @@ class NextOfKinViewModel(private val nextOfKinRepository: NextOfKinRepository) :
         _newNextOfKinEvent.value = true
     }
 
-    private fun loadNextOfKin() {
+    fun loadNextOfKin(callback: ((List<NextOfKin>) -> Unit)?) {
         nextOfKinRepository.getNextOfKin(object : NextOfKinDataSource.LoadNextOfKinCallback {
             override fun onNextOfKinLoaded(nextOfKin: List<NextOfKin>) {
                 _items.value = nextOfKin
+                callback?.let {
+                    it(nextOfKin)
+                }
             }
 
             override fun onDataNotAvailable() {
                 _items.value = emptyList()
+                callback?.let {
+                    it(emptyList())
+                }
             }
         })
     }
     
     fun deleteNextOfKin(phoneNumber: String) {
         nextOfKinRepository.deleteNextOfKin(phoneNumber)
-        loadNextOfKin()
+        loadNextOfKin {}
     }
 }
