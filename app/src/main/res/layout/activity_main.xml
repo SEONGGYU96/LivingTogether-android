@@ -153,6 +153,7 @@
                 android:minHeight="@dimen/minheight_registered_sensor"
                 app:layout_constraintBottom_toTopOf="@+id/constraintlayout_main_registerednextofkin"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardview_main_statusbox">
 
@@ -175,6 +176,7 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_entire_padding_horizontal"
                     android:textColor="@color/colorWhite"
+                    android:visibility="@{deviceViewModel.items.size() == 0 ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintBaseline_toBaselineOf="@id/textview_main_registeredsensors"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -264,6 +266,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()->mainViewModel.seeMoreNextOfKin()}"
+                    android:visibility="@{nextOfKinViewModel.items.size() == 0 ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBaseline_toBaselineOf="@id/textview_main_nextofkin"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -281,6 +284,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_main_nextofkin"
+                    app:layout_constraintVertical_bias="0.0"
                     tools:listitem="@layout/item_next_of_kin" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout

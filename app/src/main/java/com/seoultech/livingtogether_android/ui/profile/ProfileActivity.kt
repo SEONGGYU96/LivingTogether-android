@@ -21,7 +21,11 @@ class ProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout.act
             viewModel = profileViewModel
 
             lttoolbarProfile.setBackButton(View.OnClickListener {
-                startMainActivity()
+                if (isNew) {
+                    startMainActivity()
+                } else {
+                    finish()
+                }
             })
 
             groupProfileEditmode.visibility = View.GONE
@@ -38,7 +42,6 @@ class ProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout.act
             startMainActivity()
         } else {
             super.onBackPressed()
-
         }
     }
 

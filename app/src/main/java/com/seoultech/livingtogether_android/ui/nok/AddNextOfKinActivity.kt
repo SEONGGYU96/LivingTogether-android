@@ -16,13 +16,18 @@ class AddNextOfKinActivity : BaseActivity<ActivityInsertNextOfKinBinding>(R.layo
     private var nameIsNotEmpty = false
     private var phoneNumberIsNotEmpty = false
     private var isButtonEnabled = false
+    private var isFirstAdd = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        isFirstAdd = intent.getBooleanExtra("isFirstAdd", false);
+
         nextOfKinViewModel = obtainViewModel().apply {
             nextOfKinUpdated.observe(this@AddNextOfKinActivity, Observer {
-                startActivity(Intent(this@AddNextOfKinActivity, NextOfKinListActivity::class.java))
+                if (isFirstAdd) {
+                    startActivity(Intent(this@AddNextOfKinActivity, NextOfKinListActivity::class.java))
+                }
                 finish()
             })
 

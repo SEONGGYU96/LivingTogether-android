@@ -109,7 +109,7 @@ class SplashActivity : AppCompatActivity() {
     private fun startNextActivity() {
         if (isInitialOperation) {
             val intent = Intent(this, EditProfileActivity::class.java)
-            intent.getBooleanExtra("isNew", true)
+            intent.putExtra("isNew", true)
             startActivity(intent)
         } else {
             startActivity(Intent(this, MainActivity::class.java))
