@@ -15,7 +15,9 @@ class NextOfKinViewPagerHolder(parent: ViewGroup) : BaseViewPagerHolder<NextOfKi
             adapter = NextOfKinListAdapter().apply {
                 setList(data)
             }
-            addItemDecoration(MarginDecoration(itemView.context, 25, RecyclerView.VERTICAL))
+            if (itemDecorationCount != 1) {
+                addItemDecoration(MarginDecoration(itemView.context, 25, RecyclerView.VERTICAL))
+            }
         }
     }
 }
