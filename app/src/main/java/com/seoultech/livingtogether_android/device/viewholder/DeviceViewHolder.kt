@@ -10,6 +10,7 @@ import com.seoultech.livingtogether_android.databinding.ItemSensorBinding
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.device.data.Device
 
+
 class DeviceViewHolder(parent: ViewGroup, val listener: DeviceAdapter.OnDeviceClickListener?) :
     BaseViewHolder<Device, ItemSensorBinding>(R.layout.item_sensor, parent) {
 
@@ -39,8 +40,13 @@ class DeviceViewHolder(parent: ViewGroup, val listener: DeviceAdapter.OnDeviceCl
                 constraintlayoutItemdeviceRoot.setBackgroundColor(application.getColor(R.color.colorRegisterButtonGray))
             }
 
-            constraintlayoutItemdeviceRoot.setOnClickListener {
-                listener?.onClick(data)
+            if (listener != null) {
+                framelayoutSensorRoot.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                constraintlayoutItemdeviceRoot.setOnClickListener {
+                    listener.onClick(data)
+                }
+            } else {
+                constraintlayoutItemdeviceRoot.foreground = null
             }
         }
     }

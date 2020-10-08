@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.google.android.material.tabs.TabLayoutMediator
@@ -31,7 +32,7 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
 
         nextOfKinViewModel = obtainViewModel().apply {
             newNextOfKinEvent.observe(this@NextOfKinListActivity, Observer {
-                this@NextOfKinListActivity.addNewNextOfKin()
+                this@NextOfKinListActivity.addNewNextOfKin(null)
             })
 
             emptyListEvent.observe(this@NextOfKinListActivity, Observer {
@@ -41,7 +42,10 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
             })
         }
 
-        binding.viewModel = nextOfKinViewModel
+        binding.run {
+            viewModel = nextOfKinViewModel
+            lttoolbarNextofkinlist.setBackButton()
+        }
 
         goToFragment(NextOfKinViewPagerFragment::class.java, null)
     }
@@ -59,8 +63,8 @@ class NextOfKinListActivity : BaseActivity<ActivityNextOfKinListBinding>(R.layou
         }
     }
 
-    private fun addNewNextOfKin() {
-        LTDialogBuilder()
+    private fun <B: ViewDataBinding> addNewNextOfKin(binding: B?) {
+        LTDialogBuilder<B, Any>()
             .addVerticalButton("직접 추가하기") { dialog, _ ->
                 startActivity(Intent(this, AddNextOfKinActivity::class.java))
                 dialog.dismiss()

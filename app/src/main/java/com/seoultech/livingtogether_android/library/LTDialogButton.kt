@@ -1,8 +1,8 @@
 package com.seoultech.livingtogether_android.library
 
-import android.view.View
+import androidx.databinding.ViewDataBinding
 
-data class LTDialogButton(
+data class LTDialogButton<B: ViewDataBinding?>(
     val text: String,
-    val listener: ((dialog: LTDialog, contentView: View?) -> Unit)?
+    val listener: ((dialog: LTDialog<B>, viewBinding: B?) -> Unit)?
 )

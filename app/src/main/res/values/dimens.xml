@@ -86,4 +86,9 @@
     <dimen name="margin_location_edit_text_underscore_bottom">52dp</dimen>
     <dimen name="margin_ask_location_vertical">20dp</dimen>
 
+    <!-- SensorInfoDialog-->
+    <dimen name="padding_sensor_info_dalog_vertical">20dp</dimen>
+    <dimen name="padding_sensor_info_dialog_horizontal">30dp</dimen>
+    <dimen name="margin_sensor_info_elements_dialog_vertical">7dp</dimen>
+
 </resources>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.seoultech.livingtogether_android.R
@@ -14,7 +15,6 @@ import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
-import com.seoultech.livingtogether_android.library.LTDialogBuilder
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
 import com.seoultech.livingtogether_android.ui.nok.AddNextOfKinActivity
@@ -24,6 +24,7 @@ import com.seoultech.livingtogether_android.ui.sensor.SensorListActivity
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import com.seoultech.livingtogether_android.library.LTDialogBuilder as LTDialogBuilder
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -55,7 +56,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         nextOfKinViewModel = obtainNextOfKinViewModel().apply {
             newNextOfKinEvent.observe(this@MainActivity, Observer {
-                this@MainActivity.addNewNextOfKin()
+                this@MainActivity.addNewNextOfKin(null)
             })
         }
 
@@ -132,10 +133,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
 
             if (it) {
+                group_main_numberofsensors.visibility = View.INVISIBLE
                 mainViewModel.run {
                     isBluetoothOn.removeObserver(bluetoothStateObserver)
                 }
             } else {
+                group_main_numberofsensors.visibility = View.VISIBLE
                 mainViewModel.run {
                     isBluetoothOn.observe(this@MainActivity, bluetoothStateObserver)
                     bluetoothStateCheck()
@@ -162,15 +165,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
-    private fun addNewNextOfKin() {
-        LTDialogBuilder()
-            .addVerticalButton("직접 추가하기") { dialog, _ ->
+    private fun <B: ViewDataBinding>addNewNextOfKin(binding: B?) {
+        LTDialogBuilder<B, Any>()
+            .addVerticalButton(getString(R.string.dialog_button_add_next_of_kin_directly)) { dialog, _ ->
                 val intent = Intent(this, AddNextOfKinActivity::class.java)
                 intent.putExtra("isFirstAdd", true)
                 startActivity(intent)
                 dialog.dismiss()
             }
-            .addVerticalButton("연락처에서 추가하기") {dialog, _ ->
+            .addVerticalButton(getString(R.string.dialog_button_add_next_of_kin_contact)) {dialog, _ ->
                 val intent = Intent(this, ContactListActivity::class.java)
                 intent.putExtra("isFirstAdd", true)
                 startActivity(intent)
