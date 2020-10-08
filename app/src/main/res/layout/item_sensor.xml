@@ -39,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_item_device"
                 android:layout_marginTop="@dimen/margin_item_device_image"
-                android:text="@{device.deviceType}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imageview_itemdevice" />
 
@@ -68,7 +67,6 @@
                 style="@style/SmallTimeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{device.getLastDetectedTimeToMinuet()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/textview_itemdevice_name"
                 app:layout_constraintTop_toBottomOf="@id/textview_itemdevice_location" />

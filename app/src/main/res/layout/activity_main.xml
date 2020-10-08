@@ -134,9 +134,9 @@
                         app:constraint_referenced_ids="imageview_main_invallidbluetooth, button_main_bluetoothon" />
 
                     <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_main_numberofsensors"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="@{deviceViewModel.items.size() == 0 ? View.INVISIBLE : View.VISIBLE}"
                         app:constraint_referenced_ids="textview_main_numberofsensortext, textview_main_numberofsensor" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

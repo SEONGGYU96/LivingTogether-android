@@ -103,7 +103,7 @@ class ScanService : Service() {
         // 서비스 실행 요청됨
         if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
             //BT adapter 꺼진상태인지 체크
-            Log.d(TAG, "onStartCommend : Bluetooth is enabled")
+            Log.d(TAG, "onStartCommend : Bluetooth is disabled")
 
             startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(false))
 
@@ -111,6 +111,7 @@ class ScanService : Service() {
             return super.onStartCommand(intent, flags, startId)
         }
 
+        startScanService()
         return START_NOT_STICKY
     }
 
