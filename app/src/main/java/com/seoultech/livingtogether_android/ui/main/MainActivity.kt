@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.main
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -14,19 +15,21 @@ import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
 import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
 import com.seoultech.livingtogether_android.library.LTDialogBuilder
-import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
 import com.seoultech.livingtogether_android.ui.nok.AddNextOfKinActivity
 import com.seoultech.livingtogether_android.ui.nok.NextOfKinListActivity
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
+import com.seoultech.livingtogether_android.ui.sensor.SensorListActivity
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     companion object {
         private const val BACK_KEY_TIME = 1500L
+        private const val REQUEST_ENABLE_BT = 1000
     }
 
     private var backKeyPressedTime = 0L
@@ -57,8 +60,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
 
         mainViewModel = obtainMainViewModel().apply {
-            seeMoreNextOfKin.observe(this@MainActivity, Observer {
+            seeMoreNextOfKinEvent.observe(this@MainActivity, Observer {
                 this@MainActivity.seeMoreNextOfKin()
+            })
+
+            seeMoreSensorsEvent.observe(this@MainActivity, Observer {
+                this@MainActivity.seeMoreSensors()
+            })
+
+            bluetoothOnEvent.observe(this@MainActivity, Observer {
+                this@MainActivity.setBluetoothOn()
             })
         }
 
@@ -93,6 +104,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 View.VISIBLE
             }
 
+            binding.groupMainNumberofsensors.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
+
             binding.imageviewMainStatus.visibility = if (it) {
                 View.VISIBLE
             } else {
@@ -108,13 +125,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
             binding.textviewMainStatusboxtitle.text = statusBoxTitle
 
+            group_main_bluetoothoff.visibility = if (it) {
+                View.INVISIBLE
+            } else {
+                View.VISIBLE
+            }
+
             if (it) {
                 mainViewModel.run {
-                    isBluetoothOn.observe(this@MainActivity, bluetoothStateObserver)
+                    isBluetoothOn.removeObserver(bluetoothStateObserver)
                 }
             } else {
                 mainViewModel.run {
-                    isBluetoothOn.removeObserver(bluetoothStateObserver)
+                    isBluetoothOn.observe(this@MainActivity, bluetoothStateObserver)
+                    bluetoothStateCheck()
                 }
             }
             mainViewModel.setHasDevice(!it)
@@ -156,12 +180,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             .show(supportFragmentManager, "add_new_next_of_kin")
     }
 
+    private fun seeMoreSensors() {
+        startActivity(Intent(this, SensorListActivity::class.java))
+    }
+
     private fun seeMoreNextOfKin() {
         startActivity(Intent(this, NextOfKinListActivity::class.java))
     }
 
     private fun registerNewSensor() {
         startActivity(Intent(this, ScanActivity::class.java))
+    }
+
+    private fun setBluetoothOn() {
+        startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), REQUEST_ENABLE_BT)
     }
 
     private fun obtainDeviceViewModel(): DeviceViewModel = obtainViewModel(DeviceViewModel::class.java)

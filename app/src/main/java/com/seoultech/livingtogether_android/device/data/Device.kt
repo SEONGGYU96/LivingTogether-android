@@ -35,7 +35,7 @@ data class Device(
     var _isAvailable: Int = 0
 
     var isAvailable: Boolean
-    get() = _isAvailable != 0
+    get() = _isAvailable == 1
     set(value) {
         _isAvailable = if (value) {
             1
@@ -43,8 +43,6 @@ data class Device(
             0
         }
     }
-
-
 
     fun getLastDetectedTimeToMinuet() : String {
         val timeGap = GregorianCalendar().timeInMillis - lastDetectionOfActionSignal

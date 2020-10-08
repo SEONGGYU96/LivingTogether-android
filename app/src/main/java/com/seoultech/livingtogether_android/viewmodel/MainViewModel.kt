@@ -22,8 +22,16 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
     var isBluetoothOn = BluetoothLiveData
 
     private val _seeMoreNextOfKinEvent = MutableLiveData<Boolean>()
-    val seeMoreNextOfKin: LiveData<Boolean>
+    val seeMoreNextOfKinEvent: LiveData<Boolean>
         get() = _seeMoreNextOfKinEvent
+
+    private val _seeMoreSensorsEvent = MutableLiveData<Boolean>()
+    val seeMoreSensorsEvent: LiveData<Boolean>
+        get() = _seeMoreSensorsEvent
+
+    private val _bluetoothOnEvent = MutableLiveData<Boolean>()
+    val bluetoothOnEvent: LiveData<Boolean>
+        get() = _bluetoothOnEvent
 
     fun onResume() {
         startService()
@@ -34,6 +42,14 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
 
     fun seeMoreNextOfKin() {
         _seeMoreNextOfKinEvent.value = true
+    }
+
+    fun seeMoreSensors() {
+        _seeMoreSensorsEvent.value = true
+    }
+
+    fun setBluetoothOn() {
+        _bluetoothOnEvent.value = true
     }
 
     private fun startService() {
@@ -69,7 +85,7 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
 //    }
 
     fun bluetoothStateCheck() {
-        isBluetoothOn.value = bluetoothAdapter.isEnabled ?: false
+        isBluetoothOn.value = bluetoothAdapter.isEnabled
     }
 
     fun setHasDevice(hasDevice: Boolean) {

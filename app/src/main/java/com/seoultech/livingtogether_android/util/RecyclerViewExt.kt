@@ -37,10 +37,10 @@ fun TextView.visibilityAsData(list: List<Nothing>?) {
 }
 
 @BindingAdapter("setGrayTint")
-fun ImageView.setGrayTint(isGray: Boolean) {
-    if (isGray) {
-        this.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context.applicationContext, R.color.colorRegisterButtonGray))
-    } else {
+fun ImageView.setGrayTint(isAvailable: Boolean) {
+    if (isAvailable) {
         this.imageTintList = null
+    } else {
+        this.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context.applicationContext, R.color.colorRegisterButtonGray))
     }
 }

@@ -1,5 +1,7 @@
 package com.seoultech.livingtogether_android.device.viewholder
 
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
 import android.view.ViewGroup
 import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.R
@@ -17,7 +19,19 @@ class DeviceViewHolder(parent: ViewGroup, val listener: DeviceAdapter.OnDeviceCl
         binding.run {
             device = data
 
-            if (data.updateIsAvailable()) {
+            imageviewItemdeviceState.run {
+                background = ShapeDrawable(OvalShape())
+                clipToOutline = true
+            }
+
+            textviewItemdeviceLastdetactedtime.text = data.getLastDetectedTimeToMinuet()
+
+            textviewItemdeviceName.text = when (data.deviceType) {
+                "발판" -> "발판 센서"
+                else -> "알 수 없는 기기"
+            }
+
+            if (!data.updateIsAvailable()) {
                 textviewItemdeviceLastdetactedtime.run {
                     text = application.getString(R.string.sensor_no_response)
                     setTextColor(application.getColor(R.color.colorPlainText))
