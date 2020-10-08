@@ -11,6 +11,7 @@ import com.seoultech.livingtogether_android.bluetooth.viewmodel.ScanViewModel
 import com.seoultech.livingtogether_android.contacts.ContactViewModel
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
+import com.seoultech.livingtogether_android.device.viewmodel.LocationViewModel
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepository
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.AddNextOfKinViewModel
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
@@ -45,6 +46,8 @@ class ViewModelFactory private constructor(
                     ContactViewModel(application)
                 isAssignableFrom(ProfileViewModel::class.java) ->
                     ProfileViewModel(profileRepository)
+                isAssignableFrom(LocationViewModel::class.java) ->
+                    LocationViewModel(deviceRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

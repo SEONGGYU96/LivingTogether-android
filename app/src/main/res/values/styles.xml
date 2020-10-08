@@ -19,10 +19,22 @@
         <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
     </style>
 
+    <style name="ScanningTheme" parent="AppTheme">
+        <item name="android:statusBarColor">@color/colorGradientStart</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
     <style name="TitleText" parent="MajorText">
         <item name="android:textColor">@color/colorPlainText</item>
         <item name="android:textSize">20sp</item>
         <item name="android:lineSpacingExtra">9sp</item>
+    </style>
+
+    <style name="ToolbarTitle" parent="MajorText">
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_marginTop">11dp</item>
+        <item name="android:layout_marginBottom">11dp</item>
     </style>
 
     <style name="MajorText" parent="Widget.AppCompat.TextView">
@@ -54,6 +66,17 @@
 
     <style name="NoticeText" parent="MajorText">
         <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="SensorFindingText" parent="PlainText">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:lineHeight">28sp</item>
+    </style>
+
+    <style name="SensorFindedNameText" parent="SensorFindingText">
+        <item name="fontWeight">700</item>
     </style>
 
     <style name="SmallTimeText" parent="Widget.AppCompat.TextView">
@@ -97,7 +120,7 @@
         <item name="android:layout_marginBottom">@dimen/padding_item_next_of_kin</item>
         <item name="android:layout_marginEnd">@dimen/padding_item_next_of_kin</item>
     </style>
-    
+
     <style name="InputBoxCategoryText" parent="MajorText">
         <item name="android:textSize">18sp</item>
     </style>
@@ -144,11 +167,16 @@
         <item name="android:layout_height">@dimen/height_bottom_button</item>
         <item name="android:background">@drawable/background_round_rectangle_5dp</item>
         <item name="android:backgroundTint">@color/colorMainGreen</item>
-        <item name="android:textFontWeight">700</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_marginStart">@dimen/margin_entire_padding_horizontal</item>
         <item name="android:layout_marginEnd">@dimen/margin_entire_padding_horizontal</item>
         <item name="android:elevation">@dimen/elevation_entire</item>
         <item name="android:layout_marginBottom">@dimen/margin_bottom_button_bottom</item>
+    </style>
+
+    <style name="ScanBottomButton" parent="BottomButton">
+        <item name="backgroundTint">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorSeaFoamBlue</item>
     </style>
 
     <style name="RegisterButtonWhite" parent="TextAppearance.AppCompat.Button">
@@ -165,21 +193,28 @@
         <item name="android:background">@drawable/background_round_rectangle_5dp</item>
         <item name="android:textFontWeight">700</item>
     </style>
-    
+
     <style name="RegisterButtonGray" parent="RegisterButtonWhite">
         <item name="backgroundTint">@color/colorRegisterButtonGray</item>
         <item name="android:textColor">@color/colorPlainText</item>
     </style>
 
-    <style name="BackButton" parent="Widget.AppCompat.ImageButton">
+    <style name="ContactBackButton" parent="ToolbarBackButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">0dp</item>
+        <item name="android:tint">@color/colorPlainText</item>
+    </style>
+
+    <style name="ToolbarBackButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">@null</item>
         <item name="android:foreground">@drawable/custom_ripple_oval</item>
         <item name="android:paddingStart">@dimen/margin_entire_padding_horizontal</item>
         <item name="android:paddingEnd">@dimen/margin_entire_padding_horizontal</item>
-        <item name="android:src">@drawable/ic_nextofkin_delete</item>
-        <item name="android:tint">@color/colorPlainText</item>
+        <item name="android:src">@drawable/ic_lttoolbar_back</item>
+    </style>
+
+    <style name="ScanBackButton" parent="ToolbarBackButton">
+        <item name="tint">@color/colorWhite</item>
     </style>
 
     <style name="BluetoothOnButton" parent="Widget.AppCompat.ImageButton">

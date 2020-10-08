@@ -8,11 +8,15 @@ import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 
-class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewModel(){
+class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewModel() {
 
     private val _items = MutableLiveData<List<Device>>().apply { value = emptyList() }
     val items: LiveData<List<Device>>
         get() = _items
+
+    private val _newSensorEvent = MutableLiveData<Boolean>()
+    val newSensorEvent: LiveData<Boolean>
+        get() = _newSensorEvent
 
     val empty: LiveData<Boolean> = Transformations.map(_items) {
         it.isEmpty()
@@ -46,5 +50,9 @@ class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewMode
     fun updateDevice(device: Device) {
         deviceRepository.updateDevice(device)
         loadDevice()
+    }
+
+    fun registerNewSensor() {
+        _newSensorEvent.value = true
     }
 }

@@ -27,8 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".ui.profile.ProfileActivity"/>
-        <activity android:name=".ui.profile.WebViewActivity"/>
+        <activity android:name=".ui.profile.ProfileActivity" />
+        <activity android:name=".ui.profile.WebViewActivity" />
         <activity android:name=".ui.contacts.SearchContactActivity" />
         <activity android:name=".ui.contacts.ContactListActivity" />
 
@@ -41,13 +41,17 @@
             android:exported="false" />
         <receiver android:name=".bluetooth.receiver.BluetoothStateReceiver" />
 
-        <activity android:name=".ui.scan.InsertLocationActivity" />
+        <activity
+            android:name=".ui.scan.InsertLocationActivity"
+            android:theme="@style/ScanningTheme" />
         <activity android:name=".ui.sensor.SensorListActivity" />
         <activity android:name=".debug.ScanServiceTest" />
         <activity android:name=".ui.profile.EditProfileActivity" />
         <activity android:name=".ui.nok.AddNextOfKinActivity" />
         <activity android:name=".ui.nok.NextOfKinListActivity" />
-        <activity android:name=".ui.scan.ScanActivity" />
+        <activity
+            android:name=".ui.scan.ScanActivity"
+            android:theme="@style/ScanningTheme" />
         <activity android:name=".ui.main.MainActivity" />
         <activity
             android:name=".ui.SplashActivity"

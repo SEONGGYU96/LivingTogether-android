@@ -148,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_statusbox_bottom"
-                android:background="@drawable/gradient_registerd_sensors"
+                android:background="@drawable/gradient_main_green"
                 android:clipChildren="false"
                 android:minHeight="@dimen/minheight_registered_sensor"
                 app:layout_constraintBottom_toTopOf="@+id/constraintlayout_main_registerednextofkin"
@@ -229,6 +229,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_register_button_top"
+                        android:onClick="@{()->deviceViewModel.registerNewSensor()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textview_main_noregisteredsensor" />
