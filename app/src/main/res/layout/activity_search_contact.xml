@@ -29,7 +29,7 @@
 
             <ImageButton
                 android:id="@+id/imagebutton_searchcontact_back"
-                style="@style/BackButton"
+                style="@style/ContactBackButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/edittext_searchcontact_search"
                 app:layout_constraintStart_toStartOf="parent"

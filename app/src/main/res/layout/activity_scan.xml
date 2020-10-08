@@ -6,43 +6,67 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.seoultech.livingtogether_android.bluetooth.viewmodel.ScanViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.scan.ScanActivity"
-        android:background="@drawable/gradient_scan_background"
-        >
+        tools:context=".ui.scan.ScanActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_scan"
+        <ImageView
+            android:id="@+id/imageview_scan_animation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            
+
+            <ImageButton
+                android:id="@+id/imagebutton_scan_back"
+                style="@style/ScanBackButton"
+                android:layout_width="wrap_content"
+                android:onClick="@{()->viewModel.setBackKeyEvent()}"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
-                android:id="@+id/text_title_scan"
+                style="@style/ToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/resgist_sensor"/>
-            
-        </androidx.appcompat.widget.Toolbar>
+                android:text="@string/sensor_register"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textview_scan_content"
+            style="@style/SensorFindingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/sensor_finding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/scanning_bluetooth" />
+            app:layout_constraintVertical_bias="0.851" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

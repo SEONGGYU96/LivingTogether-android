@@ -78,4 +78,12 @@
     <!-- Indicator-->
     <dimen name="width_indicator">20dp</dimen>
 
+    <!-- Scanning-->
+    <dimen name="margin_sensor_circle_horizontal">48dp</dimen>
+    <dimen name="padding_location_edit_text_horizontal">50dp</dimen>
+    <dimen name="height_location_edit_text_underscore">2dp</dimen>
+    <dimen name="margin_location_edit_text_bottom">10dp</dimen>
+    <dimen name="margin_location_edit_text_underscore_bottom">52dp</dimen>
+    <dimen name="margin_ask_location_vertical">20dp</dimen>
+
 </resources>

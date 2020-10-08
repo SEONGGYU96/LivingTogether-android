@@ -19,6 +19,7 @@ import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewMod
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
 import com.seoultech.livingtogether_android.ui.nok.AddNextOfKinActivity
 import com.seoultech.livingtogether_android.ui.nok.NextOfKinListActivity
+import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.viewmodel.MainViewModel
 
@@ -43,7 +44,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        deviceViewModel = obtainDeviceViewModel()
+        deviceViewModel = obtainDeviceViewModel().apply {
+            newSensorEvent.observe(this@MainActivity, Observer {
+                this@MainActivity.registerNewSensor()
+            })
+        }
 
         nextOfKinViewModel = obtainNextOfKinViewModel().apply {
             newNextOfKinEvent.observe(this@MainActivity, Observer {
@@ -120,6 +125,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         super.onResume()
         mainViewModel.onResume()
         nextOfKinViewModel.start()
+        deviceViewModel.start()
     }
 
     override fun onBackPressed() {
@@ -152,6 +158,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun seeMoreNextOfKin() {
         startActivity(Intent(this, NextOfKinListActivity::class.java))
+    }
+
+    private fun registerNewSensor() {
+        startActivity(Intent(this, ScanActivity::class.java))
     }
 
     private fun obtainDeviceViewModel(): DeviceViewModel = obtainViewModel(DeviceViewModel::class.java)

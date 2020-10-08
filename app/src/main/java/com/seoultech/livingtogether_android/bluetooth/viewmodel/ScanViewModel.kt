@@ -8,13 +8,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.bluetooth.model.BleDevice
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
 import com.seoultech.livingtogether_android.device.data.Device
-import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
@@ -25,28 +25,43 @@ import com.seoultech.livingtogether_android.util.ServiceUtil
 import java.util.*
 
 
-class ScanViewModel(deviceRepository: DeviceRepository, signalHistoryRepository: SignalHistoryRepository) : ViewModel() {
+class ScanViewModel(
+    private val deviceRepository: DeviceRepository,
+    private val signalHistoryRepository: SignalHistoryRepository
+) : ViewModel() {
 
-    companion object{
-        private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
+    companion object {
+        private const val LIVING_TOGETHER_UUID = "53454f55-4c54-4543-4850-6f70506f7030"
         private const val MIN_RSSI = -85
+        private const val TAG = "ScanViewModel"
     }
-
-    private val finishHandler = MutableLiveData<Boolean>()
-
-    private val TAG = javaClass.simpleName
 
     private val application = ApplicationImpl.getInstance()
 
     private var isScanning = false
 
-    val timeoutHandler = MutableLiveData<Boolean>()
+    private val _backKeyEvent = MutableLiveData<Boolean>()
+    val backKeyEvent: LiveData<Boolean>
+        get() = _backKeyEvent
 
-    var isFound = MutableLiveData<Boolean>()
+    private val _duplicateEvent = MutableLiveData<Boolean>()
+    val duplicateEvent: LiveData<Boolean>
+        get() = _duplicateEvent
+
+    private val _timeOutEvent = MutableLiveData<Boolean>()
+    val timeOutEvent: LiveData<Boolean>
+        get() = _timeOutEvent
+
+    private val _foundSensorEvent = MutableLiveData<Boolean>()
+    val foundSensorEvent: LiveData<Boolean>
+        get() = _foundSensorEvent
+
+    private val _bluetoothIsNotAvailableEvent = MutableLiveData<Boolean>()
+    val bluetoothIsNotAvailableEvent: LiveData<Boolean>
+        get() = _bluetoothIsNotAvailableEvent
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
-        val bluetoothManager = application.
-            getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothManager = application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
 
@@ -57,18 +72,14 @@ class ScanViewModel(deviceRepository: DeviceRepository, signalHistoryRepository:
 
     private var runnable = Runnable {
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
-        timeoutHandler.value = true
+        _timeOutEvent.value = true
         Log.d(TAG, "Scan Timeout")
     }
 
-    init {
-        isBluetoothAvailable()
-    }
-
-    private fun isBluetoothAvailable() {
+    fun checkBluetoothAvailable() {
         if (BluetoothUtil.isBluetoothAvailable(application)) {
             Log.d(TAG, "This device does not support Bluetooth.")
-            finishHandler.value = true
+            _bluetoothIsNotAvailableEvent.value = true
         } else {
             Log.d(TAG, "This device supports Bluetooth.")
         }
@@ -79,6 +90,7 @@ class ScanViewModel(deviceRepository: DeviceRepository, signalHistoryRepository:
     }
 
     fun startScan(time: Long) {
+        stopService()
         handler.postDelayed(runnable, time)
         isScanning = true
         bluetoothAdapter!!.bluetoothLeScanner.startScan(scanCallback)
@@ -90,15 +102,15 @@ class ScanViewModel(deviceRepository: DeviceRepository, signalHistoryRepository:
         handler.removeCallbacks(runnable)
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan is terminated")
-
         startService()
     }
 
-    fun startService() {
-        application.startService(Intent(application, ScanService::class.java))
+    fun setBackKeyEvent() {
+        stopScan()
+        _backKeyEvent.value = true
     }
 
-    fun stopService() {
+    private fun stopService() {
         // To service Stop.
         if (ServiceUtil.isServiceRunning(application, ScanService::class.java)) {
             val intent = Intent(application, ScanService::class.java)
@@ -111,73 +123,76 @@ class ScanViewModel(deviceRepository: DeviceRepository, signalHistoryRepository:
         }
     }
 
+    private fun startService() {
+        application.startService(Intent(application, ScanService::class.java))
+    }
+
     @ExperimentalUnsignedTypes
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
             super.onScanResult(callbackType, result)
 
-            if (!isScanning) {
-                Log.d(TAG, "isScanning is false. return.")
+            if (isScanning && result != null) {
+                validateResult(result)
+            }
+        }
+    }
+
+    private fun validateResult(result: ScanResult) {
+        Log.d(TAG, "find : ${result.device}")
+
+        if (result.rssi < MIN_RSSI) {
+            Log.d(TAG, "rssi (${result.rssi}) is too week. return")
+            return
+        }
+
+        if (result.scanRecord == null) {
+            Log.d(TAG, "This device does not have scanRecord. return")
+            return
+        }
+
+        val bleDevice = BleCreater.create(result.device, result.rssi, result.scanRecord!!.bytes)
+
+        Log.d(
+            TAG,
+            "uuid : ${bleDevice.uuid}, major : ${bleDevice.major}, minor : ${bleDevice.minor}, ${bleDevice.rssi}"
+        )
+
+        if (bleDevice.uuid != LIVING_TOGETHER_UUID) {
+            return
+        }
+        
+        Log.d(TAG, "Living Together H/W has been found")
+
+        stopScan()
+
+        deviceRepository.getDevice(bleDevice.address, object : DeviceDataSource.GetDeviceCallback {
+            override fun onDeviceLoaded(device: Device) {
+                Log.d(TAG, "This device is already registered. return.")
+                _duplicateEvent.value = true
                 return
             }
 
-            result?.let { it ->
-                Log.d(TAG, "find : ${result.device}")
-
-                if (it.rssi < MIN_RSSI) {
-                    Log.d(TAG, "rssi (${it.rssi}) is too week. return")
-                    return
-                }
-
-                if (it.scanRecord == null) {
-                    Log.d(TAG, "This device does not have scanRecord. return")
-                    return
-                }
-
-                val bleDevice = BleCreater.create(it.device, it.rssi, it.scanRecord!!.bytes)
-
-                Log.d(TAG, "uuid : ${bleDevice.uuid}, major : ${bleDevice.major}, minor : ${bleDevice.minor}, ${bleDevice.rssi}")
-
-                if (bleDevice.uuid == LIVING_TOGETHER_UUID) {
-                    Log.d(TAG, "Living Together H/W has been found")
-
-                    stopScan()
-
-                    deviceRepository.getDevice(bleDevice.address, object : DeviceDataSource.GetDeviceCallback {
-                        override fun onDeviceLoaded(device: Device) {
-                            Toast.makeText(application, "이미 등록된 버튼입니다.", Toast.LENGTH_SHORT).show()
-                            Log.d(TAG, "This device is already registered. return.")
-                            finishHandler.value = true
-                            return
-                        }
-
-                        override fun onDataNotAvailable() {
-                            val calendar = GregorianCalendar()
-
-                            val newDevice = Device("발판", bleDevice.address, null,
-                                calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis)
-
-                            deviceRepository.saveDevice(newDevice)
-
-                            signalHistoryRepository.insert(SignalHistoryEntity(bleDevice.address, 3, calendar.timeInMillis))
-
-                            AlarmUtil.setAlarm(application)
-
-                            isFound.value = true
-
-                            return
-                        }
-                    })
-                }
+            override fun onDataNotAvailable() {
+                registerSensor(bleDevice)
             }
-        }
+        })
+    }
+    
+    private fun registerSensor(bleDevice: BleDevice) {
+        val calendar = GregorianCalendar()
 
-        override fun onBatchScanResults(results: MutableList<ScanResult>?) {
-            super.onBatchScanResults(results)
-        }
+        val newDevice = Device(
+            "발판", bleDevice.address, null,
+            calendar.timeInMillis, calendar.timeInMillis, calendar.timeInMillis
+        )
 
-        override fun onScanFailed(errorCode: Int) {
-            super.onScanFailed(errorCode)
-        }
+        deviceRepository.saveDevice(newDevice)
+
+        //signalHistoryRepository.insert(SignalHistoryEntity(bleDevice.address, 3, calendar.timeInMillis))
+
+        AlarmUtil.setAlarm(application)
+
+        _foundSensorEvent.value = true
     }
 }
