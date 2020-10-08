@@ -23,8 +23,8 @@
     <string name="bottom_button_insert">추가하기</string>
     <string name="bottom_button_edit">수정하기</string>
 
-    <string name="notification_service_ok">정상적으로 기기를 감지하고 있습니다.</string>
-    <string name="notification_bluetooth_off">블루투스가 꺼져있어 기기를 감지할 수 없습니다.</string>
+    <!-- Notification-->
+    <string name="notification_bluetooth_off">블루투스가 꺼져있어 센서를 감지할 수 없습니다.</string>
 
     <!-- Profile-->
     <string name="profile_setting">사용자 설정</string>

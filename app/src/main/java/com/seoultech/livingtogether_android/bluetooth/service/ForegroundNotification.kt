@@ -26,7 +26,7 @@ class ForegroundNotification(private val application: Application) {
         initNotificationManager()
 
         val text: String = when (state) {
-            true -> application.getString(R.string.notification_service_ok)
+            true -> application.getString(R.string.status_box_on_going)
             false -> application.getString(R.string.notification_bluetooth_off)
         }
 
@@ -41,13 +41,13 @@ class ForegroundNotification(private val application: Application) {
         val builder = NotificationCompat.Builder(application, CHANNEL_ID)
 
         builder.setContentTitle(application.getString(R.string.app_name))
-            .setSmallIcon(R.drawable.ic_skylight_notification) //Todo: 임시 아이콘. 변경 필요
+            .setSmallIcon(R.drawable.ic_lt_logo)
             .setContentText(text) //알림 타이틀
             .setShowWhen(false) //알림 시간 노출 여부
             .setContentIntent(pendingIntent)
 
         if (state) {
-            builder.color = ContextCompat.getColor(application, R.color.colorMainGreen)
+            builder.color = ContextCompat.getColor(application, R.color.colorGradientStart)
         } else {
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(text)) //긴 문자열 스타일, 문구 지정
         }

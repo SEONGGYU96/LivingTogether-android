@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.ui.main
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     companion object {
         private const val BACK_KEY_TIME = 1500L
+        private const val REQUEST_ENABLE_BT = 1000
     }
 
     private var backKeyPressedTime = 0L
@@ -64,6 +66,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
             seeMoreSensorsEvent.observe(this@MainActivity, Observer {
                 this@MainActivity.seeMoreSensors()
+            })
+
+            bluetoothOnEvent.observe(this@MainActivity, Observer {
+                this@MainActivity.setBluetoothOn()
             })
         }
 
@@ -184,6 +190,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun registerNewSensor() {
         startActivity(Intent(this, ScanActivity::class.java))
+    }
+
+    private fun setBluetoothOn() {
+        startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), REQUEST_ENABLE_BT)
     }
 
     private fun obtainDeviceViewModel(): DeviceViewModel = obtainViewModel(DeviceViewModel::class.java)
