@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:id="@+id/linearlayout_dialog_title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/colorMainGreen"
             android:orientation="vertical"
@@ -35,7 +35,7 @@
 
         <LinearLayout
             android:id="@+id/linearlayout_dialog_content"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/linearlayout_dialog_buttons"
@@ -47,7 +47,7 @@
 
         <LinearLayout
             android:id="@+id/linearlayout_dialog_buttons"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"

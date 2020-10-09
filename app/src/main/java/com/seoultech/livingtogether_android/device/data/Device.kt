@@ -3,6 +3,7 @@ package com.seoultech.livingtogether_android.device.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.seoultech.livingtogether_android.util.StringUtil
 import java.lang.StringBuilder
 import java.util.*
 
@@ -35,16 +36,16 @@ data class Device(
     var _isAvailable: Int = 0
 
     var isAvailable: Boolean
-    get() = _isAvailable == 1
-    set(value) {
-        _isAvailable = if (value) {
-            1
-        } else {
-            0
+        get() = _isAvailable == 1
+        set(value) {
+            _isAvailable = if (value) {
+                1
+            } else {
+                0
+            }
         }
-    }
 
-    fun getLastDetectedTimeToMinuet() : String {
+    fun getLastDetectedTimeToMinuet(): String {
         val timeGap = GregorianCalendar().timeInMillis - lastDetectionOfActionSignal
         val string = StringBuilder()
 
@@ -54,7 +55,7 @@ data class Device(
                 string.append("분 전")
             }
             timeGap < 86400000 -> {
-                string.append(timeGap / (1000 * 60 * 60 ))
+                string.append(timeGap / (1000 * 60 * 60))
                 string.append("시간 전")
             }
             else -> {
@@ -73,36 +74,12 @@ data class Device(
         return getTimeToString(lastDetectionOfPreserveSignal)
     }
 
-    private fun getTimeToString(timeInMillis: Long) : String {
-        val calendar = GregorianCalendar()
-        val str = StringBuilder()
-
-        calendar.timeInMillis = timeInMillis
-
-        str.append(calendar.get(Calendar.MONTH) + 1)
-            .append("-")
-            .append(calendar.get(Calendar.DAY_OF_MONTH))
-            .append(" ")
-            .append(calendar.get(Calendar.HOUR_OF_DAY))
-            .append(":")
-            .append(calendar.get(Calendar.MINUTE))
-
-        return str.toString()
+    private fun getTimeToString(timeInMillis: Long): String {
+        return StringUtil.longToDate(timeInMillis, year = false, time = true)
     }
 
     fun getInitDateToString(): String {
-        val calendar = GregorianCalendar()
-        val str = StringBuilder()
-
-        calendar.timeInMillis = initDate
-
-        str.append(calendar.get(Calendar.YEAR).toString().substring(2))
-            .append("-")
-            .append(calendar.get(Calendar.MONTH) + 1)
-            .append("-")
-            .append(calendar.get(Calendar.DAY_OF_MONTH))
-
-        return str.toString()
+        return StringUtil.longToDate(initDate, year = true, time = false)
     }
 
     fun getDeviceAvailable(): String {
