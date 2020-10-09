@@ -1,10 +1,12 @@
-package com.seoultech.livingtogether_android.device.data.source
+package com.seoultech.livingtogether_android.device.data.source.local
 
 import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.util.AppExecutors
 
 class DeviceLocalDataSource private constructor(
-    private val appExecutors: AppExecutors, private val deviceDao: DeviceDao) : DeviceDataSource {
+    private val appExecutors: AppExecutors, private val deviceDao: DeviceDao
+) : DeviceDataSource {
 
     override fun getDevices(callback: DeviceDataSource.LoadDevicesCallback) {
         appExecutors.diskIO.execute {
@@ -70,6 +72,12 @@ class DeviceLocalDataSource private constructor(
         }
     }
 
+    override fun deleteAllDevices() {
+        appExecutors.diskIO.execute {
+            deviceDao.deleteAllDevices()
+        }
+    }
+
     override fun updateDevice(device: Device) {
         appExecutors.diskIO.execute {
             deviceDao.update(device)
@@ -83,7 +91,11 @@ class DeviceLocalDataSource private constructor(
         fun getInstance(appExecutors: AppExecutors, deviceDao: DeviceDao): DeviceLocalDataSource {
             if (INSTANCE == null) {
                 synchronized(DeviceLocalDataSource::javaClass) {
-                    INSTANCE = DeviceLocalDataSource(appExecutors, deviceDao)
+                    INSTANCE =
+                        DeviceLocalDataSource(
+                            appExecutors,
+                            deviceDao
+                        )
                 }
             }
             return INSTANCE!!

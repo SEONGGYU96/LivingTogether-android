@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.seoultech.livingtogether_android.database.util.Converters
 import com.seoultech.livingtogether_android.user.data.Profile
-import com.seoultech.livingtogether_android.device.data.source.DeviceDao
+import com.seoultech.livingtogether_android.device.data.source.local.DeviceDao
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinDao
 import com.seoultech.livingtogether_android.signal.SignalHistoryDao
 import com.seoultech.livingtogether_android.user.data.source.local.ProfileDao

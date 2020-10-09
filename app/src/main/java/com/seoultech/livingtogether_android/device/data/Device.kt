@@ -2,7 +2,10 @@ package com.seoultech.livingtogether_android.device.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.google.firebase.database.Exclude
+import com.google.firebase.database.IgnoreExtraProperties
 import com.seoultech.livingtogether_android.util.StringUtil
 import java.lang.StringBuilder
 import java.util.*
@@ -12,28 +15,37 @@ import java.util.*
     tableName = "device",
     inheritSuperIndices = false
 )
+@IgnoreExtraProperties
 data class Device(
+    @Exclude
     @ColumnInfo(name = "device_type")
-    var deviceType: String,
+    var deviceType: String = "",
 
+    @Exclude
     @PrimaryKey
     @ColumnInfo(name = "device_address")
-    var deviceAddress: String,
+    var deviceAddress: String = "",
 
+    @Exclude
     @ColumnInfo(name = "location")
-    var location: String?,
+    var location: String? = "",
 
+    @Exclude
     @ColumnInfo(name = "init_date")
-    var initDate: Long,
+    var initDate: Long = 0,
 
+    @Exclude
     @ColumnInfo(name = "last_detection_type_one")
-    var lastDetectionOfActionSignal: Long,
+    var lastDetectionOfActionSignal: Long = 0,
 
+    @Exclude
     @ColumnInfo(name = "last_detection_type_two")
-    var lastDetectionOfPreserveSignal: Long
-) {
+    var lastDetectionOfPreserveSignal: Long = 0,
+
+    @Exclude
     @ColumnInfo(name = "is_available")
-    var _isAvailable: Int = 0
+    var _isAvailable: Int = 1
+) {
 
     var isAvailable: Boolean
         get() = _isAvailable == 1

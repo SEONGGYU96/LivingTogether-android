@@ -18,6 +18,10 @@ class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewMode
     val newSensorEvent: LiveData<Boolean>
         get() = _newSensorEvent
 
+    private val _emptyListEvent = MutableLiveData<Boolean>()
+    val emptyListEvent: LiveData<Boolean>
+        get() = _emptyListEvent
+
     val empty: LiveData<Boolean> = Transformations.map(_items) {
         it.isEmpty()
     }
@@ -38,6 +42,7 @@ class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewMode
 
             override fun onDataNotAvailable() {
                 _items.value = emptyList()
+                _emptyListEvent.value = true
             }
         })
     }
