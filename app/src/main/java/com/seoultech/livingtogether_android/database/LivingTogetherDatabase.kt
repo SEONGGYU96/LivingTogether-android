@@ -5,23 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.seoultech.livingtogether_android.database.util.Converters
 import com.seoultech.livingtogether_android.user.data.Profile
 import com.seoultech.livingtogether_android.device.data.source.local.DeviceDao
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinDao
-import com.seoultech.livingtogether_android.signal.SignalHistoryDao
+import com.seoultech.livingtogether_android.signal.data.source.local.SignalDao
 import com.seoultech.livingtogether_android.user.data.source.local.ProfileDao
 import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.nextofkin.data.NextOfKin
-import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
+import com.seoultech.livingtogether_android.signal.data.Signal
 
-@Database(entities = [Profile::class, Device::class, NextOfKin::class, SignalHistoryEntity::class], version = 1)
-@TypeConverters(Converters::class)
+@Database(entities = [Profile::class, Device::class, NextOfKin::class, Signal::class], version = 1)
 abstract class LivingTogetherDatabase : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao
     abstract fun profileDao(): ProfileDao
     abstract fun nokDao(): NextOfKinDao
-    abstract fun signalHistoryDao(): SignalHistoryDao
+    abstract fun signalDao(): SignalDao
 
     companion object {
         private const val DB_NAME = "LivingTogether.db"

@@ -33,9 +33,9 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
     val bluetoothOnEvent: LiveData<Boolean>
         get() = _bluetoothOnEvent
 
-    fun onResume() {
-        startService()
+    private fun onResume() {
         if (hasDevice) {
+            startService()
             bluetoothStateCheck()
         }
     }
@@ -63,32 +63,18 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
         }
     }
 
-//    fun stopService() {
-//        // To service Stop.
-//        if (ServiceUtil.isServiceRunning(getApplication(), ScanService::class.java)) {
-//            val intent = Intent(getApplication(), ScanService::class.java)
-//            intent.putExtra(ScanService.FLAG_STOP_SERVICE, true)
-//            getApplication<Application>().startService(intent)
-//
-//            Log.d(TAG, "Request to terminate Service ")
-//        } else {
-//            Log.d(TAG, "Service is not running.")
-//        }
-//    }
-
-    fun isServiceRunning(): Boolean {
+    private fun isServiceRunning(): Boolean {
         return ServiceUtil.isServiceRunning(application, ScanService::class.java)
     }
-
-//    fun isScanning() : Boolean {
-//        return bluetoothAdapter?.isDiscovering ?: false
-//    }
 
     fun bluetoothStateCheck() {
         isBluetoothOn.value = bluetoothAdapter.isEnabled
     }
 
     fun setHasDevice(hasDevice: Boolean) {
-        this.hasDevice = hasDevice;
+        this.hasDevice = hasDevice
+        if (hasDevice) {
+            onResume()
+        }
     }
 }

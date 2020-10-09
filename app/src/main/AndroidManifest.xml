@@ -45,7 +45,6 @@
             android:name=".ui.scan.InsertLocationActivity"
             android:theme="@style/ScanningTheme" />
         <activity android:name=".ui.sensor.SensorListActivity" />
-        <activity android:name=".debug.ScanServiceTest" />
         <activity android:name=".ui.profile.EditProfileActivity" />
         <activity android:name=".ui.nok.AddNextOfKinActivity" />
         <activity android:name=".ui.nok.NextOfKinListActivity" />

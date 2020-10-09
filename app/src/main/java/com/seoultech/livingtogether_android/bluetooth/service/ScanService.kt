@@ -15,17 +15,18 @@ import android.os.IBinder
 import android.text.TextUtils
 import android.util.Log
 import com.seoultech.livingtogether_android.Injection
-import com.seoultech.livingtogether_android.signal.SignalHistoryEntity
+import com.seoultech.livingtogether_android.signal.data.Signal
 import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateReceiver
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
 import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
-import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
+import com.seoultech.livingtogether_android.signal.data.source.SignalRepository
 import java.util.*
 
 class ScanService : Service() {
+
     companion object {
         private const val TAG = "ScanService"
 
@@ -43,20 +44,18 @@ class ScanService : Service() {
         private const val LOC_CODE1 = 27
         private const val LOC_CODE2 = 28
     }
+
     private var lastDetectedCode2: Byte? = null
     private var lastDetectedCode1: Byte? = null
-    
-    private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager = application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
-
+    private val foregroundNotification: ForegroundNotification by lazy { ForegroundNotification(application) }
     private val btStateReceiver: BluetoothStateReceiver by lazy { BluetoothStateReceiver() }
-
     private val deviceRepository: DeviceRepository by lazy { Injection.provideDeviceRepository(applicationContext) }
-    private val signalHistoryRepository: SignalHistoryRepository by lazy { SignalHistoryRepository() }
+    private val signalRepository: SignalRepository by lazy { Injection.provideSignalRepository(applicationContext) }
 
     //service 가 처음 생성되었을 때 최초 1회 호출되는 부분
     override fun onCreate() {
@@ -164,6 +163,8 @@ class ScanService : Service() {
 
             override fun onDataNotAvailable() {
                 Log.e(TAG, "No device in DB")
+
+                stopService()
             }
         })
     }
@@ -241,13 +242,17 @@ class ScanService : Service() {
                 //감지된 신호의 타입을 분석
                 when (bleDevice.major.toString()) {
                     ACTION_SIGNAL -> {
+                        if (currentTime - device.lastDetectionOfActionSignal < 10000) {
+                            Log.d(TAG, "This Device has just been registered.")
+                            return
+                        }
                         device.run {
                             lastDetectionOfActionSignal = currentTime
                             isAvailable = true
                             deviceRepository.updateDevice(this)
                         }
 
-                        signalHistoryRepository.insert(SignalHistoryEntity(device.deviceAddress, 1, currentTime))
+                        signalRepository.saveSignal(Signal(device.deviceAddress, 1, currentTime))
 
                         AlarmUtil.setAlarm(application)
                         Log.d(TAG, "Alarm is set")
@@ -260,13 +265,28 @@ class ScanService : Service() {
                             deviceRepository.updateDevice(this)
                         }
 
-                        signalHistoryRepository.insert(SignalHistoryEntity(device.deviceAddress, 2, currentTime))
+                        signalRepository.saveSignal(Signal(device.deviceAddress, 2, currentTime))
                     }
 
                     //그 외에는 이상한 major
                     else -> {
-                        Log.d(TAG, "Unresolved major : ${bleDevice.major}")
-                        return
+//                        Log.d(TAG, "Unresolved major : ${bleDevice.major}")
+//                        return
+                        //Todo: 테스트 후 아래는 지우고 위는 살릴것
+                        if (currentTime - device.lastDetectionOfActionSignal < 10000) {
+                            Log.d(TAG, "This Device has just been registered.")
+                            return
+                        }
+                        device.run {
+                            lastDetectionOfActionSignal = currentTime
+                            isAvailable = true
+                            deviceRepository.updateDevice(this)
+                        }
+
+                        signalRepository.saveSignal(Signal(device.deviceAddress, 1, currentTime))
+
+                        AlarmUtil.setAlarm(application)
+                        Log.d(TAG, "Alarm is set")
                     }
                 }
             }

@@ -1,12 +1,11 @@
 package com.seoultech.livingtogether_android.device.data.source.remote
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import android.util.Log
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
+import com.seoultech.livingtogether_android.signal.data.Signal
 
 class DeviceRemoteDataSource(private val deviceDatabase: DatabaseReference) : DeviceDataSource {
 
@@ -90,6 +89,24 @@ class DeviceRemoteDataSource(private val deviceDatabase: DatabaseReference) : De
 
     override fun deleteDevice(deviceAddress: String) {
         deviceDatabase.child(deviceAddress).removeValue()
+        deviceDatabase.parent?.child("signal")?.orderByChild("deviceAddress")?.equalTo(deviceAddress)?.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                return
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    return
+                }
+                for (_snapshot in snapshot.children) {
+                    val signal = _snapshot.getValue<Signal>()
+                    signal?.let {
+                        deviceDatabase.parent?.child("signal")?.child(it.detectiveTime.toString())?.removeValue()
+                        Log.d("", "")
+                    }
+                }
+            }
+        })
     }
 
     override fun deleteAllDevices() {
