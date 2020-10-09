@@ -2,7 +2,10 @@ package com.seoultech.livingtogether_android.device.data.source
 
 import com.seoultech.livingtogether_android.device.data.Device
 
-class DeviceRepository(private val deviceLocalDataSource: DeviceDataSource) : DeviceDataSource {
+class DeviceRepository(
+    private val deviceLocalDataSource: DeviceDataSource,
+    private val deviceRemoteDataSource: DeviceDataSource
+) : DeviceDataSource {
 
     private val cachedDevices = LinkedHashMap<String, Device>()
 
@@ -21,7 +24,7 @@ class DeviceRepository(private val deviceLocalDataSource: DeviceDataSource) : De
             }
 
             override fun onDataNotAvailable() {
-                callback.onDataNotAvailable()
+                getDevicesFromRemoteDataSource(callback)
             }
         })
     }
@@ -42,13 +45,36 @@ class DeviceRepository(private val deviceLocalDataSource: DeviceDataSource) : De
             }
 
             override fun onDataNotAvailable() {
-                callback.onDataNotAvailable()
+                getDeviceFromRemoteDataSource(deviceAddress, callback)
             }
         })
     }
 
     override fun getDeviceAddresses(callback: DeviceDataSource.LoadDeviceAddressesCallback) {
-        deviceLocalDataSource.getDeviceAddresses(callback);
+        if (cachedDevices.isNotEmpty() && !cacheIsDirty) {
+            val result = mutableListOf<String>()
+            val iterator = cachedDevices.iterator()
+            while (iterator.hasNext()) {
+                result.add(iterator.next().value.deviceAddress)
+            }
+            callback.onDeviceAddressesLoaded(result)
+            return
+        }
+
+        if (cacheIsDirty) {
+            getDeviceAddressFromRemoteDataResource(callback)
+            return
+        }
+
+        deviceLocalDataSource.getDeviceAddresses(object: DeviceDataSource.LoadDeviceAddressesCallback {
+            override fun onDeviceAddressesLoaded(addresses: List<String>) {
+                callback.onDeviceAddressesLoaded(addresses)
+            }
+
+            override fun onDataNotAvailable() {
+                getDeviceAddressFromRemoteDataResource(callback)
+            }
+        })
     }
 
     override fun getLatestDevice(callback: DeviceDataSource.GetDeviceCallback) {
@@ -58,22 +84,79 @@ class DeviceRepository(private val deviceLocalDataSource: DeviceDataSource) : De
     override fun saveDevice(device: Device) {
         cacheAndPerform(device) {
             deviceLocalDataSource.saveDevice(it)
+            deviceRemoteDataSource.saveDevice(it)
         }
     }
 
     override fun deleteDevice(deviceAddress: String) {
         deviceLocalDataSource.deleteDevice(deviceAddress)
+        deviceRemoteDataSource.deleteDevice(deviceAddress)
         cachedDevices.remove(deviceAddress)
+    }
+
+    override fun deleteAllDevices() {
+        deviceLocalDataSource.deleteAllDevices()
+        deviceRemoteDataSource.deleteAllDevices()
+        cachedDevices.clear()
     }
 
     override fun updateDevice(device: Device) {
         cacheAndPerform(device) {
             deviceLocalDataSource.updateDevice(device)
+            deviceRemoteDataSource.updateDevice(device)
         }
+    }
+
+    private fun getDeviceAddressFromRemoteDataResource(callback: DeviceDataSource.LoadDeviceAddressesCallback) {
+        deviceRemoteDataSource.getDeviceAddresses(object : DeviceDataSource.LoadDeviceAddressesCallback {
+            override fun onDeviceAddressesLoaded(addresses: List<String>) {
+                callback.onDeviceAddressesLoaded(addresses)
+            }
+
+            override fun onDataNotAvailable() {
+                callback.onDataNotAvailable()
+            }
+        })
+    }
+    
+    private fun getDevicesFromRemoteDataSource(callback: DeviceDataSource.LoadDevicesCallback) {
+        deviceRemoteDataSource.getDevices(object: DeviceDataSource.LoadDevicesCallback {
+            override fun onDevicesLoaded(devices: List<Device>) {
+                refreshCache(devices)
+                refreshLocalDataSource(devices)
+                callback.onDevicesLoaded(devices)
+            }
+
+            override fun onDataNotAvailable() {
+                callback.onDataNotAvailable()
+            }
+        })
+    }
+    
+    private fun getDeviceFromRemoteDataSource(deviceAddress: String, callback: DeviceDataSource.GetDeviceCallback) {
+        deviceRemoteDataSource.getDevice(deviceAddress, object: DeviceDataSource.GetDeviceCallback {
+            override fun onDeviceLoaded(device: Device) {
+                cacheAndPerform(device) { deviceLocalDataSource.saveDevice(device) }
+                callback.onDeviceLoaded(device)
+            }
+
+            override fun onDataNotAvailable() {
+                callback.onDataNotAvailable()
+            }
+        })
     }
 
     private fun getDeviceByAddress(deviceAddress: String) = cachedDevices[deviceAddress]
 
+    private fun refreshLocalDataSource(devices: List<Device>) {
+        deviceLocalDataSource.run {
+            deleteAllDevices()
+            for (device in devices) {
+                saveDevice(device)
+            }
+        }
+    }
+    
     private fun refreshCache(devices: List<Device>) {
         cachedDevices.clear()
         devices.forEach {
@@ -93,9 +176,9 @@ class DeviceRepository(private val deviceLocalDataSource: DeviceDataSource) : De
 
         private var INSTANCE: DeviceRepository? = null
 
-        @JvmStatic fun getInstance(deviceLocalDataSource: DeviceDataSource) =
+        @JvmStatic fun getInstance(deviceLocalDataSource: DeviceDataSource, deviceRemoteDataSource: DeviceDataSource) =
             INSTANCE ?: synchronized(DeviceRepository::class.java) {
-                INSTANCE ?: DeviceRepository(deviceLocalDataSource)
+                INSTANCE ?: DeviceRepository(deviceLocalDataSource, deviceRemoteDataSource)
                     .also { INSTANCE = it }
             }
     }

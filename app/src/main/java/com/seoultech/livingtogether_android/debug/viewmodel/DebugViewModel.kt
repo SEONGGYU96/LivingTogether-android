@@ -24,7 +24,7 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun deleteAll() {
-        db.deviceDao().deleteAll()
+        db.deviceDao().deleteAllDevices()
         Toast.makeText(getApplication(), "모든 기기가 제거되었습니다.", Toast.LENGTH_SHORT).show()
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
@@ -33,7 +34,13 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        deviceViewModel = obtainViewModel()
+        deviceViewModel = obtainViewModel().apply {
+            emptyListEvent.observe(this@SensorListActivity, Observer {
+                if (it) {
+                    finish()
+                }
+            })
+        }
 
         initDeviceAdapterListener()
 

@@ -1,4 +1,4 @@
-package com.seoultech.livingtogether_android.device.data.source
+package com.seoultech.livingtogether_android.device.data.source.local
 
 import androidx.room.*
 import com.seoultech.livingtogether_android.base.BaseDao
@@ -20,7 +20,7 @@ abstract class DeviceDao : BaseDao<Device> {
     abstract fun getLatestDevice(): Device?
 
     @Query("DELETE FROM device")
-    abstract fun deleteAll()
+    abstract fun deleteAllDevices()
 
     @Query("DELETE FROM device WHERE device_address = :deviceAddress")
     abstract fun deleteDeviceByAddress(deviceAddress: String)

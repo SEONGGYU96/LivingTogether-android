@@ -42,6 +42,6 @@ class ProfileRemoteDataSource(private val profileDatabase: DatabaseReference) : 
     }
 
     override fun deleteProfile() {
-        profileDatabase.setValue(null)
+        profileDatabase.removeValue()
     }
 }

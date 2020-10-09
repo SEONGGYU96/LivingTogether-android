@@ -36,6 +36,8 @@ interface DeviceDataSource {
     fun saveDevice(device: Device)
 
     fun deleteDevice(deviceAddress: String)
+    
+    fun deleteAllDevices()
 
     fun updateDevice(device: Device)
 }
