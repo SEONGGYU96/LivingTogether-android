@@ -13,7 +13,6 @@ import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.nextofkin.adapter.NextOfKinMainAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
-import com.seoultech.livingtogether_android.debug.viewmodel.DebugViewModel
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
@@ -35,7 +34,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private var backKeyPressedTime = 0L
     private val deviceAdapter: DeviceAdapter by lazy { DeviceAdapter() }
-    private lateinit var debugVm: DebugViewModel
 
     private lateinit var deviceViewModel: DeviceViewModel
     private lateinit var nextOfKinViewModel: NextOfKinViewModel
@@ -150,7 +148,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     override fun onResume() {
         super.onResume()
-        mainViewModel.onResume()
         nextOfKinViewModel.start()
         deviceViewModel.start()
     }

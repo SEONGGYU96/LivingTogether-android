@@ -33,7 +33,7 @@ object SMSSender {
      * @param content 내용
      */
     fun sendSMSAll(content: String?) {
-        val contactList = Injection.provideNextOfKinRepository(ApplicationImpl.getInstance()).getNextOfKin(object : NextOfKinDataSource.LoadNextOfKinCallback {
+        Injection.provideNextOfKinRepository(ApplicationImpl.getInstance()).getNextOfKin(object : NextOfKinDataSource.LoadNextOfKinCallback {
             override fun onNextOfKinLoaded(nextOfKin: List<NextOfKin>) {
                 for (contact in nextOfKin) {
                     Log.d("SMSSender.class", contact.toString())

@@ -12,7 +12,9 @@ import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.device.data.source.remote.DeviceRemoteDataSource
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinLocalDataSource
 import com.seoultech.livingtogether_android.nextofkin.data.source.NextOfKinRepository
-import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
+import com.seoultech.livingtogether_android.signal.data.source.SignalRepository
+import com.seoultech.livingtogether_android.signal.data.source.local.SignalLocalDataSource
+import com.seoultech.livingtogether_android.signal.data.source.remote.SignalRemoteDataSource
 import com.seoultech.livingtogether_android.user.data.source.ProfileRepository
 import com.seoultech.livingtogether_android.user.data.source.local.ProfileLocalDataSource
 import com.seoultech.livingtogether_android.user.data.source.remote.ProfileRemoteDataSource
@@ -22,6 +24,7 @@ object Injection {
 
     private var remoteDatabase: DatabaseReference? = null
 
+    @SuppressLint("HardwareIds")
     private fun getRemoteDatabase(context: Context): DatabaseReference {
         if (remoteDatabase == null) {
             val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
@@ -43,13 +46,12 @@ object Injection {
                 getRemoteDatabase(context).child("device")))
     }
 
-    fun provideSignalHistoryRepository(context: Context): SignalHistoryRepository {
+    fun provideSignalRepository(context: Context): SignalRepository {
         val database = LivingTogetherDatabase.getInstance(context)
-        //Todo: 다른 레포지토리 처럼 수정
-        return SignalHistoryRepository()
+        return SignalRepository.getInstance(SignalLocalDataSource.getInstance(AppExecutors(), database.signalDao()), SignalRemoteDataSource(
+            getRemoteDatabase(context).child("signal")))
     }
 
-    @SuppressLint("HardwareIds")
     fun provideProfileRepository(context: Context): ProfileRepository {
         val database = LivingTogetherDatabase.getInstance(context)
         return ProfileRepository.getInstance(

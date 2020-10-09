@@ -16,10 +16,11 @@ import com.seoultech.livingtogether_android.bluetooth.model.BleDevice
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
 import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
-import com.seoultech.livingtogether_android.signal.SignalHistoryRepository
+import com.seoultech.livingtogether_android.signal.data.source.SignalRepository
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
+import com.seoultech.livingtogether_android.signal.data.Signal
 import com.seoultech.livingtogether_android.util.BluetoothUtil
 import com.seoultech.livingtogether_android.util.ServiceUtil
 import java.util.*
@@ -27,10 +28,11 @@ import java.util.*
 
 class ScanViewModel(
     private val deviceRepository: DeviceRepository,
-    private val signalHistoryRepository: SignalHistoryRepository
+    private val signalRepository: SignalRepository
 ) : ViewModel() {
 
     companion object {
+        //Todo: 기존 발판 UUID로 바꿀것
         private const val LIVING_TOGETHER_UUID = "53454f55-4c54-4543-4850-6f70506f7030"
         private const val MIN_RSSI = -85
         private const val TAG = "ScanViewModel"
@@ -102,7 +104,6 @@ class ScanViewModel(
         handler.removeCallbacks(runnable)
         bluetoothAdapter!!.bluetoothLeScanner.stopScan(scanCallback)
         Log.d(TAG, "Scan is terminated")
-        startService()
     }
 
     fun setBackKeyEvent() {
@@ -189,7 +190,7 @@ class ScanViewModel(
 
         deviceRepository.saveDevice(newDevice)
 
-        //signalHistoryRepository.insert(SignalHistoryEntity(bleDevice.address, 3, calendar.timeInMillis))
+        signalRepository.saveSignal(Signal(bleDevice.address, 3, calendar.timeInMillis))
 
         AlarmUtil.setAlarm(application)
 
