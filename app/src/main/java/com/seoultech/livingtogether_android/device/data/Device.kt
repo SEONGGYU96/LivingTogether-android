@@ -119,6 +119,7 @@ data class Device(
 
     companion object {
         //preserve 갭 6시간
-        private const val PRESERVE_GAP = 21600000
+        //private const val PRESERVE_GAP = 21600000
+        private const val PRESERVE_GAP = 130000 //2분10초
     }
 }
