@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.device.data.source
 
+import android.util.Log
 import com.seoultech.livingtogether_android.device.data.Device
 
 class DeviceRepository(
@@ -33,6 +34,7 @@ class DeviceRepository(
         val deviceInCache = getDeviceByAddress(deviceAddress)
 
         if (deviceInCache != null) {
+            val d = Log.d(TAG, "cache has the device : ${deviceAddress}")
             callback.onDeviceLoaded(deviceInCache)
             return
         }
@@ -40,11 +42,13 @@ class DeviceRepository(
         deviceLocalDataSource.getDevice(deviceAddress, object : DeviceDataSource.GetDeviceCallback {
             override fun onDeviceLoaded(device: Device) {
                 cacheAndPerform(device) {
+                    Log.d(TAG, "local has the data : $deviceAddress")
                     callback.onDeviceLoaded(it)
                 }
             }
 
             override fun onDataNotAvailable() {
+                Log.d(TAG, "local does not has data : $deviceAddress")
                 getDeviceFromRemoteDataSource(deviceAddress, callback)
             }
         })
@@ -136,6 +140,7 @@ class DeviceRepository(
     private fun getDeviceFromRemoteDataSource(deviceAddress: String, callback: DeviceDataSource.GetDeviceCallback) {
         deviceRemoteDataSource.getDevice(deviceAddress, object: DeviceDataSource.GetDeviceCallback {
             override fun onDeviceLoaded(device: Device) {
+                Log.d(TAG, "remote have the data : $deviceAddress")
                 cacheAndPerform(device) { deviceLocalDataSource.saveDevice(device) }
                 callback.onDeviceLoaded(device)
             }
@@ -175,6 +180,7 @@ class DeviceRepository(
     companion object {
 
         private var INSTANCE: DeviceRepository? = null
+        private const val TAG = "DeviceRepository"
 
         @JvmStatic fun getInstance(deviceLocalDataSource: DeviceDataSource, deviceRemoteDataSource: DeviceDataSource) =
             INSTANCE ?: synchronized(DeviceRepository::class.java) {

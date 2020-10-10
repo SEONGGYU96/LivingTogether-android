@@ -32,8 +32,10 @@ class ScanViewModel(
 ) : ViewModel() {
 
     companion object {
-        //Todo: 기존 발판 UUID로 바꿀것
-        private const val LIVING_TOGETHER_UUID = "53454f55-4c54-4543-4850-6f70506f7030"
+        //POPPOP
+        //private const val LIVING_TOGETHER_UUID = "53454f55-4c54-4543-4850-6f70506f7030"
+        //LIVINGTOGHETER
+        private const val LIVING_TOGETHER_UUID = "01122334-4556-6778-899a-abbccddeeff0"
         private const val MIN_RSSI = -85
         private const val TAG = "ScanViewModel"
     }
@@ -122,10 +124,6 @@ class ScanViewModel(
         } else {
             Log.d(TAG, "Service is not running.")
         }
-    }
-
-    private fun startService() {
-        application.startService(Intent(application, ScanService::class.java))
     }
 
     @ExperimentalUnsignedTypes

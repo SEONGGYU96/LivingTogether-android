@@ -62,6 +62,7 @@
             android:id="@+id/button_sensorlist_insert"
             style="@style/BottomButton"
             android:text="@string/bottom_button_insert"
+            android:onClick="@{()->viewModel.registerNewSensor()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

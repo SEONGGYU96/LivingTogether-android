@@ -35,7 +35,6 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
 
     private fun onResume() {
         if (hasDevice) {
-            startService()
             bluetoothStateCheck()
         }
     }
@@ -50,21 +49,6 @@ class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val applicat
 
     fun setBluetoothOn() {
         _bluetoothOnEvent.value = true
-    }
-
-    private fun startService() {
-        if (!isServiceRunning()) {
-            // 등록된 버튼 있는데 스캔 Service 미 동작중이면 서비스 실행 시킴
-            application.startService(Intent(application, ScanService::class.java))
-
-            Log.d(TAG, "Devices registered are exist and service is not running. start service.")
-        } else {
-            Log.d(TAG, "No device registered or service is already running")
-        }
-    }
-
-    private fun isServiceRunning(): Boolean {
-        return ServiceUtil.isServiceRunning(application, ScanService::class.java)
     }
 
     fun bluetoothStateCheck() {

@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
+import com.seoultech.livingtogether_android.util.ServiceUtil
 
 class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewModel() {
 
@@ -38,11 +40,13 @@ class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewMode
         deviceRepository.getDevices(object : DeviceDataSource.LoadDevicesCallback {
             override fun onDevicesLoaded(devices: List<Device>) {
                 _items.value = devices
+                ServiceUtil.startService(ApplicationImpl.getInstance())
             }
 
             override fun onDataNotAvailable() {
                 _items.value = emptyList()
                 _emptyListEvent.value = true
+                ServiceUtil.stopService(ApplicationImpl.getInstance())
             }
         })
     }

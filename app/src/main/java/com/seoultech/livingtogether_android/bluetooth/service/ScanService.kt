@@ -15,6 +15,7 @@ import android.os.IBinder
 import android.text.TextUtils
 import android.util.Log
 import com.seoultech.livingtogether_android.Injection
+import com.seoultech.livingtogether_android.bluetooth.model.LastByteCode
 import com.seoultech.livingtogether_android.signal.data.Signal
 import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateReceiver
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
@@ -24,6 +25,7 @@ import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.signal.data.source.SignalRepository
 import java.util.*
+import kotlin.collections.HashMap
 
 class ScanService : Service() {
 
@@ -44,9 +46,7 @@ class ScanService : Service() {
         private const val LOC_CODE1 = 27
         private const val LOC_CODE2 = 28
     }
-
-    private var lastDetectedCode2: Byte? = null
-    private var lastDetectedCode1: Byte? = null
+    private val cacheLastSignal = HashMap<String, LastByteCode>()
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager = application.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -205,19 +205,19 @@ class ScanService : Service() {
 
     private val scanCallback: ScanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
-            if (isNewSignal(result.scanRecord!!.bytes)) {
+            if (isNewSignal(result.device.address, result.scanRecord!!.bytes)) {
                 onScanResult(result)
             } else {
-                Log.d(TAG, "This Device has just been registered.")
+                Log.d(TAG, "Signal is duplicated")
             }
         }
 
         override fun onBatchScanResults(results: List<ScanResult>) {
             for (result in results) {
-                if (isNewSignal(result.scanRecord!!.bytes)) {
+                if (isNewSignal(result.device.address, result.scanRecord!!.bytes)) {
                     onScanResult(result)
                 } else {
-                    Log.d(TAG, "This Device has just been registered.")
+                    Log.d(TAG, "Signal is duplicated")
                 }
             }
         }
@@ -243,7 +243,7 @@ class ScanService : Service() {
                 when (bleDevice.major.toString()) {
                     ACTION_SIGNAL -> {
                         if (currentTime - device.lastDetectionOfActionSignal < 10000) {
-                            Log.d(TAG, "This Device has just been registered.")
+                            Log.d(TAG, "But this Device has just been registered.")
                             return
                         }
                         device.run {
@@ -270,23 +270,8 @@ class ScanService : Service() {
 
                     //그 외에는 이상한 major
                     else -> {
-//                        Log.d(TAG, "Unresolved major : ${bleDevice.major}")
-//                        return
-                        //Todo: 테스트 후 아래는 지우고 위는 살릴것
-                        if (currentTime - device.lastDetectionOfActionSignal < 10000) {
-                            Log.d(TAG, "This Device has just been registered.")
-                            return
-                        }
-                        device.run {
-                            lastDetectionOfActionSignal = currentTime
-                            isAvailable = true
-                            deviceRepository.updateDevice(this)
-                        }
-
-                        signalRepository.saveSignal(Signal(device.deviceAddress, 1, currentTime))
-
-                        AlarmUtil.setAlarm(application)
-                        Log.d(TAG, "Alarm is set")
+                        Log.d(TAG, "Unresolved major : ${bleDevice.major}")
+                        return
                     }
                 }
             }
@@ -300,15 +285,22 @@ class ScanService : Service() {
 
     // 새로운 신호인지 확인
     // 신호마다 byte arr를 보내주는데 27, 28번째 byte가 달라짐
-    private fun isNewSignal(codes: ByteArray): Boolean {
+    private fun isNewSignal(deviceAddress: String, codes: ByteArray): Boolean {
         val decisionCode1 = codes[LOC_CODE1]
         val decisionCode2 = codes[LOC_CODE2]
-        return if (lastDetectedCode1 != decisionCode1 || lastDetectedCode2 != decisionCode2) {
-            lastDetectedCode1 = decisionCode1
-            lastDetectedCode2 = decisionCode2
-            true
+        if (cacheLastSignal.containsKey(deviceAddress)) {
+            cacheLastSignal[deviceAddress]!!.run {
+                return if (lastDetectedCode1 != decisionCode1 || lastDetectedCode2 != decisionCode2) {
+                    lastDetectedCode1 = decisionCode1
+                    lastDetectedCode2 = decisionCode2
+                    true
+                } else {
+                    false
+                }
+            }
         } else {
-            false
+            cacheLastSignal[deviceAddress] = LastByteCode(decisionCode1, decisionCode2)
+            return true
         }
     }
 }
