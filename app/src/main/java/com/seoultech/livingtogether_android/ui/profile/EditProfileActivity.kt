@@ -8,6 +8,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.seoultech.livingtogether_android.R
 import com.seoultech.livingtogether_android.databinding.ActivityProfileBinding
+import com.seoultech.livingtogether_android.ui.main.MainActivity
 
 class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout.activity_profile) {
 
@@ -29,8 +30,7 @@ class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout
 
                 saveProfileEvent.observe(this@EditProfileActivity, Observer {
                     if (isNew) {
-                        val intent = Intent(this@EditProfileActivity, ProfileActivity::class.java)
-                        intent.putExtra("isNew", isNew)
+                        val intent = Intent(this@EditProfileActivity, MainActivity::class.java)
                         startActivity(intent)
                     }
                     finish()

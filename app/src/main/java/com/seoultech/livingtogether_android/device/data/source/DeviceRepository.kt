@@ -2,6 +2,7 @@ package com.seoultech.livingtogether_android.device.data.source
 
 import android.util.Log
 import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.DeviceStateChangedLiveData
 
 class DeviceRepository(
     private val deviceLocalDataSource: DeviceDataSource,

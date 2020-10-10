@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.DeviceStateChangedLiveData
 import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.util.ServiceUtil
@@ -41,6 +42,7 @@ class DeviceViewModel(private val deviceRepository: DeviceRepository) : ViewMode
             override fun onDevicesLoaded(devices: List<Device>) {
                 _items.value = devices
                 ServiceUtil.startService(ApplicationImpl.getInstance())
+                DeviceStateChangedLiveData.value = false
             }
 
             override fun onDataNotAvailable() {

@@ -15,6 +15,7 @@ import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 import com.seoultech.livingtogether_android.databinding.ActivitySensorListBinding
 import com.seoultech.livingtogether_android.databinding.DialogDeviceDetailBinding
 import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.DeviceStateChangedLiveData
 import com.seoultech.livingtogether_android.util.MarginDecoration
 import com.seoultech.livingtogether_android.ui.scan.ScanActivity
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
@@ -49,6 +50,12 @@ class SensorListActivity : BaseActivity<ActivitySensorListBinding>(R.layout.acti
                 }
             })
         }
+
+        DeviceStateChangedLiveData.observe(this, Observer {
+            if (it) {
+                deviceViewModel.start()
+            }
+        })
 
         initDeviceAdapterListener()
 

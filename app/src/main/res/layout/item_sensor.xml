@@ -27,14 +27,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintlayout_itemdevice_root"
                 android:layout_width="match_parent"
-                android:foreground="?android:selectableItemBackground"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:foreground="?android:selectableItemBackground">
 
                 <ImageView
                     android:id="@+id/imageview_itemdevice"
-                    setGrayTint="@{device.updateIsAvailable()}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/width_device_item_image"
+                    android:layout_height="31dp"
                     android:layout_marginTop="@dimen/padding_item_device"
                     android:layout_marginEnd="@dimen/padding_item_device"
                     android:src="@drawable/sensor_ic"
