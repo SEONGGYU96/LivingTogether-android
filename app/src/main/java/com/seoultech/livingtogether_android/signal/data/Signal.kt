@@ -13,7 +13,7 @@ data class Signal(
     @ColumnInfo(name = "detective_time") var detectiveTime: Long = 0
 ) {
     fun getDetectedTimeToString() : String {
-        return StringUtil.longToDate(detectiveTime, year = true, time = true)
+        return StringUtil.longToDate(detectiveTime, year = true, longYear = false, time = true)
     }
 
     fun getSignalType(): Signal {

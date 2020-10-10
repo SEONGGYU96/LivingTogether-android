@@ -22,6 +22,9 @@ data class Profile constructor(
     @ColumnInfo(name = "phone_num")
     var phoneNumber: String = "",
 
+    @ColumnInfo(name = "join")
+    var join: String = "",
+
     @PrimaryKey
     @ColumnInfo(name = "profile_id")
     var id: String = UUID.randomUUID().toString()

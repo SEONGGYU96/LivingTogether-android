@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.seoultech.livingtogether_android.user.data.Profile
 import com.seoultech.livingtogether_android.user.data.source.ProfileDataSource
 import com.seoultech.livingtogether_android.user.data.source.ProfileRepository
+import com.seoultech.livingtogether_android.util.FirebaseUtil
+import com.seoultech.livingtogether_android.util.StringUtil
 import java.lang.StringBuilder
+import java.util.*
 
 class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewModel() {
 
@@ -25,6 +28,8 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
     var phoneNumber = MutableLiveData<String>()
 
     private var isNew = true
+
+    private var cacheJoin = ""
 
     private val _saveProfileEvent = MutableLiveData<Boolean>()
     val saveProfileEvent: LiveData<Boolean>
@@ -48,11 +53,12 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
                 showingAddress.value = generateShowingAddress(profile, isEdit)
                 phoneNumber.value = profile.phoneNumber
                 profileId = profile.id
+                cacheJoin = profile.join
                 isNew = false
             }
 
             override fun onDataNotAvailable() {
-                isNew = false
+                isNew = true
             }
         })
     }
@@ -90,10 +96,12 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
 
         if (isNew || profileId == null) {
             createProfile(Profile(currentName, currentCity,
-                currentMiddleAddress, currentExtraAddress, currentPhoneNumber))
+                currentMiddleAddress, currentExtraAddress, currentPhoneNumber,
+                StringUtil.getCurrentTime(year = true, longYear = true, time = false)))
+            FirebaseUtil.pushEmergency(true)
         } else {
             updateProfile(Profile(currentName, currentCity,
-                currentMiddleAddress, currentExtraAddress, currentPhoneNumber, profileId!!))
+                currentMiddleAddress, currentExtraAddress, currentPhoneNumber, cacheJoin, profileId!!))
         }
         _saveProfileEvent.value = true
     }

@@ -19,18 +19,25 @@ object StringUtil {
         return result.toString()
     }
 
-    fun longToDate(timeInMillis: Long, year: Boolean, time: Boolean): String {
+    fun getCurrentTime(year: Boolean, longYear: Boolean, time: Boolean) : String {
+        return longToDate(GregorianCalendar().timeInMillis, year, longYear, time)
+    }
+
+    fun longToDate(timeInMillis: Long, year: Boolean, longYear: Boolean, time: Boolean): String {
         val calendar = GregorianCalendar()
         val str = StringBuilder()
 
         calendar.timeInMillis = timeInMillis
 
         if (year) {
-            str.makeFullDate(calendar.get(Calendar.YEAR).toString().substring(2))
-                .append("-")
+            if (longYear) {
+                str.makeFullDate(calendar.get(Calendar.YEAR).toString())
+            } else {
+                str.makeFullDate(calendar.get(Calendar.YEAR).toString().substring(2))
+            }
         }
-
-        str.makeFullDate(calendar.get(Calendar.MONTH) + 1)
+        str.append("-")
+            .makeFullDate(calendar.get(Calendar.MONTH) + 1)
             .append("-")
             .makeFullDate(calendar.get(Calendar.DAY_OF_MONTH))
 
