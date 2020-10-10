@@ -87,11 +87,11 @@ data class Device(
     }
 
     private fun getTimeToString(timeInMillis: Long): String {
-        return StringUtil.longToDate(timeInMillis, year = false, time = true)
+        return StringUtil.longToDate(timeInMillis, year = false, longYear = false, time = true)
     }
 
     fun getInitDateToString(): String {
-        return StringUtil.longToDate(initDate, year = true, time = false)
+        return StringUtil.longToDate(initDate, year = true, longYear = false, time = false)
     }
 
     fun getDeviceAvailable(): String {

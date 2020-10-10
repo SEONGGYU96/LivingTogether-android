@@ -36,7 +36,7 @@ object SMSSender {
         Injection.provideNextOfKinRepository(ApplicationImpl.getInstance()).getNextOfKin(object : NextOfKinDataSource.LoadNextOfKinCallback {
             override fun onNextOfKinLoaded(nextOfKin: List<NextOfKin>) {
                 for (contact in nextOfKin) {
-                    Log.d("SMSSender.class", contact.toString())
+                    Log.d(TAG, "send to : $contact")
                     sendSMS(contact.phoneNumber, content)
                 }
             }

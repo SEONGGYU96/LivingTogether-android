@@ -19,19 +19,9 @@ import com.seoultech.livingtogether_android.user.data.source.ProfileRepository
 import com.seoultech.livingtogether_android.user.data.source.local.ProfileLocalDataSource
 import com.seoultech.livingtogether_android.user.data.source.remote.ProfileRemoteDataSource
 import com.seoultech.livingtogether_android.util.AppExecutors
+import com.seoultech.livingtogether_android.util.FirebaseUtil
 
 object Injection {
-
-    private var remoteDatabase: DatabaseReference? = null
-
-    @SuppressLint("HardwareIds")
-    private fun getRemoteDatabase(context: Context): DatabaseReference {
-        if (remoteDatabase == null) {
-            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
-            remoteDatabase = Firebase.database.reference.child("Users").child(deviceId)
-        }
-        return remoteDatabase!!
-    }
 
     fun provideNextOfKinRepository(context: Context): NextOfKinRepository {
         val database = LivingTogetherDatabase.getInstance(context)
@@ -43,19 +33,19 @@ object Injection {
         val database = LivingTogetherDatabase.getInstance(context)
         return DeviceRepository.getInstance(
             DeviceLocalDataSource.getInstance(AppExecutors(), database.deviceDao()), DeviceRemoteDataSource(
-                getRemoteDatabase(context).child("device")))
+                FirebaseUtil.getRemoteDatabase(context).child("device")))
     }
 
     fun provideSignalRepository(context: Context): SignalRepository {
         val database = LivingTogetherDatabase.getInstance(context)
         return SignalRepository.getInstance(SignalLocalDataSource.getInstance(AppExecutors(), database.signalDao()), SignalRemoteDataSource(
-            getRemoteDatabase(context).child("signal")))
+            FirebaseUtil.getRemoteDatabase(context).child("signal")))
     }
 
     fun provideProfileRepository(context: Context): ProfileRepository {
         val database = LivingTogetherDatabase.getInstance(context)
         return ProfileRepository.getInstance(
             ProfileLocalDataSource.getInstance(AppExecutors(), database.profileDao()),
-            ProfileRemoteDataSource(getRemoteDatabase(context).child("profile")))
+            ProfileRemoteDataSource(FirebaseUtil.getRemoteDatabase(context).child("profile")))
     }
 }

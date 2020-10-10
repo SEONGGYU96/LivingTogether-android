@@ -28,9 +28,11 @@ class EditProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout
                 })
 
                 saveProfileEvent.observe(this@EditProfileActivity, Observer {
-                    val intent = Intent(this@EditProfileActivity, ProfileActivity::class.java)
-                    intent.putExtra("isNew", isNew)
-                    startActivity(intent)
+                    if (isNew) {
+                        val intent = Intent(this@EditProfileActivity, ProfileActivity::class.java)
+                        intent.putExtra("isNew", isNew)
+                        startActivity(intent)
+                    }
                     finish()
                 })
 
