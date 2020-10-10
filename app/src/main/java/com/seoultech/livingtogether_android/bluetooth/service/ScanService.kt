@@ -21,6 +21,7 @@ import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateRec
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
 import com.seoultech.livingtogether_android.device.data.Device
+import com.seoultech.livingtogether_android.device.data.DeviceStateChangedLiveData
 import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.signal.data.source.SignalRepository
@@ -40,7 +41,7 @@ class ScanService : Service() {
 
         private const val NOTIFICATION_ID = 100
 
-        private const val ACTION_SIGNAL = "100"
+        const val ACTION_SIGNAL = "100"
         private const val PRESERVE_SIGNAL = "200"
 
         private const val LOC_CODE1 = 27
@@ -254,7 +255,8 @@ class ScanService : Service() {
 
                         signalRepository.saveSignal(Signal(device.deviceAddress, 1, currentTime))
 
-                        AlarmUtil.setAlarm(application)
+                        DeviceStateChangedLiveData.value = true
+                        AlarmUtil.setActiveAlarm(application)
                         Log.d(TAG, "Alarm is set")
                     }
 
@@ -266,6 +268,7 @@ class ScanService : Service() {
                         }
 
                         signalRepository.saveSignal(Signal(device.deviceAddress, 2, currentTime))
+                        AlarmUtil.setPreservedAlarm(application, device.deviceAddress)
                     }
 
                     //그 외에는 이상한 major

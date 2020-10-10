@@ -31,6 +31,8 @@
     <!-- item_sensor-->
     <dimen name="width_item_sensor">130dp</dimen>
     <dimen name="padding_item_device">12dp</dimen>
+    <dimen name="width_device_item_image">64dp</dimen>
+    <dimen name="height_device_item_image">31dp</dimen>
 
     <!-- item_next_of_kin-->
     <dimen name="padding_item_next_of_kin_delete">10dp</dimen>

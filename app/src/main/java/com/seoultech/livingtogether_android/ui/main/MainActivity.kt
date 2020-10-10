@@ -13,6 +13,7 @@ import com.seoultech.livingtogether_android.device.adapter.DeviceAdapter
 import com.seoultech.livingtogether_android.nextofkin.adapter.NextOfKinMainAdapter
 import com.seoultech.livingtogether_android.base.BaseActivity
 import com.seoultech.livingtogether_android.databinding.ActivityMainBinding
+import com.seoultech.livingtogether_android.device.data.DeviceStateChangedLiveData
 import com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel
 import com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel
 import com.seoultech.livingtogether_android.ui.contacts.ContactListActivity
@@ -71,6 +72,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 this@MainActivity.setBluetoothOn()
             })
         }
+
+        DeviceStateChangedLiveData.observe(this, Observer {
+            if (it) {
+                deviceViewModel.start()
+            }
+        })
 
         binding.run {
             this.mainViewModel = this@MainActivity.mainViewModel

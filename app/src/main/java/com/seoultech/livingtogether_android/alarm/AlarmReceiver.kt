@@ -7,11 +7,15 @@ import android.util.Log
 import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.Injection
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
+import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil.ALARM_TYPE
+import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil.DEVICE_ADDRESS
+import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil.TYPE_ACTIVE
+import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil.TYPE_PRESERVED
+import com.seoultech.livingtogether_android.device.data.DeviceStateChangedLiveData
 import com.seoultech.livingtogether_android.user.data.Profile
 import com.seoultech.livingtogether_android.user.data.source.ProfileDataSource
 import com.seoultech.livingtogether_android.util.FirebaseUtil
 import com.seoultech.livingtogether_android.util.SMSSender
-import com.seoultech.livingtogether_android.util.StringUtil
 
 class AlarmReceiver: BroadcastReceiver() {
 
@@ -20,14 +24,35 @@ class AlarmReceiver: BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        if (intent == null) {
+            Log.e(TAG, "intent is null")
+            return
+        }
+
+        if (intent.getStringExtra(ALARM_TYPE) != TYPE_ACTIVE) {
+            Log.d(TAG, "DeviceStateIsChanged by not coming preserved signal")
+            val deviceAddress = intent.getStringExtra(DEVICE_ADDRESS)
+            DeviceStateChangedLiveData.value = true
+            if (deviceAddress == null) {
+                Log.e(TAG, "This alarm is called by preserved But deviceAddress is null")
+            } else {
+                removePreservedAlarmReceiver(deviceAddress)
+            }
+            return
+        }
+
         Log.d(TAG, "***********EMERGENCY PROTOCOL HAS BEEN OPERATED********")
-        removeReceiver()
+        removeActiveAlarmReceiver()
         alertToServer()
         sendSMS()
     }
 
-    private fun removeReceiver() {
-        AlarmUtil.stopAlarm(ApplicationImpl.getInstance())
+    private fun removePreservedAlarmReceiver(deviceAddress: String) {
+        AlarmUtil.stopPreservedAlarm(ApplicationImpl.getInstance(), deviceAddress)
+    }
+
+    private fun removeActiveAlarmReceiver() {
+        AlarmUtil.stopActiveAlarm(ApplicationImpl.getInstance())
     }
 
     private fun alertToServer() {

@@ -1,5 +1,6 @@
 package com.seoultech.livingtogether_android.signal.data.source
 
+import com.seoultech.livingtogether_android.device.data.DeviceStateChangedLiveData
 import com.seoultech.livingtogether_android.signal.data.Signal
 
 class SignalRepository(
@@ -49,6 +50,7 @@ class SignalRepository(
     override fun saveSignal(signal: Signal) {
         signalLocalDataSource.saveSignal(signal)
         signalRemoteDataSource.saveSignal(signal)
+        DeviceStateChangedLiveData.value = true
     }
 
     companion object {

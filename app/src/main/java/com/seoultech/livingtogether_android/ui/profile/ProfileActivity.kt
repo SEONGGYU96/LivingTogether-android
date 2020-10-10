@@ -10,23 +10,13 @@ import com.seoultech.livingtogether_android.ui.main.MainActivity
 
 class ProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout.activity_profile) {
 
-    private var isNew = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        isNew = intent.getBooleanExtra("isNew", false)
 
         binding.run {
             viewModel = profileViewModel
 
-            lttoolbarProfile.setBackButton(View.OnClickListener {
-                if (isNew) {
-                    startMainActivity()
-                } else {
-                    finish()
-                }
-            })
+            lttoolbarProfile.setBackButton()
 
             groupProfileEditmode.visibility = View.GONE
             groupProfileNormalmode.visibility = View.VISIBLE
@@ -37,21 +27,8 @@ class ProfileActivity : BaseProfileActivity<ActivityProfileBinding>(R.layout.act
         }
     }
 
-    override fun onBackPressed() {
-        if (isNew) {
-            startMainActivity()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         profileViewModel.getProfile(false)
-    }
-
-    private fun startMainActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
     }
 }

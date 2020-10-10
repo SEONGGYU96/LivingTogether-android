@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 import com.seoultech.livingtogether_android.util.StringUtil
+import com.seoultech.livingtogether_android.util.TimeUtil
 import java.lang.StringBuilder
 import java.util.*
 
@@ -103,8 +104,9 @@ data class Device(
     }
 
     fun updateIsAvailable(): Boolean {
-        val calendar = GregorianCalendar()
-        val gap = calendar.timeInMillis - lastDetectionOfPreserveSignal
+        val gap = TimeUtil.calculateTimeGapWithCurrent(
+            lastDetectionOfActionSignal.coerceAtLeast(lastDetectionOfPreserveSignal)
+        )
         if (isAvailable) {
             if (gap > PRESERVE_GAP) {
                 isAvailable = false
@@ -120,6 +122,6 @@ data class Device(
     companion object {
         //preserve 갭 6시간
         //private const val PRESERVE_GAP = 21600000
-        private const val PRESERVE_GAP = 130000 //2분10초
+        private const val PRESERVE_GAP = 180000 //3분
     }
 }

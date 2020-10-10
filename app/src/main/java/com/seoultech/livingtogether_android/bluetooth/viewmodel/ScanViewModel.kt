@@ -18,6 +18,7 @@ import com.seoultech.livingtogether_android.device.data.Device
 import com.seoultech.livingtogether_android.device.data.source.DeviceRepository
 import com.seoultech.livingtogether_android.signal.data.source.SignalRepository
 import com.seoultech.livingtogether_android.bluetooth.service.ScanService
+import com.seoultech.livingtogether_android.bluetooth.service.ScanService.Companion.ACTION_SIGNAL
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.device.data.source.DeviceDataSource
 import com.seoultech.livingtogether_android.signal.data.Signal
@@ -160,8 +161,13 @@ class ScanViewModel(
         if (bleDevice.uuid != LIVING_TOGETHER_UUID) {
             return
         }
-        
+
         Log.d(TAG, "Living Together H/W has been found")
+
+        if (bleDevice.major.toString() != ACTION_SIGNAL) {
+            Log.d(TAG, "But it is preserved signal")
+            return
+        }
 
         stopScan()
 
@@ -190,7 +196,7 @@ class ScanViewModel(
 
         signalRepository.saveSignal(Signal(bleDevice.address, 3, calendar.timeInMillis))
 
-        AlarmUtil.setAlarm(application)
+        AlarmUtil.setActiveAlarm(application)
 
         _foundSensorEvent.value = true
     }
