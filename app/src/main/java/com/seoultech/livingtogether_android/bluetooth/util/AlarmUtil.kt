@@ -19,8 +19,8 @@ object AlarmUtil {
 
     const val DEVICE_ADDRESS = "device_address"
 
-    //Todo: 알람 트리거 시간 변경하여야 함. 지금은 디버깅 용도로 20초
-    private const val ACTIVE_ALARM_TRIGGER_TIME = 20
+    //분 단위
+    private const val ACTIVE_ALARM_TRIGGER_TIME = 240
     private const val PRESERVED_ALARM_TRIGGER_TIME = 180
 
     private const val TAG = "AlarmUtil"
