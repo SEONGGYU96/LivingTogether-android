@@ -124,7 +124,7 @@ class ScanActivity : BaseActivity<ActivityScanBinding>(R.layout.activity_scan) {
                 }
             })
         }
-        a.load(rawRes).into(binding.imageviewScanAnimation)
+        binding.lottieScanAnimation.setAnimation(rawRes)
     }
 
     private fun setFoundedView() {
