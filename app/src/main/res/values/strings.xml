@@ -67,6 +67,7 @@
     <string name="status_box_fail">알 수 없는 이유로\n기기를 감지할 수 없습니다.</string>
     <string name="status_box_bluetooth_off">블루투스가 꺼져있어\n센서를 감지할 수 없습니다.</string>
     <string name="status_box_number_of_sensor">개의 감지 중인 센서</string>
+    <string name="status_box_connection_fail">기기와의 연결이 모두 끊어졌습니다.</string>
 
     <!-- ScanService-->
     <string name="registered_sensor">등록된 센서</string>
