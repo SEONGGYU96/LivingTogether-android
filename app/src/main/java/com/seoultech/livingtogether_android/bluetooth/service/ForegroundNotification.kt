@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.seoultech.livingtogether_android.R
+import com.seoultech.livingtogether_android.Status
 import com.seoultech.livingtogether_android.ui.main.MainActivity
 
 class ForegroundNotification(private val application: Application) {
@@ -20,14 +21,15 @@ class ForegroundNotification(private val application: Application) {
     private val notificationManager: NotificationManager by lazy {
         application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
-    fun getNotification(state: Boolean): Notification {
+    fun getNotification(state: Int): Notification {
         Log.d(TAG, "getNotification() is invoked. state : $state")
 
         initNotificationManager()
 
         val text: String = when (state) {
-            true -> application.getString(R.string.status_box_on_going)
-            false -> application.getString(R.string.notification_bluetooth_off)
+            Status.NORMAL -> application.getString(R.string.status_box_on_going)
+            Status.BLUETOOTH_OFF -> application.getString(R.string.notification_bluetooth_off)
+            else -> application.getString(R.string.status_box_connection_fail)
         }
 
         val notificationIntent = Intent(application, MainActivity::class.java)
@@ -46,7 +48,7 @@ class ForegroundNotification(private val application: Application) {
             .setShowWhen(false) //알림 시간 노출 여부
             .setContentIntent(pendingIntent)
 
-        if (state) {
+        if (state == Status.NORMAL) {
             builder.color = ContextCompat.getColor(application, R.color.colorGradientStart)
         } else {
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(text)) //긴 문자열 스타일, 문구 지정

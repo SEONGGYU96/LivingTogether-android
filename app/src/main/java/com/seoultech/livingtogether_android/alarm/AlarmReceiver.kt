@@ -6,6 +6,8 @@ import android.content.Intent
 import android.util.Log
 import com.seoultech.livingtogether_android.ApplicationImpl
 import com.seoultech.livingtogether_android.Injection
+import com.seoultech.livingtogether_android.Status
+import com.seoultech.livingtogether_android.bluetooth.service.ScanService
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil.ALARM_TYPE
 import com.seoultech.livingtogether_android.bluetooth.util.AlarmUtil.DEVICE_ADDRESS
@@ -33,6 +35,8 @@ class AlarmReceiver: BroadcastReceiver() {
             Log.d(TAG, "DeviceStateIsChanged by not coming preserved signal")
             val deviceAddress = intent.getStringExtra(DEVICE_ADDRESS)
             DeviceStateChangedLiveData.value = true
+            Status.setConnectOk(false)
+            sendBTState()
             if (deviceAddress == null) {
                 Log.e(TAG, "This alarm is called by preserved But deviceAddress is null")
             } else {
@@ -45,6 +49,13 @@ class AlarmReceiver: BroadcastReceiver() {
         removeActiveAlarmReceiver()
         alertToServer()
         sendSMS()
+    }
+
+    private fun sendBTState() {
+        val intent = Intent(ApplicationImpl.getInstance(), ScanService::class.java).apply {
+            putExtra(ScanService.FLAG_CONNECTION, ScanService.FLAG_CONNECTION_FAIL)
+        }
+        ApplicationImpl.getInstance().startService(intent)
     }
 
     private fun removePreservedAlarmReceiver(deviceAddress: String) {

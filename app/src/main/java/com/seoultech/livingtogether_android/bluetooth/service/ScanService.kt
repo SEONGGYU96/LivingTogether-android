@@ -15,6 +15,7 @@ import android.os.IBinder
 import android.text.TextUtils
 import android.util.Log
 import com.seoultech.livingtogether_android.Injection
+import com.seoultech.livingtogether_android.Status
 import com.seoultech.livingtogether_android.bluetooth.model.LastByteCode
 import com.seoultech.livingtogether_android.signal.data.Signal
 import com.seoultech.livingtogether_android.bluetooth.receiver.BluetoothStateReceiver
@@ -35,9 +36,11 @@ class ScanService : Service() {
 
         internal const val FLAG_BT_CHANGED_VALUE_ON = "ON"
         internal const val FLAG_BT_CHANGED_VALUE_OFF = "OFF"
+        internal const val FLAG_CONNECTION_FAIL = "FAIL"
 
         const val FLAG_STOP_SERVICE = "FLAG_STOP_SERVICE"
         internal const val FLAG_BT_CHANGED = "FLAG_BT_CHANGED"
+        internal const val FLAG_CONNECTION = "FLAG_CONNECTION"
 
         private const val NOTIFICATION_ID = 100
 
@@ -90,7 +93,7 @@ class ScanService : Service() {
                     stopScan()
 
                     //Notification 상태 변경
-                    startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(false))
+                    startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(Status.BLUETOOTH_OFF))
 
                     Log.d(TAG, "onStartCommand : stopScan() is called because BT is turned off")
                 }
@@ -105,7 +108,7 @@ class ScanService : Service() {
             //BT adapter 꺼진상태인지 체크
             Log.d(TAG, "onStartCommend : Bluetooth is disabled")
 
-            startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(false))
+            startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(Status.BLUETOOTH_OFF))
 
             //START_STICKY
             return super.onStartCommand(intent, flags, startId)
@@ -122,7 +125,7 @@ class ScanService : Service() {
     private fun startScanService() {
         Log.d(TAG, "ScanService() is invoked")
 
-        startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(true))
+        startForeground(NOTIFICATION_ID, foregroundNotification.getNotification(Status.getStatus()))
 
         startScan()
 
@@ -269,6 +272,7 @@ class ScanService : Service() {
 
                         signalRepository.saveSignal(Signal(device.deviceAddress, 2, currentTime))
                         AlarmUtil.setPreservedAlarm(application, device.deviceAddress)
+                        Status.setConnectOk(true)
                     }
 
                     //그 외에는 이상한 major
