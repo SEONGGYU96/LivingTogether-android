@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.seoultech.livingtogether_android.device.viewmodel.LocationViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_main_green"
+        tools:context=".ui.scan.InsertLocationActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/ToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sensor_register"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/margin_sensor_circle_horizontal"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="@color/colorAlphaWhite30"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.378"
+            app:layout_constraintWidth_percent="0.736">
+
+            <ImageView
+                android:id="@+id/Image_sensor"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_sensor_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1: 0.4842"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.302"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/SensorFindingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sensor_foot"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/Image_sensor"
+                app:layout_constraintStart_toStartOf="@+id/Image_sensor"
+                app:layout_constraintTop_toBottomOf="@+id/Image_sensor"
+                app:layout_constraintVertical_bias="0.349" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/SensorFindingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_ask_location_vertical"
+            android:text="@string/sensor_ask_location"
+            app:layout_constraintBottom_toTopOf="@+id/edit_location_insert"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/edit_location_insert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fontFamily="@font/notosans_medium"
+            android:hint="@string/sensor_location_example"
+            android:inputType="textPersonName"
+            android:paddingHorizontal="@dimen/padding_location_edit_text_horizontal"
+            android:text="@={viewModel.location}"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorAlphaWhite50"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/view_insertlocation_underscore"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <View
+            android:id="@+id/view_insertlocation_underscore"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_location_edit_text_underscore"
+            android:layout_marginTop="@dimen/margin_location_edit_text_bottom"
+            android:layout_marginBottom="@dimen/margin_location_edit_text_underscore_bottom"
+            android:background="@color/colorAlphaWhite50"
+            app:layout_constraintBottom_toTopOf="@id/button_insertlocation_register"
+            app:layout_constraintEnd_toEndOf="@id/edit_location_insert"
+            app:layout_constraintStart_toStartOf="@id/edit_location_insert"
+            app:layout_constraintTop_toBottomOf="@id/edit_location_insert" />
+
+        <Button
+            android:id="@+id/button_insertlocation_register"
+            style="@style/ScanBottomButton"
+            android:onClick="@{()->viewModel.updateLocation()}"
+            android:text="@string/register_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_insertlocation_underscore" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

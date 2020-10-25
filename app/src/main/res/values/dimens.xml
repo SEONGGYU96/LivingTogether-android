@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- entire-->
+    <dimen name="margin_entire_padding_horizontal">16dp</dimen>
+    <dimen name="margin_entire_list_padding_horizontal">25dp</dimen>
+    <dimen name="elevation_entire">5dp</dimen>
+    <dimen name="height_bottom_button">48dp</dimen>
+    <dimen name="margin_bottom_button_bottom">25dp</dimen>
+    <dimen name="radius_entire">5dp</dimen>
+
+    <!-- status_box-->
+    <dimen name="margin_statusbox_padding_start">20dp</dimen>
+    <dimen name="margin_statusbox_padding_top">13dp</dimen>
+    <dimen name="margin_statusbox_padding_bottom">15dp</dimen>
+    <dimen name="margin_statusbox_numberofsensor">4dp</dimen>
+    <dimen name="margin_statusbox_bottom">25dp</dimen>
+    <dimen name="margin_statusbox_top">25dp</dimen>
+
+    <!-- registerd_sensors-->
+    <dimen name="margin_registerd_sensors_padding_top">13dp</dimen>
+    <dimen name="margin_sensor_reyclerview_top">16dp</dimen>
+    <dimen name="margin_sensor_recyclerview_bottom">18dp</dimen>
+    <dimen name="margin_registered_sensers_bottom">15dp</dimen>
+    <dimen name="minheight_registered_sensor">206dp</dimen>
+    <dimen name="margin_no_registered_sensor_top">35dp</dimen>
+
+    <!-- registered_next_of_kin-->
+    <dimen name="margin_no_registered_next_of_kin_top">60dp</dimen>
+
+    <!-- item_sensor-->
+    <dimen name="width_item_sensor">130dp</dimen>
+    <dimen name="padding_item_device">12dp</dimen>
+    <dimen name="width_device_item_image">64dp</dimen>
+    <dimen name="height_device_item_image">31dp</dimen>
+
+    <!-- item_next_of_kin-->
+    <dimen name="padding_item_next_of_kin_delete">10dp</dimen>
+    <dimen name="padding_item_next_of_kin">16dp</dimen>
+
+    <!-- toolbar-->
+    <dimen name="height_toolbar">56dp</dimen>
+    <dimen name="margin_item_device_image">13dp</dimen>
+    <dimen name="width_item_device_state">5dp</dimen>
+    <dimen name="margin_item_device_state">4dp</dimen>
+    <dimen name="margin_list_title_vertical">20dp</dimen>
+
+    <!-- profile-->
+    <dimen name="padding_profile_value_vertical">12dp</dimen>
+    <dimen name="padding_profile_value_horizontal">17dp</dimen>
+    <dimen name="margin_profile_value_top">10dp</dimen>
+
+    <!-- inputbox-->
+    <dimen name="margin_inputbox_category_top">18dp</dimen>
+    <dimen name="padding_inputbox_bottom">25dp</dimen>
+    <dimen name="padding_inputbox_horizontal">20dp</dimen>
+    <dimen name="padding_inputbox_top">13dp</dimen>
+    <dimen name="margin_inputbox_title_bottom">25dp</dimen>
+    <dimen name="margin_inputbox_top">25dp</dimen>
+
+    <!-- RegisterButton-->
+    <dimen name="padding_register_button_vertical">8dp</dimen>
+    <dimen name="padding_register_button_horizontal">30dp</dimen>
+    <dimen name="margin_register_button_top">20dp</dimen>
+
+    <!-- Contact-->
+    <dimen name="margin_contact_title_verticlal">10dp</dimen>
+    <dimen name="margin_contact_result_text_start">20dp</dimen>
+    <dimen name="margin_contact_result_text_top">20dp</dimen>
+    <dimen name="margin_contact_result_recyclerview_top">10dp</dimen>
+    <dimen name="margin_statusbox_bluetooth_button_bottom">16dp</dimen>
+    <dimen name="padding_statusbox_bluetooth_button_horizontal">14dp</dimen>
+    <dimen name="padding_statusbox_bluetooth_button_vertical">7dp</dimen>
+    <dimen name="margin_statusbox_bluetooth_image_end">16dp</dimen>
+
+    <!-- LivingTogetherDialog-->
+    <dimen name="padding_dialog_title_vertical">11dp</dimen>
+    <dimen name="padding_dialog_button_vertical">21dp</dimen>
+
+    <!-- Indicator-->
+    <dimen name="width_indicator">20dp</dimen>
+
+    <!-- Scanning-->
+    <dimen name="margin_sensor_circle_horizontal">48dp</dimen>
+    <dimen name="padding_location_edit_text_horizontal">50dp</dimen>
+    <dimen name="height_location_edit_text_underscore">2dp</dimen>
+    <dimen name="margin_location_edit_text_bottom">10dp</dimen>
+    <dimen name="margin_location_edit_text_underscore_bottom">52dp</dimen>
+    <dimen name="margin_ask_location_vertical">20dp</dimen>
+
+    <!-- SensorInfoDialog-->
+    <dimen name="padding_sensor_info_dalog_vertical">20dp</dimen>
+    <dimen name="padding_sensor_info_dialog_horizontal">30dp</dimen>
+    <dimen name="margin_sensor_info_elements_dialog_vertical">7dp</dimen>
+
+</resources>

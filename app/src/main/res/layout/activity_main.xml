@@ -6,215 +6,326 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
-            name="viewModel"
+            name="mainViewModel"
             type="com.seoultech.livingtogether_android.viewmodel.MainViewModel" />
+
+        <variable
+            name="deviceViewModel"
+            type="com.seoultech.livingtogether_android.device.viewmodel.DeviceViewModel" />
+
+        <variable
+            name="nextOfKinViewModel"
+            type="com.seoultech.livingtogether_android.nextofkin.viewmodel.NextOfKinViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
             tools:context=".MainActivity">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/top_of_recycler"
+            <com.seoultech.livingtogether_android.library.LTToolbar
+                android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:paddingTop="15dp"
-                android:paddingEnd="15dp"
+                android:clipChildren="false"
+                app:layout_constraintBottom_toTopOf="@+id/cardview_main_statusbox"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-                <TextView
-                    android:id="@+id/textView3"
-                    style="@style/TitleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_title"
-                    android:textColor="@color/black"
-                    android:textSize="32sp"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/text_main_location"
-                    style="@style/MinorText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="노원구"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toEndOf="@+id/textView3" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_main_statusbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_entire_padding_horizontal"
+                android:layout_marginTop="@dimen/margin_statusbox_top"
+                android:background="@color/colorWhite"
+                app:cardCornerRadius="@dimen/radius_entire"
+                app:cardElevation="@dimen/elevation_entire"
+                app:layout_constraintBottom_toTopOf="@+id/constraintlayout_main_registerdsensors"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_main">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/my_rect"
-                    android:padding="10dp"
-                    android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/textview_main_statusboxtitle"
+                        style="@style/MajorText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="센서를 정상적으로 감지하고 있습니다."
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:layout_marginStart="@dimen/margin_statusbox_padding_start"
+                        android:layout_marginTop="@dimen/margin_statusbox_padding_top"
+                        android:text="@string/status_box_on_going"
+                        app:layout_constraintBottom_toTopOf="@+id/textview_main_numberofsensor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/textview_main_numberofsensor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="3"
-                        android:textColor="@color/mainBlue"
-                        android:textSize="50sp"
-                        app:layout_constraintStart_toStartOf="@+id/textView"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        android:layout_marginStart="@dimen/margin_statusbox_padding_start"
+                        android:includeFontPadding="false"
+                        android:text="@{deviceViewModel.itemSizeString}"
+                        android:textColor="#61d7cb"
+                        android:textSize="65sp"
+                        app:layout_constraintBaseline_toBaselineOf="@id/textview_main_numberofsensortext"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="개의 감지 중인 센서"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-                        app:layout_constraintStart_toEndOf="@+id/textView2" />
-
-                    <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textview_main_numberofsensortext"
                         style="@style/MinorText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="서울특별시 노원구 공릉동"
-                        android:textColor="@color/gray"
-                        app:layout_constraintStart_toStartOf="@+id/textView2"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                        android:layout_marginStart="@dimen/margin_statusbox_numberofsensor"
+                        android:layout_marginBottom="@dimen/margin_statusbox_padding_bottom"
+                        android:text="@string/status_box_number_of_sensor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/textview_main_numberofsensor" />
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/imageview_main_status"
+                        setGrayTint="@{!deviceViewModel.empty}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-                        app:layout_constraintStart_toEndOf="@+id/textView5"
-                        app:layout_constraintTop_toTopOf="@+id/textView5"
-                        app:srcCompat="@drawable/ic_location_on_24dp" />
+                        android:src="@drawable/sensor_png"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_main_bluetoothon"
+                        style="@style/BluetoothOnButton"
+                        android:onClick="@{()->mainViewModel.setBluetoothOn()}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/statusbox_bluetooth_on_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/textview_main_statusboxtitle" />
+
+                    <ImageView
+                        android:id="@+id/imageview_main_invallidbluetooth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_statusbox_bluetooth_image_end"
+                        android:layout_marginBottom="@dimen/margin_statusbox_padding_bottom"
+                        android:src="@drawable/ic_invalid_bluetooth"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_main_bluetoothoff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="imageview_main_invallidbluetooth, button_main_bluetoothon" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_main_numberofsensors"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="textview_main_numberofsensortext, textview_main_numberofsensor" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/textView6"
-                    style="@style/TitleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="등록된 센서"
-                    android:textColor="@color/black"
-                    android:textSize="32sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-                <TextView
-                    android:id="@+id/textView7"
-                    style="@style/MinorText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="더 보기"
-                    android:textColor="@color/gray"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_main_location"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_main_location"
-                    app:srcCompat="@drawable/ic_settings_24dp" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_sensor_list_main"
-                replaceAll="@{viewModel.sensors}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingVertical="12dp"
-                android:clipToPadding="false"
-                android:paddingHorizontal="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/top_of_recycler" />
+            </androidx.cardview.widget.CardView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/botton_of_recycler"
+                android:id="@+id/constraintlayout_main_registerdsensors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/margin_statusbox_bottom"
+                android:background="@drawable/gradient_main_green"
+                android:clipChildren="false"
+                android:minHeight="@dimen/minheight_registered_sensor"
+                app:layout_constraintBottom_toTopOf="@+id/constraintlayout_main_registerednextofkin"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_sensor_list_main">
+                app:layout_constraintTop_toBottomOf="@+id/cardview_main_statusbox">
 
                 <TextView
-                    android:id="@+id/textView9"
-                    style="@style/MinorText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="더 보기"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/textview_main_registeredsensors"
                     style="@style/TitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="27dp"
-                    android:text="보호자"
-                    android:textColor="@color/black"
-                    android:textSize="32sp"
+                    android:layout_marginStart="@dimen/margin_entire_padding_horizontal"
+                    android:layout_marginTop="@dimen/margin_registerd_sensors_padding_top"
+                    android:text="@string/registered_sensor"
+                    android:textColor="@color/colorWhite"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_nok_list_main"
-                    replaceAll="@{viewModel.noks}"
-                    android:layout_width="0dp"
+                <Button
+                    android:id="@+id/button_seemoresensors"
+                    style="@style/SeeMoreButton"
+                    android:onClick="@{()->mainViewModel.seeMoreSensors()}"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
+                    android:padding="@dimen/margin_entire_padding_horizontal"
+                    android:textColor="@color/colorWhite"
+                    android:visibility="@{deviceViewModel.items.size() == 0 ? View.INVISIBLE : View.VISIBLE}"
+                    app:layout_constraintBaseline_toBaselineOf="@id/textview_main_registeredsensors"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_main_sensors"
+                    replaceAll="@{deviceViewModel.items}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_sensor_reyclerview_top"
+                    android:layout_marginBottom="@dimen/margin_sensor_recyclerview_bottom"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/margin_entire_padding_horizontal"
+                    android:visibility="@{deviceViewModel.items.size() == 0 ? View.INVISIBLE : View.VISIBLE}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_main_registeredsensors"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:listitem="@layout/item_sensor" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintlayout_main_noregisteredsensor"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:visibility="@{deviceViewModel.items.size() == 0 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8"
-                    tools:listitem="@layout/nok_item_main" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_main_registeredsensors">
+
+                    <TextView
+                        android:id="@+id/textview_main_noregisteredsensor"
+                        style="@style/NoticeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_no_registered_sensor_top"
+                        android:text="@string/sensor_no_registered"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_main_registersensor"
+                        style="@style/RegisterButtonWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_register_button_top"
+                        android:onClick="@{()->deviceViewModel.registerNewSensor()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_main_noregisteredsensor" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_main_registerednextofkin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_registered_sensers_bottom"
+                android:background="@color/colorWhite"
+                android:clipChildren="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_main_registerdsensors">
+
+                <TextView
+                    android:id="@+id/textview_main_nextofkin"
+                    style="@style/TitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_entire_padding_horizontal"
+                    android:layout_marginTop="@dimen/margin_registerd_sensors_padding_top"
+                    android:text="@string/next_of_kin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/button_main_seemorenextofkin"
+                    style="@style/SeeMoreButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->mainViewModel.seeMoreNextOfKin()}"
+                    android:visibility="@{nextOfKinViewModel.items.size() == 0 ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBaseline_toBaselineOf="@id/textview_main_nextofkin"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_main_nextofkin"
+                    replaceAll="@{nextOfKinViewModel.items}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_entire_padding_horizontal"
+                    android:layout_marginVertical="@dimen/margin_sensor_reyclerview_top"
+                    android:orientation="vertical"
+                    android:visibility="@{nextOfKinViewModel.items.size() == 0 ? View.GONE : View.VISIBLE}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_main_nextofkin"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:listitem="@layout/item_next_of_kin" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintlayout_main_noregisterednextofkin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{nextOfKinViewModel.items.size() == 0 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_main_nextofkin">
+
+                    <TextView
+                        android:id="@+id/textview_main_noregisterednextofkin"
+                        style="@style/NoticeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_no_registered_next_of_kin_top"
+                        android:text="@string/next_of_kin_no_registered"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        style="@style/RegisterButtonGray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_register_button_top"
+                        android:onClick="@{()->nextOfKinViewModel.addNewNextOfKin()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_main_noregisterednextofkin" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
 </layout>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+
+        <variable
+            name="device"
+            type="com.seoultech.livingtogether_android.device.data.Device" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_kind"
+            style="@style/SensorInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_sensor_info_dalog_vertical"
+            android:text="센서 종류"
+            app:layout_constraintBottom_toTopOf="@id/textview_dialogdevice_mac"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_kindpresent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{device.deviceType}"
+            app:layout_constraintBottom_toBottomOf="@id/textview_dialogdevice_kind"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@id/textview_dialogdevice_kind" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_mac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SensorInfoText"
+            android:text="Mac Address"
+            app:layout_constraintBottom_toTopOf="@id/textview_dialogdevice_initdate"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_kind"
+            app:layout_constraintTop_toBottomOf="@id/textview_dialogdevice_kind" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_macpresent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{device.deviceAddress}"
+            app:layout_constraintBottom_toBottomOf="@id/textview_dialogdevice_mac"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_kindpresent"
+            app:layout_constraintTop_toTopOf="@id/textview_dialogdevice_mac" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_initdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SensorInfoText"
+            android:text="등록 일자"
+            app:layout_constraintBottom_toTopOf="@id/textview_dialogdevice_active"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_mac"
+            app:layout_constraintTop_toBottomOf="@id/textview_dialogdevice_mac" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_initdatepresent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{device.getInitDateToString()}"
+            app:layout_constraintBottom_toBottomOf="@id/textview_dialogdevice_initdate"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_macpresent"
+            app:layout_constraintTop_toTopOf="@id/textview_dialogdevice_initdate" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_active"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SensorInfoText"
+            android:text="마지막 활성 신호"
+            app:layout_constraintBottom_toTopOf="@id/textview_dialogdevice_preserve"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_initdate"
+            app:layout_constraintTop_toBottomOf="@id/textview_dialogdevice_initdate" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_activepresent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{device.getLastDetectedActiveTimeToString()}"
+            app:layout_constraintBottom_toBottomOf="@id/textview_dialogdevice_active"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_initdatepresent"
+            app:layout_constraintTop_toTopOf="@id/textview_dialogdevice_active" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_preserve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SensorInfoText"
+            android:text="마지막 보존 신호"
+            app:layout_constraintBottom_toTopOf="@id/textview_dialogdevice_available"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_active"
+            app:layout_constraintTop_toBottomOf="@id/textview_dialogdevice_active" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_preservepresent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{device.getLastDetectedPreserveTimeToString()}"
+            app:layout_constraintBottom_toBottomOf="@id/textview_dialogdevice_preserve"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_activepresent"
+            app:layout_constraintTop_toTopOf="@id/textview_dialogdevice_preserve" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_available"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_sensor_info_elements_dialog_vertical"
+            android:text="수신 상태"
+            app:layout_constraintBottom_toTopOf="@id/textview_dialogdevice_location"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_active"
+            app:layout_constraintTop_toBottomOf="@id/textview_dialogdevice_preserve" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_availablepresent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{device.getDeviceAvailable()}"
+            app:layout_constraintBottom_toBottomOf="@id/textview_dialogdevice_available"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_preservepresent"
+            app:layout_constraintTop_toTopOf="@id/textview_dialogdevice_available" />
+
+        <TextView
+            android:id="@+id/textview_dialogdevice_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SensorInfoText"
+            android:layout_marginBottom="@dimen/padding_sensor_info_dalog_vertical"
+            android:text="위치"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/edittext_dialogdevice_locationpresent"
+            app:layout_constraintStart_toStartOf="@id/textview_dialogdevice_available"
+            app:layout_constraintTop_toBottomOf="@id/textview_dialogdevice_available" />
+
+        <EditText
+            android:id="@+id/edittext_dialogdevice_locationpresent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_sensor_info_dialog_horizontal"
+            android:background="@null"
+            style="@style/EditLocationText"
+            android:text="@={device.location}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@id/textview_dialogdevice_location" />
+        
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/colorMainGreen"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="@id/edittext_dialogdevice_locationpresent"
+            app:layout_constraintEnd_toEndOf="@id/edittext_dialogdevice_locationpresent"
+            app:layout_constraintTop_toBottomOf="@id/edittext_dialogdevice_locationpresent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="30dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.50"
+            app:layout_constraintStart_toStartOf="parent" />
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDividerGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

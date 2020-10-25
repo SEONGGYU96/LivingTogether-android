@@ -1,41 +1,64 @@
 package com.seoultech.livingtogether_android.viewmodel
 
-import androidx.databinding.ObservableField
-import com.seoultech.livingtogether_android.data.NOKData
-import com.seoultech.livingtogether_android.data.SensorData
+import android.app.Application
+import android.bluetooth.BluetoothAdapter
+import android.content.Intent
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.seoultech.livingtogether_android.bluetooth.model.BluetoothLiveData
+import com.seoultech.livingtogether_android.bluetooth.service.ScanService
+import com.seoultech.livingtogether_android.util.ServiceUtil
 
-class MainViewModel {
-    var sensors = ObservableField<List<SensorData>>(mutableListOf())
+class MainViewModel(private val bluetoothAdapter: BluetoothAdapter, val application: Application) : ViewModel() {
 
-    var noks = ObservableField<List<NOKData>>(mutableListOf())
+    companion object {
+        private const val TAG = "MainViewModel"
+    }
 
-    init {
-        var data = mutableListOf<SensorData>()
+    private var hasDevice = false
 
-        val data1 = SensorData("발판 센서", "화장실", 3, true, "발판")
-        val data2 = SensorData("발판 센서", "안방", 2, true, "발판")
-        val data3 = SensorData("발판 센서", "현관", 5, true, "발판")
-        val data4 = SensorData("발판 센서", "화장실", 12, false, "발판")
+    var isBluetoothOn = BluetoothLiveData
 
-        data.add(data1)
-        data.add(data2)
-        data.add(data3)
-        data.add(data4)
+    private val _seeMoreNextOfKinEvent = MutableLiveData<Boolean>()
+    val seeMoreNextOfKinEvent: LiveData<Boolean>
+        get() = _seeMoreNextOfKinEvent
 
-        sensors.set(data)
+    private val _seeMoreSensorsEvent = MutableLiveData<Boolean>()
+    val seeMoreSensorsEvent: LiveData<Boolean>
+        get() = _seeMoreSensorsEvent
 
-        var nok = mutableListOf<NOKData>()
+    private val _bluetoothOnEvent = MutableLiveData<Boolean>()
+    val bluetoothOnEvent: LiveData<Boolean>
+        get() = _bluetoothOnEvent
 
-        val nok1 = NOKData("김성규","010-2222-3444")
-        val nok2 = NOKData("이영준","010-2235-3734")
-        val nok3 = NOKData("강석민","010-2277-3344")
-        val nok4 = NOKData("위정빈","010-2232-1254")
+    private fun onResume() {
+        if (hasDevice) {
+            bluetoothStateCheck()
+        }
+    }
 
-        nok.add(nok1)
-        nok.add(nok2)
-        nok.add(nok3)
-        nok.add(nok4)
+    fun seeMoreNextOfKin() {
+        _seeMoreNextOfKinEvent.value = true
+    }
 
-        noks.set(nok)
+    fun seeMoreSensors() {
+        _seeMoreSensorsEvent.value = true
+    }
+
+    fun setBluetoothOn() {
+        _bluetoothOnEvent.value = true
+    }
+
+    fun bluetoothStateCheck() {
+        isBluetoothOn.value = bluetoothAdapter.isEnabled
+    }
+
+    fun setHasDevice(hasDevice: Boolean) {
+        this.hasDevice = hasDevice
+        if (hasDevice) {
+            onResume()
+        }
     }
 }

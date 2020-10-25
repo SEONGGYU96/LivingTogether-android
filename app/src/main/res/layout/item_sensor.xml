@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="device"
+            type="com.seoultech.livingtogether_android.device.data.Device" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/framelayout_sensor_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview_sensor_root"
+            android:layout_width="@dimen/width_item_sensor"
+            android:layout_height="@dimen/width_item_sensor"
+            android:layout_gravity="center"
+            app:cardCornerRadius="@dimen/radius_entire"
+            app:cardElevation="@dimen/elevation_entire">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_itemdevice_root"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="?android:selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/imageview_itemdevice"
+                    android:layout_width="@dimen/width_device_item_image"
+                    android:layout_height="31dp"
+                    android:layout_marginTop="@dimen/padding_item_device"
+                    android:layout_marginEnd="@dimen/padding_item_device"
+                    android:src="@drawable/sensor_ic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_itemdevice_name"
+                    style="@style/PlainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_item_device"
+                    android:layout_marginTop="@dimen/margin_item_device_image"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imageview_itemdevice" />
+
+                <ImageView
+                    android:id="@+id/imageview_itemdevice_state"
+                    android:layout_width="@dimen/width_item_device_state"
+                    android:layout_height="@dimen/width_item_device_state"
+                    android:layout_marginStart="@dimen/margin_item_device_state"
+                    android:src="@color/colorMainGreen"
+                    android:visibility="@{device.isAvailable ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@id/textview_itemdevice_name"
+                    app:layout_constraintStart_toEndOf="@id/textview_itemdevice_name"
+                    app:layout_constraintTop_toTopOf="@id/textview_itemdevice_name" />
+
+                <TextView
+                    android:id="@+id/textview_itemdevice_location"
+                    style="@style/MinorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{device.location}"
+                    app:layout_constraintStart_toStartOf="@id/textview_itemdevice_name"
+                    app:layout_constraintTop_toBottomOf="@id/textview_itemdevice_name" />
+
+                <TextView
+                    android:id="@+id/textview_itemdevice_lastdetactedtime"
+                    style="@style/SmallTimeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/textview_itemdevice_name"
+                    app:layout_constraintTop_toBottomOf="@id/textview_itemdevice_location" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+</layout>
