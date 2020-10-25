@@ -19,8 +19,8 @@ object AlarmUtil {
 
     const val DEVICE_ADDRESS = "device_address"
 
-    //분 단위
-    private const val ACTIVE_ALARM_TRIGGER_TIME = 240
+    //초 단위
+    private const val ACTIVE_ALARM_TRIGGER_TIME = 43200
     private const val PRESERVED_ALARM_TRIGGER_TIME = 180
 
     private const val TAG = "AlarmUtil"
