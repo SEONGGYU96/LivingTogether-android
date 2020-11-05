@@ -75,7 +75,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun requestPermission() {
         ActivityCompat.requestPermissions(
-            this, arrayOf(permission.ACCESS_FINE_LOCATION, permission.SEND_SMS),
+            this, arrayOf(permission.ACCESS_FINE_LOCATION),
             REQUEST_PERMISSION
         )
     }
@@ -112,11 +112,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(
-            this,
-            permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            this, permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun checkPermissionResponse(grantResults: IntArray): Boolean {

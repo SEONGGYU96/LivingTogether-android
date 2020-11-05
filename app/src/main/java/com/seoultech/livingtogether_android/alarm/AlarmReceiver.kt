@@ -48,7 +48,7 @@ class AlarmReceiver: BroadcastReceiver() {
         Log.d(TAG, "***********EMERGENCY PROTOCOL HAS BEEN OPERATED********")
         removeActiveAlarmReceiver()
         alertToServer()
-        sendSMS()
+        //sendSMS()
     }
 
     private fun sendBTState() {
