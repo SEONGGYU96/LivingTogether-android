@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.seoultech.livingtogether_android.ApplicationImpl
+import com.seoultech.livingtogether_android.Status
 import com.seoultech.livingtogether_android.bluetooth.model.BleDevice
 import com.seoultech.livingtogether_android.bluetooth.util.BleCreater
 import com.seoultech.livingtogether_android.device.data.Device
@@ -199,5 +200,7 @@ class ScanViewModel(
         AlarmUtil.setActiveAlarm(application)
 
         _foundSensorEvent.value = true
+
+        Status.setConnectOk(true)
     }
 }
